@@ -102,7 +102,7 @@ function art(id){
    const map={1:['light','dark'],2:['sky','water'],3:['land','tree'],4:['sun','moon'],5:['fish','bird'],6:['lion','human1']};
    return '<span class="art">'+map[d.day].map(k=>SVG[k]).join('')+'</span>';
  }
- return '<span class="art">'+(SVG[id]||SVG.light)+'</span>';
+ const key=id==='human'?'human1':id; return '<span class="art">'+(SVG[key]||SVG.light)+'</span>';
 }
 function cumulativeWorld(day){
  const parts=[];
