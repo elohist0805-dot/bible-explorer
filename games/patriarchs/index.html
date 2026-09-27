@@ -167,8 +167,48 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
   filter:drop-shadow(0 3px 2px #5d45252a)!important;
   opacity:1!important
 }
+
+/* v16 pale watercolor terrain: broad, soft, low-contrast land washes */
+.macroTerrain{
+  filter:blur(52px)!important;
+  opacity:.34!important;
+  transform:scale(1.055)!important;
+  transform-origin:center!important
+}
+.macroTerrain path{
+  opacity:.20!important;
+  stroke:none!important;
+  filter:none!important
+}
+.landmarkBelt{
+  filter:blur(24px)!important;
+  opacity:.16!important
+}
+.terrainModules .farm,.terrainModules .terrace,.terrainModules .scrub,
+.terrainModules .lowridge,.terrainModules .rivergreen{
+  filter:blur(22px)!important;
+  opacity:.18!important
+}
+.terrainModules .dunes,.terrainModules .hills{
+  filter:blur(18px)!important;
+  opacity:.20!important
+}
+.terrainModules .rocks,.terrainModules .palmgrove,.terrainModules .oasis{
+  filter:blur(10px)!important;
+  opacity:.38!important
+}
+/* soften the underlying colored patches and map texture */
+.map:before{opacity:.28!important;filter:blur(34px)!important}
+.map:after{opacity:.035!important}
+/* only true landmarks stay crisp */
+.terrainModules .mountains,.terrainModules .mountain,
+.terrainModules .village,.terrainModules .hamlet,.terrainModules .city,
+.geo.city,.mountain .mountIcon{
+  filter:drop-shadow(0 2px 2px #5d452520)!important;
+  opacity:.88!important
+}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.15</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.16</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
