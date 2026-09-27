@@ -270,7 +270,7 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .fullEventArt .eventArtwork{display:block;width:100%;height:100%;object-fit:contain;object-position:center center;background:#efe0bf}
 @media(max-width:700px){#eventScene>.sceneArt.fullEventArt{aspect-ratio:5/2}.fullEventArt .eventArtwork{object-fit:contain}}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.32</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.33</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
@@ -382,8 +382,8 @@ const events=[
 {id:'a-moriah',char:'abraham',place:'moriah',title:'最大的考驗',story:'亞伯拉罕帶著以撒前往摩利亞地。這是一場非常艱難的考驗。當事情到了最關鍵的時刻，神阻止亞伯拉罕傷害以撒；亞伯拉罕隨後看見神已經有所預備。',q:'這個事件最後讓亞伯拉罕經歷到什麼？',a:['神會親自預備','以撒必須永遠住在摩利亞','只有昂貴的祭物神才接受'],correct:0,reward:'gold',ref:'創世記 22:1–19',lesson:'亞伯拉罕稱那地方為「耶和華以勒」，表達神會預備。'},
 {id:'a-machpelah',char:'abraham',place:'hebron',title:'買下麥比拉洞',story:'撒拉去世後，亞伯拉罕需要一個地方安葬她。當地人願意提供土地，但亞伯拉罕堅持按照正式方式取得那塊田地，最後在眾人面前完成交易。',q:'亞伯拉罕為什麼堅持正式買下這塊土地？',a:['要取得屬於自己的安葬之地','要在那裡蓋王宮','要把土地轉賣賺錢'],correct:0,reward:'onyx',ref:'創世記 23章',lesson:'麥比拉成為亞伯拉罕家族在迦南正式擁有的重要土地，也成為家族的安葬之地。'},
 
-{id:'i-moriah',char:'isaac',place:'moriah',title:'為以撒尋找妻子',story:'亞伯拉罕年老時，特別吩咐僕人不要為以撒娶迦南女子，而要回到他的本地、本族去尋找妻子。僕人於是往兩河流域出發，後來遇見了利百加。',q:'利百加是哪裡人？',a:['亞伯拉罕本族、住在兩河流域的人','埃及人','迦南人'],correct:0,reward:'gold',ref:'創世記 24:1–15',lesson:'利百加來自亞伯拉罕的親族；她離開家鄉來到迦南，後來成為以撒的妻子。'},
-{id:'i-rebekah',char:'isaac',place:'lahairoi',title:'遇見利百加',story:'亞伯拉罕年老後，差遣僕人回到親族那裡，為以撒尋找妻子。經過漫長旅程，僕人帶著一位女子回到迦南。傍晚，以撒正在田間默想，看見遠處有駱駝走來。',q:'這位從遠方來到迦南、後來成為以撒妻子的女子是誰？',a:['利百加','拉結','利亞'],correct:0,reward:'onyx',ref:'創世記 24:62–67',lesson:'利百加離開自己的家鄉來到迦南，成為以撒的妻子，也進入神應許延續的家庭。'},
+{id:'i-moriah',char:'isaac',place:'moriah',title:'和父親上山',story:'以撒跟著父親亞伯拉罕前往摩利亞地。他自己背著燔祭用的柴，亞伯拉罕手中拿著火與刀。走了一段路後，以撒發現似乎少了一樣獻祭時很重要的東西。',q:'以撒發現少了什麼，因此開口詢問父親？',a:['燔祭的羊羔','搭帳棚的繩子','回家的地圖'],correct:0,reward:'gold',ref:'創世記 22:6–14',lesson:'亞伯拉罕回答：「神必自己預備作燔祭的羊羔。」後來以撒親身經歷了神的預備。'},
+{id:'i-rebekah',char:'isaac',place:'lahairoi',title:'遇見利百加',story:'亞伯拉罕年老後，差遣僕人回到親族那裡，為以撒尋找妻子。僕人到了亞伯拉罕本族居住的地方，遇見利百加，後來帶她回到迦南。傍晚，以撒正在田間默想，看見遠處有駱駝走來。',q:'利百加是哪裡人？',a:['亞伯拉罕本族、住在兩河流域的人','埃及人','迦南人'],correct:0,reward:'onyx',ref:'創世記 24:10–15、62–67',lesson:'利百加來自亞伯拉罕的親族；她離開家鄉來到迦南，成為以撒的妻子，也進入神應許延續的家庭。'},
 {id:'i-twins',char:'isaac',place:'lahairoi',title:'雙胞胎出生',story:'以撒和利百加結婚多年卻沒有孩子，以撒便為妻子祈求。後來利百加懷孕，而且腹中的兩個孩子彼此相爭。孩子出生時，一個先出生，另一個則抓著哥哥的腳跟。',q:'這對雙胞胎兄弟是誰？',a:['以掃和雅各','該隱和亞伯','以實瑪利和以撒'],correct:0,reward:'pearl',ref:'創世記 25:19–26',lesson:'先出生的是以掃，接著出生的是雅各。這對兄弟後來的故事也成為創世記的重要部分。'},
 {id:'i-gerar',char:'isaac',place:'gerar',title:'饑荒中的選擇',story:'以撒居住的地方發生饑荒。他來到基拉耳，可能也像父親亞伯拉罕從前一樣，考慮往糧食較充足的地方去。這時，神向以撒顯現，給了他清楚的指示。',q:'神給以撒什麼吩咐？',a:['不要下埃及，要住在神所指示的地方','立刻下埃及躲避饑荒','回到哈蘭居住'],correct:0,reward:'onyx',ref:'創世記 26:1–6',lesson:'神吩咐以撒不要下埃及，要住在祂所指示的地方，並再次向以撒確認給亞伯拉罕的應許。'},
 {id:'i-wells',char:'isaac',place:'gerar',title:'一次又一次挖井',story:'以撒在基拉耳一帶逐漸富足，引起當地人的嫉妒。後來他的僕人在谷中挖井，當地牧人卻來與他們爭奪。換了一個地方再挖，仍然發生爭執。',q:'面對一次又一次的爭井，以撒主要怎麼做？',a:['退讓，再到別處挖井','召集人馬搶回所有水井','從此不再挖井'],correct:0,reward:'pearl',ref:'創世記 26:19–21',lesson:'以撒有能力爭奪，卻沒有讓衝突不斷擴大，而是多次退讓，再尋找可以安居的地方。'},
