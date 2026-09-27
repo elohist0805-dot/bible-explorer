@@ -248,7 +248,7 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .sceneArt .hero svg{display:none}
 .sceneArt .sceneCaption{position:absolute;left:14px;top:12px;z-index:9;background:#fff8e9dc;border:1px solid #8a623944;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;color:#65452c}
 .sceneArt .storyPicture{display:block;width:100%;height:100%;overflow:hidden;border-radius:18px}.sceneArt .storyCharacter{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 4px #5c432e30);user-select:none;-webkit-user-drag:none}.sceneArt .storyCharacter[src=""]{display:none}</style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.25</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.26</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
@@ -435,13 +435,26 @@ window.addEventListener('keydown',e=>{if(locked)return;const k=e.key;if(['ArrowL
 window.addEventListener('keyup',e=>{if(e.key.includes('Arrow'))moving={x:0,y:0}});
 function checkTrigger(){document.querySelectorAll('.place').forEach(el=>el.classList.remove('near'));for(const p of places){const cp=positions[active],d=Math.hypot(cp.x-p.x,cp.y-p.y),el=document.getElementById('place-'+p.id);if(d<115&&events.some(e=>e.char===active&&e.place===p.id&&!completed.has(e.id)))el&&el.classList.add('near');if(d<58){const ev=events.find(e=>e.char===active&&e.place===p.id&&!completed.has(e.id));if(ev){openEvent(ev);break}}}}
 
+const eventArt={
+ 'a-ur':'./assets/a-ur.webp',
+ 'a-haran':'./assets/a-haran.webp',
+ 'a-shechem':'./assets/a-shechem.webp',
+ 'a-egypt':'./assets/a-egypt.webp',
+ 'a-lot':'./assets/a-lot.webp',
+ 'a-covenant':'./assets/a-covenant.webp',
+ 'a-sodom':'./assets/a-sodom.webp',
+ 'a-isaac':'./assets/a-isaac.webp',
+ 'a-moriah':'./assets/a-moriah.webp',
+ 'a-machpelah':'./assets/a-machpelah.webp'
+};
 const storyArt={
  abraham:['./assets/abraham_story_asset.webp','../exodus/og-cover.png'],
  isaac:['./assets/isaac-story.webp','../exodus/og-cover.png'],
  jacob:['./assets/jacob-story.webp','../exodus/og-cover.png']
 };
 function storyChibi(c){
- const sources=storyArt[c]||storyArt.abraham;
+ const eventSrc=currentEvent&&eventArt[currentEvent.id];
+ const sources=eventSrc?[eventSrc,storyArt[c]?.[0]||storyArt.abraham[0]]:(storyArt[c]||storyArt.abraham);
  return '<picture class="storyPicture"><source srcset="'+sources[0]+'" type="image/webp"><img class="storyCharacter" src="'+sources[1]+'" alt="'+(charInfo[c]?.name||'族長')+' 精緻卡通插圖" draggable="false"></picture>';
 }
 function eventSceneHTML(ev){
