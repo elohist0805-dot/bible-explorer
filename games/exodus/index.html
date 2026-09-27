@@ -260,7 +260,7 @@
 
 </style>
 </head>
-<body>
+<body class="game-mode">
 
 <div id="portal" class="portalView">
   <header class="portalHeader">
@@ -365,7 +365,7 @@
   </div>
   <div class="legend"><span><i class="dot d1"></i>已完成</span><span><i class="dot d2"></i>目前可挑戰</span><span><i class="dot d3"></i>尚未解鎖</span></div></div>
 
-  <div id="intro" class="overlay show">
+  <div id="intro" class="overlay">
     <div class="introCard">
       <div style="font-size:56px">🏺🔥🌊⛰️</div>
       <h1>出埃及記：曠野之路</h1>
@@ -1049,7 +1049,7 @@ function showEnding(){
  r.classList.add('show');
 }
 function restoreLevelUI(){ $('#question').style.display='block'; $('#options').style.display='grid'; $('#mosesGuide').style.display='flex'; }
-function resetGame(){ if(confirm('確定要清除目前進度，重新從埃及出發嗎？')){state={unlocked:0,done:[],history:0,faith:0,answers:{}};save();renderNodes();closeLevel();restoreLevelUI();$('#intro').classList.add('show');}}
+function resetGame(){ if(confirm('確定要清除目前進度，重新從埃及出發嗎？')){state={unlocked:0,done:[],history:0,faith:0,answers:{}};save();renderNodes();closeLevel();restoreLevelUI();}}
 $('#startBtn').onclick=()=>{AudioGame.start(true);AudioGame.setMuted(false);AudioGame.setMood('map');AudioGame.sfx('open');$('#intro').classList.remove('show');MapUI.reset();};
 $('#closeBtn').onclick=closeLevel; $('#resetBtn').onclick=resetGame;
 $('#audioToggle').onclick=()=>AudioGame.toggle();
@@ -1083,8 +1083,8 @@ $('#audioVolume').oninput=(e)=>AudioGame.setVolume(Number(e.target.value)/100);
 
   refreshGlobalVisitCount();
 
-  const enter=()=>{document.body.classList.add('game-mode');setTimeout(()=>MapUI.reset(),50);window.scrollTo(0,0);};
-  const leave=()=>{document.body.classList.remove('game-mode');AudioGame.setMuted(true);window.scrollTo(0,0);};
+  const enter=()=>{document.body.classList.add('game-mode');document.getElementById('intro')?.classList.remove('show');setTimeout(()=>MapUI.reset(),50);window.scrollTo(0,0);};
+  const leave=()=>{AudioGame.setMuted(true);window.location.href='/';};
   const a=document.getElementById('enterGameBtn'); if(a) a.onclick=enter;
   const c=document.getElementById('continueGameBtn'); if(c) c.onclick=()=>{enter();document.getElementById('intro').classList.remove('show');AudioGame.start(true);AudioGame.setMuted(false);AudioGame.setMood('map');};
   const b=document.getElementById('backPortalBtn'); if(b) b.onclick=leave;
