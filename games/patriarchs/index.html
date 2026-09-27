@@ -252,8 +252,13 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .fullEventArt .eventArtwork{display:block;width:100%;height:100%;object-fit:cover;object-position:center center;user-select:none;-webkit-user-drag:none}
 .fullEventArt .sun,.fullEventArt .ground,.fullEventArt .prop,.fullEventArt .stars,.fullEventArt .hero,.fullEventArt .sceneCaption{display:none!important}
 @media(max-width:700px){#eventScene,#eventScene>.sceneArt.fullEventArt{height:180px}.fullEventArt .eventArtwork{object-fit:cover;object-position:center center}}
+/* v28 preserve complete event panels without destructive crop */
+#eventScene{height:auto;min-height:0;margin:10px 0 12px;overflow:hidden}
+#eventScene>.sceneArt.fullEventArt{height:auto;aspect-ratio:16/9;min-height:220px;max-height:330px;background:#f3e5c6;display:flex;align-items:center;justify-content:center}
+.fullEventArt .eventArtwork{width:100%;height:100%;object-fit:contain;object-position:center center;background:#f3e5c6}
+@media(max-width:700px){#eventScene,#eventScene>.sceneArt.fullEventArt{height:auto}.fullEventArt .eventArtwork{object-fit:contain}}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.27</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.28</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
