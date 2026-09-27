@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>族長足跡｜亞伯拉罕・以撒・雅各</title>
+<style>
+:root{--ink:#49351f;--paper:#fff6dc;--brown:#7a5230;--gold:#d9a536;--sea:#82bfd0;--green:#78935c}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:#ead5a4}
+body{overflow:hidden}.top{height:58px;background:#fff9e9ee;border-bottom:2px solid #8b663c44;display:flex;align-items:center;justify-content:space-between;padding:7px 14px;position:relative;z-index:20}
+.brand{font-weight:950;font-size:20px}.brand small{font-size:12px;font-weight:700;opacity:.65;margin-left:8px}.topBtns{display:flex;gap:7px}.top button,.back{border:0;border-radius:11px;padding:9px 12px;font-weight:900;cursor:pointer;text-decoration:none;color:#fff;background:#765134}.summaryBtn{background:#b47a28!important}
+.game{height:calc(100% - 58px);display:grid;grid-template-rows:minmax(0,1fr) 126px}.mapWrap{position:relative;overflow:hidden;background:#d9c084;touch-action:none}
+.map{position:absolute;inset:0;background:
+radial-gradient(ellipse at 17% 65%,#86c2d3 0 12%,transparent 12.5%),
+radial-gradient(ellipse at 30% 88%,#86c2d3 0 10%,transparent 10.5%),
+linear-gradient(145deg,#d9c487,#efdba2 58%,#c9b271)}
+.map:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;background-image:repeating-linear-gradient(18deg,transparent 0 23px,#704d2b 24px 25px)}
+.river{position:absolute;right:17%;top:0;width:16px;height:49%;background:#6eb3ca;border-radius:50%;transform:rotate(8deg);opacity:.8;box-shadow:0 0 0 3px #a6d4df66}
+.river.euphrates{right:8%;height:58%;transform:rotate(-10deg)}.seaLabel{position:absolute;left:6%;top:68%;color:#377d96;font-weight:900;transform:rotate(-16deg);opacity:.8}
+.region{position:absolute;font-family:Georgia,"Noto Serif TC",serif;font-weight:900;font-size:clamp(13px,1.6vw,21px);opacity:.32;letter-spacing:4px}.egypt{left:8%;bottom:11%}.canaan{left:36%;top:39%}.meso{right:8%;top:16%}
+.place{position:absolute;transform:translate(-50%,-50%);z-index:4;text-align:center;user-select:none}.dot{width:14px;height:14px;margin:auto;border-radius:50%;background:#7b4a2b;border:3px solid #f8e4a7;box-shadow:0 2px 6px #0005}.place span{display:block;background:#fff5d9dc;border:1px solid #8c653d55;border-radius:7px;padding:2px 5px;margin-top:2px;font-size:11px;font-weight:900;white-space:nowrap}
+.mountain .dot{width:auto;height:auto;background:none;border:0;box-shadow:none;font-size:20px}.mountain span{background:#f1e4c6e8}
+.char{position:absolute;left:50%;top:50%;z-index:10;transform:translate(-50%,-75%);width:58px;height:72px;display:grid;place-items:center;filter:drop-shadow(0 5px 3px #0004);transition:filter .2s;pointer-events:none}.char .face{font-size:43px;line-height:1}.char .tag{position:absolute;top:-10px;background:#fff8df;border:2px solid #805936;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:950;white-space:nowrap}
+.hint{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:12;background:#fff7dfdd;border:1px solid #76502e44;border-radius:999px;padding:7px 13px;font-size:12px;font-weight:850;box-shadow:0 4px 12px #0001}
+.joy{position:absolute;left:18px;bottom:18px;width:112px;height:112px;border-radius:50%;z-index:14;background:#fff8e6a8;border:3px solid #7c5a3888;touch-action:none;box-shadow:inset 0 0 22px #704e2b22}.stick{position:absolute;width:48px;height:48px;left:29px;top:29px;border-radius:50%;background:#7c5736dd;border:4px solid #f8e7bd;box-shadow:0 3px 7px #0003}
+.loot{position:absolute;right:12px;top:12px;z-index:13;background:#fff8e8e8;border:1px solid #7e5b3633;border-radius:13px;padding:8px 11px;font-weight:900;font-size:13px;display:flex;gap:10px}.loot b{font-size:15px}
+.panel{background:#fff7e4;border-top:3px solid #8c663e44;display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px 14px;align-items:center;z-index:15}.characters{display:flex;gap:8px}.pick{flex:1;max-width:190px;border:2px solid #d6bd8a;background:#fffdf4;border-radius:15px;padding:7px;cursor:pointer;font-weight:900;color:#543d28}.pick.active{border-color:#a66a21;background:#f7dfaa;box-shadow:0 0 0 3px #e4b95b55}.pick .ico{font-size:27px;display:block}.pick small{display:block;font-weight:700;opacity:.65}.guide{font-size:12px;line-height:1.5;max-width:290px}.guide b{display:block;font-size:13px}
+.modal{position:fixed;inset:0;background:#2b211788;z-index:50;display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.card{width:min(580px,96vw);max-height:88vh;overflow:auto;background:#fff8e8;border:4px solid #8c6038;border-radius:24px;padding:20px;box-shadow:0 18px 50px #0005}.card h2{margin:0 0 5px;font-family:Georgia,"Noto Serif TC",serif}.where{font-size:12px;color:#8b6745;font-weight:800}.story{line-height:1.7;background:#f5e7c7;border-radius:13px;padding:12px;margin:12px 0}.question{font-weight:950;margin:10px 0}.answers{display:grid;gap:8px}.answer{border:2px solid #dbc294;background:#fffdf6;border-radius:12px;padding:10px;text-align:left;font-weight:800;cursor:pointer;color:#49351f}.answer:hover{background:#f5e4bb}.feedback{display:none;margin-top:12px;border-radius:12px;padding:11px;line-height:1.6;font-weight:800}.feedback.ok{display:block;background:#e1efd1}.feedback.no{display:block;background:#f5d7c9}.continue{display:none;margin:12px auto 0;border:0;background:#775135;color:#fff;border-radius:11px;padding:10px 15px;font-weight:900;cursor:pointer}.summaryCard{text-align:center}.treasures{display:flex;justify-content:center;gap:16px;font-size:18px;margin:15px 0}.progress{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.prog{background:#f0dfbd;border-radius:12px;padding:10px}.prog b{font-size:22px;display:block}.closeTip{font-size:12px;opacity:.6;margin-top:14px}
+@media(max-width:650px){.brand small,.guide{display:none}.game{grid-template-rows:minmax(0,1fr) 112px}.panel{grid-template-columns:1fr;padding:8px}.characters{gap:5px}.pick{padding:5px;font-size:12px}.pick .ico{font-size:23px}.joy{width:96px;height:96px;left:12px;bottom:12px}.stick{width:42px;height:42px;left:24px;top:24px}.loot{font-size:11px}.hint{top:55px;max-width:78vw;text-align:center}.place span{font-size:10px}}
+</style></head><body>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="/">回入口</a></div></header>
+<main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
+<div class="river"></div><div class="river euphrates"></div><div class="seaLabel">大 海</div><div class="region egypt">埃及</div><div class="region canaan">迦南</div><div class="region meso">兩河流域</div>
+</div><div class="hint" id="hint">選一位族長，再用左下圓盤探索地圖</div><div class="char" id="char"><span class="tag" id="charTag">亞伯拉罕</span><span class="face" id="charFace">🧔🏻</span></div>
+<div class="joy" id="joy"><div class="stick" id="stick"></div></div><div class="loot">⚪ <b id="pearl">0</b> 🔶 <b id="onyx">0</b> 🪙 <b id="gold">0</b></div></section>
+<section class="panel"><div class="characters">
+<button class="pick active" data-char="abraham"><span class="ico">🧔🏻</span>亞伯拉罕<small>信心之父</small></button>
+<button class="pick" data-char="isaac"><span class="ico">👨🏻‍🦱</span>以撒<small>應許之子</small></button>
+<button class="pick" data-char="jacob"><span class="ico">👨🏻</span>雅各<small>以色列</small></button>
+</div><div class="guide"><b>自由探索玩法</b>人物靠近與他有關的地點，就會出現聖經事件。答對可獲得寶物；沒有固定順序。</div></section></main>
+<div class="modal" id="eventModal"><div class="card" id="eventCard"><div class="where" id="eventWhere"></div><h2 id="eventTitle"></h2><div class="story" id="eventStory"></div><div class="question" id="eventQuestion"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><button class="continue" id="continueBtn">繼續探索</button></div></div>
+<div class="modal" id="summaryModal"><div class="card summaryCard"><h2>🏆 本次族長探險總結</h2><p>你可以隨時繼續探索，沒有固定的終點。</p><div class="treasures"><span>⚪ 珍珠 <b id="sPearl">0</b></span><span>🔶 瑪瑙 <b id="sOnyx">0</b></span><span>🪙 黃金 <b id="sGold">0</b></span></div><div class="progress" id="summaryProgress"></div><p id="summaryText"></p><div class="closeTip">輕觸這張卡片以外的空白處即可關閉</div></div></div>
+<script>
+const places=[
+{id:'ur',name:'吾珥',x:87,y:31},{id:'haran',name:'哈蘭',x:69,y:12},{id:'shechem',name:'示劍',x:40,y:38},{id:'bethel',name:'伯特利',x:41,y:48},{id:'moriah',name:'摩利亞山',x:42,y:55,mountain:true},{id:'hebron',name:'希伯崙',x:40,y:65},{id:'beersheba',name:'別是巴',x:39,y:76},{id:'gerar',name:'基拉耳',x:34,y:70},{id:'peniel',name:'毗努伊勒',x:48,y:42},{id:'egypt',name:'埃及',x:19,y:78}
+];
+const events=[
+{id:'a-ur',char:'abraham',place:'ur',title:'離開本地',story:'亞伯蘭的家族原先住在迦勒底的吾珥，後來往迦南方向遷移。',q:'他們離開吾珥後，先停留在哪一座城？',a:['哈蘭','伯特利','別是巴'],correct:0,reward:'pearl',ref:'創世記 11:31'},
+{id:'a-haran',char:'abraham',place:'haran',title:'蒙召出發',story:'耶和華呼召亞伯蘭離開本地、本族、父家，往神所要指示的地去。',q:'亞伯蘭怎樣回應這個呼召？',a:['照耶和華的吩咐去了','留在哈蘭直到老年','先前往埃及定居'],correct:0,reward:'gold',ref:'創世記 12:1–5'},
+{id:'a-shechem',char:'abraham',place:'shechem',title:'示劍築壇',story:'亞伯蘭進入迦南，到示劍的摩利橡樹那裡，耶和華向他顯現。',q:'神應許要把這地賜給誰？',a:['亞伯蘭的後裔','羅得的後裔','埃及法老'],correct:0,reward:'onyx',ref:'創世記 12:6–7'},
+{id:'a-bethel',char:'abraham',place:'bethel',title:'求告耶和華',story:'亞伯蘭在伯特利東邊支搭帳棚，並築壇求告耶和華的名。',q:'亞伯蘭在這裡做了什麼？',a:['築壇並求告耶和華','建造王宮','挖護城河'],correct:0,reward:'pearl',ref:'創世記 12:8'},
+{id:'a-hebron',char:'abraham',place:'hebron',title:'幔利橡樹',story:'亞伯蘭遷到希伯崙幔利的橡樹那裡居住，也在那裡築壇。',q:'亞伯拉罕後來為撒拉買下哪一處作墳地？',a:['麥比拉洞','摩利亞山頂','雅博渡口'],correct:0,reward:'onyx',ref:'創世記 13:18；23章'},
+{id:'a-moriah',char:'abraham',place:'moriah',title:'摩利亞的考驗',story:'神試驗亞伯拉罕，要他帶著以撒到摩利亞地。',q:'最後以撒被獻為燔祭了嗎？',a:['沒有，神預備了公羊代替','有，之後又復活','沒有，因為以撒逃走'],correct:0,reward:'gold',ref:'創世記 22章'},
+{id:'i-gerar',char:'isaac',place:'gerar',title:'饑荒中的選擇',story:'以撒年間遇到饑荒，他到了基拉耳的非利士王亞比米勒那裡。',q:'神吩咐以撒不要往哪裡去？',a:['埃及','哈蘭','示劍'],correct:0,reward:'onyx',ref:'創世記 26:1–6'},
+{id:'i-gerar-wells',char:'isaac',place:'gerar',title:'水井之爭',story:'以撒的僕人挖井，幾次與基拉耳的牧人相爭，之後又繼續遷移挖井。',q:'以撒面對爭井主要採取什麼做法？',a:['退讓並另挖新井','立刻發動戰爭','永久離開迦南'],correct:0,reward:'pearl',ref:'創世記 26:19–22'},
+{id:'i-beer',char:'isaac',place:'beersheba',title:'別是巴築壇',story:'耶和華在別是巴向以撒顯現，重申給亞伯拉罕的應許。',q:'以撒在那裡做了什麼？',a:['築壇、求告耶和華並支搭帳棚','建造金像','回到吾珥'],correct:0,reward:'gold',ref:'創世記 26:23–25'},
+{id:'j-bethel',char:'jacob',place:'bethel',title:'天梯之夢',story:'雅各離開別是巴往哈蘭，在途中枕著石頭睡覺，夢見梯子立在地上，梯頂通天。',q:'雅各醒來後怎樣稱呼那地方？',a:['伯特利','毗努伊勒','希伯崙'],correct:0,reward:'gold',ref:'創世記 28:10–22'},
+{id:'j-haran',char:'jacob',place:'haran',title:'在拉班家',story:'雅各到了東方，在拉班家多年，為娶拉結而服事。',q:'雅各先娶到的是誰？',a:['利亞','拉結','底拿'],correct:0,reward:'onyx',ref:'創世記 29章'},
+{id:'j-peniel',char:'jacob',place:'peniel',title:'與神摔跤',story:'雅各回迦南途中，在雅博渡口附近整夜與一位神祕人物摔跤。',q:'雅各在這次事件後得到什麼新名字？',a:['以色列','亞伯蘭','以東'],correct:0,reward:'gold',ref:'創世記 32:22–32'},
+{id:'j-shechem',char:'jacob',place:'shechem',title:'回到迦南',story:'雅各從巴旦亞蘭回來，平平安安到了示劍城，在城東支搭帳棚。',q:'雅各在那裡築壇，表明什麼？',a:['敬拜以色列的神','改拜迦南諸神','宣告自己為王'],correct:0,reward:'pearl',ref:'創世記 33:18–20'},
+{id:'j-hebron',char:'jacob',place:'hebron',title:'回到父親身邊',story:'雅各回到基列亞巴的幔利，就是亞伯拉罕和以撒寄居的希伯崙。',q:'雅各在這裡回到哪一位父親身邊？',a:['以撒','亞伯拉罕','拉班'],correct:0,reward:'onyx',ref:'創世記 35:27'}
+];
+const charInfo={abraham:{name:'亞伯拉罕',face:'🧔🏻'},isaac:{name:'以撒',face:'👨🏻‍🦱'},jacob:{name:'雅各',face:'👨🏻'}};
+let active='abraham',pos={x:50,y:58},moving={x:0,y:0},completed=new Set(),loot={pearl:0,onyx:0,gold:0},locked=false,currentEvent=null;
+const map=document.getElementById('map'),wrap=document.getElementById('mapWrap'),char=document.getElementById('char');
+places.forEach(p=>{const e=document.createElement('div');e.className='place'+(p.mountain?' mountain':'');e.style.left=p.x+'%';e.style.top=p.y+'%';e.innerHTML='<div class="dot">'+(p.mountain?'⛰️':'')+'</div><span>'+p.name+'</span>';map.appendChild(e)});
+function render(){char.style.left=pos.x+'%';char.style.top=pos.y+'%';document.getElementById('charTag').textContent=charInfo[active].name;document.getElementById('charFace').textContent=charInfo[active].face}
+function switchChar(c){active=c;document.querySelectorAll('.pick').forEach(b=>b.classList.toggle('active',b.dataset.char===c));render();document.getElementById('hint').textContent='現在探索：'+charInfo[c].name+'｜靠近與他有關的地點'}
+document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>switchChar(b.dataset.char));
+function tick(){if(!locked&&(moving.x||moving.y)){pos.x=Math.max(3,Math.min(97,pos.x+moving.x*.24));pos.y=Math.max(6,Math.min(94,pos.y+moving.y*.24));render();checkTrigger()}requestAnimationFrame(tick)}tick();
+const joy=document.getElementById('joy'),stick=document.getElementById('stick');let joyActive=false;
+function joyMove(clientX,clientY){const r=joy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=clientX-cx,dy=clientY-cy,max=r.width*.31,d=Math.hypot(dx,dy)||1,k=Math.min(1,max/d),sx=dx*k,sy=dy*k;stick.style.transform='translate('+sx+'px,'+sy+'px)';moving={x:sx/max,y:sy/max}}
+function joyEnd(){joyActive=false;moving={x:0,y:0};stick.style.transform='translate(0,0)'}
+joy.addEventListener('pointerdown',e=>{joyActive=true;joy.setPointerCapture(e.pointerId);joyMove(e.clientX,e.clientY)});
+joy.addEventListener('pointermove',e=>{if(joyActive)joyMove(e.clientX,e.clientY)});joy.addEventListener('pointerup',joyEnd);joy.addEventListener('pointercancel',joyEnd);
+window.addEventListener('keydown',e=>{if(locked)return;const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(k))e.preventDefault();if(k==='ArrowLeft')moving.x=-1;if(k==='ArrowRight')moving.x=1;if(k==='ArrowUp')moving.y=-1;if(k==='ArrowDown')moving.y=1});
+window.addEventListener('keyup',e=>{if(e.key.includes('Arrow'))moving={x:0,y:0}});
+function checkTrigger(){for(const p of places){const d=Math.hypot((pos.x-p.x)*1.2,pos.y-p.y);if(d<3.8){const ev=events.find(e=>e.char===active&&e.place===p.id&&!completed.has(e.id));if(ev){openEvent(ev);break}}}}
+function openEvent(ev){locked=true;moving={x:0,y:0};currentEvent=ev;document.getElementById('eventWhere').textContent=ev.ref+'｜'+places.find(p=>p.id===ev.place).name;document.getElementById('eventTitle').textContent=ev.title;document.getElementById('eventStory').textContent=ev.story;document.getElementById('eventQuestion').textContent=ev.q;const box=document.getElementById('answers');box.innerHTML='';ev.a.forEach((a,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=a;b.onclick=()=>answer(i);box.appendChild(b)});const f=document.getElementById('feedback');f.className='feedback';f.textContent='';document.getElementById('continueBtn').style.display='none';document.getElementById('eventModal').classList.add('show')}
+function answer(i){const ev=currentEvent,f=document.getElementById('feedback');if(i===ev.correct){if(!completed.has(ev.id)){completed.add(ev.id);loot[ev.reward]++;updateLoot()}const names={pearl:'珍珠 ⚪',onyx:'瑪瑙 🔶',gold:'黃金 🪙'};f.className='feedback ok';f.textContent='答對了！獲得 '+names[ev.reward]+'。這個事件已收入你的探索紀錄。';document.querySelectorAll('.answer').forEach(b=>b.disabled=true);document.getElementById('continueBtn').style.display='block'}else{f.className='feedback no';f.textContent='再想一想。可以從事件敘述與聖經中的人物行動找線索。'}}
+function updateLoot(){['pearl','onyx','gold'].forEach(k=>document.getElementById(k).textContent=loot[k])}
+document.getElementById('continueBtn').onclick=()=>{document.getElementById('eventModal').classList.remove('show');locked=false;pos.x=Math.min(97,pos.x+4);render()};
+function showSummary(){locked=true;document.getElementById('sPearl').textContent=loot.pearl;document.getElementById('sOnyx').textContent=loot.onyx;document.getElementById('sGold').textContent=loot.gold;const chars=['abraham','isaac','jacob'];document.getElementById('summaryProgress').innerHTML=chars.map(c=>{const total=events.filter(e=>e.char===c).length,done=events.filter(e=>e.char===c&&completed.has(e.id)).length;return '<div class="prog"><span>'+charInfo[c].name+'</span><b>'+done+' / '+total+'</b><small>事件</small></div>'}).join('');document.getElementById('summaryText').textContent='已探索 '+completed.size+' 個事件，還有 '+(events.length-completed.size)+' 個事件等待發現。';document.getElementById('summaryModal').classList.add('show')}
+document.getElementById('summaryBtn').onclick=showSummary;document.getElementById('summaryModal').addEventListener('click',e=>{if(e.target===e.currentTarget){e.currentTarget.classList.remove('show');locked=false}});
+render();
+</script></body></html>
