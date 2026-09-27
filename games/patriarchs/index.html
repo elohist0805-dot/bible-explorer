@@ -248,7 +248,7 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .sceneArt .hero svg{display:block;width:118px;height:136px;filter:drop-shadow(0 5px 3px #5c432e55)}
 .sceneArt .sceneCaption{position:absolute;left:14px;top:12px;z-index:9;background:#fff8e9dc;border:1px solid #8a623944;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;color:#65452c}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.19 · build 2</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.20</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
@@ -436,9 +436,28 @@ window.addEventListener('keyup',e=>{if(e.key.includes('Arrow'))moving={x:0,y:0}}
 function checkTrigger(){document.querySelectorAll('.place').forEach(el=>el.classList.remove('near'));for(const p of places){const cp=positions[active],d=Math.hypot(cp.x-p.x,cp.y-p.y),el=document.getElementById('place-'+p.id);if(d<115&&events.some(e=>e.char===active&&e.place===p.id&&!completed.has(e.id)))el&&el.classList.add('near');if(d<58){const ev=events.find(e=>e.char===active&&e.place===p.id&&!completed.has(e.id));if(ev){openEvent(ev);break}}}}
 
 function storyChibi(c){
- const isIsaac=c==='isaac';
- const hair=isIsaac?'#6b432b':'#eee4cf', robe=isIsaac?'#d2a15d':'#b36f3d', beard=isIsaac?'':'<path d="M37 58 Q59 86 81 58 L78 88 Q59 108 40 88Z" fill="#eee4cf" stroke="#67452e" stroke-width="4"/>';
- return '<svg viewBox="0 0 118 136" aria-hidden="true"><path d="M27 134 Q29 93 59 87 Q89 93 91 134Z" fill="'+robe+'" stroke="#67452e" stroke-width="5"/><path d="M54 90 H65 V134 H54Z" fill="#f2dfb4"/><ellipse cx="59" cy="55" rx="31" ry="34" fill="#e8b07d" stroke="#67452e" stroke-width="5"/><path d="M29 48 Q31 15 59 15 Q88 15 90 49 Q74 35 59 36 Q43 35 29 48Z" fill="'+hair+'" stroke="#67452e" stroke-width="5"/><circle cx="47" cy="55" r="4" fill="#49321f"/><circle cx="71" cy="55" r="4" fill="#49321f"/><path d="M53 69 Q59 74 66 69" fill="none" stroke="#67452e" stroke-width="3" stroke-linecap="round"/>'+beard+'</svg>';
+ const isaac=c==='isaac';
+ const skin='#e6aa78', line='#5b3926', hair=isaac?'#6b4029':'#f1e3c8', robe=isaac?'#d8a24f':'#b86743', robe2=isaac?'#7f9c78':'#d79b62';
+ const beard=isaac
+ ? '<path d="M41 61 Q59 77 77 61 Q75 88 59 93 Q43 88 41 61Z" fill="#6b4029" stroke="'+line+'" stroke-width="3"/>'
+ : '<path d="M35 58 Q59 79 83 58 L80 91 Q59 110 38 91Z" fill="#f1e3c8" stroke="'+line+'" stroke-width="3"/><path d="M47 72 Q59 81 71 72" fill="none" stroke="#c9b38e" stroke-width="2"/>';
+ const hairShape=isaac
+ ? '<path d="M29 50 Q29 17 59 13 Q90 17 89 51 Q79 35 59 34 Q39 35 29 50Z" fill="'+hair+'" stroke="'+line+'" stroke-width="4"/><path d="M30 43 Q22 55 28 69" fill="none" stroke="'+hair+'" stroke-width="9" stroke-linecap="round"/><path d="M88 43 Q96 55 90 69" fill="none" stroke="'+hair+'" stroke-width="9" stroke-linecap="round"/>'
+ : '<path d="M27 49 Q28 17 59 13 Q91 17 91 49 Q78 32 59 33 Q40 32 27 49Z" fill="'+hair+'" stroke="'+line+'" stroke-width="4"/><path d="M31 38 Q41 25 51 30 M67 30 Q78 24 87 39" fill="none" stroke="#fff8e9" stroke-width="4" stroke-linecap="round"/>';
+ return '<svg viewBox="0 0 118 136" aria-hidden="true">'+
+ '<ellipse cx="59" cy="131" rx="42" ry="5" fill="#6b4a3022"/>'+
+ '<path d="M22 134 Q25 96 43 87 L59 98 L75 87 Q94 96 96 134Z" fill="'+robe+'" stroke="'+line+'" stroke-width="4"/>'+
+ '<path d="M43 88 L59 100 L75 88 L80 134 H38Z" fill="'+robe2+'" opacity=".72"/>'+
+ '<path d="M55 98 H64 V134 H55Z" fill="#f5dfaa"/>'+
+ '<ellipse cx="59" cy="55" rx="31" ry="34" fill="'+skin+'" stroke="'+line+'" stroke-width="4"/>'+
+ '<ellipse cx="28" cy="58" rx="6" ry="9" fill="'+skin+'" stroke="'+line+'" stroke-width="3"/><ellipse cx="90" cy="58" rx="6" ry="9" fill="'+skin+'" stroke="'+line+'" stroke-width="3"/>'+
+ hairShape+
+ '<path d="M41 55 Q47 49 53 55" fill="none" stroke="'+line+'" stroke-width="3" stroke-linecap="round"/><path d="M65 55 Q71 49 77 55" fill="none" stroke="'+line+'" stroke-width="3" stroke-linecap="round"/>'+
+ '<circle cx="47" cy="57" r="3.5" fill="'+line+'"/><circle cx="71" cy="57" r="3.5" fill="'+line+'"/><circle cx="46" cy="56" r="1" fill="#fff"/><circle cx="70" cy="56" r="1" fill="#fff"/>'+
+ '<path d="M55 65 Q59 68 63 65" fill="none" stroke="#a86449" stroke-width="2" stroke-linecap="round"/>'+
+ beard+
+ '<path d="M51 76 Q59 81 67 76" fill="none" stroke="'+line+'" stroke-width="2.5" stroke-linecap="round"/>'+
+ '</svg>';
 }
 function eventSceneHTML(ev){
  if(!['abraham','isaac'].includes(ev.char))return '';
