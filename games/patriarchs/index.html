@@ -96,10 +96,49 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .terrainModules{z-index:2}.tile.back{z-index:1;opacity:.9}.tile.midlayer{z-index:2}.tile.front{z-index:3}
 .tile.scrub{width:220px;height:90px}.tile.terrace{width:230px;height:105px}.tile.lowridge{width:260px;height:110px}.tile.hamlet{width:125px;height:90px}
 .place{z-index:12}.char{z-index:20}.geo.route{z-index:5}.geoLabel,.region,.seaLabel{z-index:9}
+
+/* v13 macro terrain regions: large visible landform layers */
+.macroTerrain{position:absolute;inset:0;z-index:1;pointer-events:none}
+.macroTerrain svg{width:2400px;height:1500px;overflow:visible}
+.macroTerrain .landShadow{fill:#70512f;opacity:.13}
+.macroTerrain .canaanA{fill:#8fa56a}.macroTerrain .canaanB{fill:#718957}.macroTerrain .canaanHi{fill:#b7bd7b}
+.macroTerrain .northA{fill:#93aa70}.macroTerrain .northB{fill:#708b5b}
+.macroTerrain .desertA{fill:#d8ad69}.macroTerrain .desertB{fill:#c88e4d}.macroTerrain .desertHi{fill:#efd08f}
+.macroTerrain .egyptA{fill:#91a963}.macroTerrain .egyptB{fill:#6f9259}.macroTerrain .mesoA{fill:#a8ad6b}
+.macroTerrain .ridge{fill:none;stroke:#675039;stroke-width:7;stroke-linecap:round;opacity:.28}
+.macroTerrain .highlight{fill:none;stroke:#e8d9a6;stroke-width:12;stroke-linecap:round;opacity:.42}
+.terrainModules{z-index:3}.map>.water,.map>.river{z-index:2!important}.geo.route{z-index:6!important}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.12</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.13</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
-<div class="water medSea"></div><div class="terrainModules">
+<div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
+<!-- Egypt / Nile valley -->
+<path class="egyptA" d="M250 1010Q365 970 455 1015Q535 1080 610 1190L555 1430Q430 1460 300 1395Q230 1280 250 1010Z"/>
+<path class="egyptB" d="M365 1010Q420 1060 445 1150Q468 1250 430 1405L505 1418Q535 1260 500 1140Q470 1040 410 995Z"/>
+<path class="highlight" d="M395 1040Q455 1160 462 1375"/>
+<!-- Canaan continuous hill country -->
+<path class="landShadow" d="M760 455Q930 365 1120 430Q1270 500 1320 690Q1345 880 1240 1050Q1080 1150 860 1080Q720 940 715 730Q720 560 760 455Z"/>
+<path class="canaanA" d="M785 455Q930 390 1085 440Q1225 500 1270 665Q1290 820 1210 1005Q1060 1095 875 1040Q760 920 750 745Q748 575 785 455Z"/>
+<path class="canaanB" d="M875 490Q970 445 1065 485Q1150 555 1168 685Q1175 830 1115 970Q1035 1030 955 985Q900 860 895 735Q895 600 875 490Z"/>
+<path class="canaanHi" d="M810 545Q900 490 965 520Q870 620 865 755Q870 900 925 1000Q840 955 800 855Q765 690 810 545Z"/>
+<path class="ridge" d="M905 505Q990 600 965 720Q945 845 1020 970M1080 510Q1130 620 1100 745Q1070 860 1115 955"/>
+<!-- Gilead / Transjordan -->
+<path class="northA" d="M1120 390Q1260 330 1410 420Q1470 545 1415 690Q1335 780 1190 735Q1130 625 1120 390Z"/>
+<path class="northB" d="M1220 420Q1320 385 1380 450Q1410 555 1360 650Q1285 705 1215 665Q1180 555 1220 420Z"/>
+<!-- Haran northern green hills -->
+<path class="northA" d="M1510 95Q1715 45 1930 125Q2040 225 1970 390Q1800 470 1590 405Q1470 300 1510 95Z"/>
+<path class="northB" d="M1600 125Q1740 90 1880 145Q1940 220 1900 315Q1780 380 1640 340Q1560 270 1600 125Z"/>
+<path class="highlight" d="M1570 195Q1740 115 1910 210"/>
+<!-- Negev / southern desert transition -->
+<path class="desertA" d="M650 980Q850 900 1080 1010Q1280 1080 1490 1010Q1650 1030 1730 1210Q1610 1410 1320 1460L650 1450Q550 1270 650 980Z"/>
+<path class="desertB" d="M1050 1110Q1250 1020 1435 1100Q1570 1180 1510 1335Q1330 1430 1100 1380Q980 1270 1050 1110Z"/>
+<path class="desertHi" d="M690 1070Q820 990 960 1060Q1080 1125 1180 1080Q1080 1180 930 1165Q800 1130 690 1070Z"/>
+<path class="ridge" d="M1110 1210Q1270 1105 1430 1210M1200 1320Q1360 1210 1510 1295"/>
+<!-- Mesopotamian river plain -->
+<path class="mesoA" d="M1710 390Q1920 300 2220 410Q2350 620 2290 1110Q2150 1290 1900 1220Q1720 1050 1700 780Q1680 570 1710 390Z"/>
+<path class="northA" d="M1810 455Q1940 400 2080 470Q2180 630 2140 960Q2030 1070 1880 1010Q1785 830 1810 455Z" opacity=".62"/>
+<path class="highlight" d="M1880 455Q1990 650 1950 970M2080 470Q2160 680 2100 1010"/>
+</svg></div><div class="terrainModules">
 <div class="tile mtn" style="left:1120px;top:360px"><svg viewBox="0 0 250 150"><ellipse cx="125" cy="137" rx="112" ry="13" fill="#6d513329"/><path class="mid ol" d="M8 135L70 54l35 43 50-82 87 120Z"/><path class="dark" d="M70 54l35 43-25 38H8Z"/><path class="hi" d="M155 15l-30 50 31-17 19 26 18-24Z"/></svg></div>
 <div class="tile mtn" style="left:1370px;top:510px;transform:scale(1.15)"><svg viewBox="0 0 250 150"><ellipse cx="125" cy="137" rx="112" ry="13" fill="#6d513329"/><path class="mid ol" d="M8 135L70 54l35 43 50-82 87 120Z"/><path class="dark" d="M70 54l35 43-25 38H8Z"/><path class="hi" d="M155 15l-30 50 31-17 19 26 18-24Z"/></svg></div>
 <div class="tile mtn" style="left:720px;top:770px;transform:scale(.8)"><svg viewBox="0 0 250 150"><ellipse cx="125" cy="137" rx="112" ry="13" fill="#6d513329"/><path class="mid ol" d="M8 135L70 54l35 43 50-82 87 120Z"/><path class="dark" d="M70 54l35 43-25 38H8Z"/><path class="hi" d="M155 15l-30 50 31-17 19 26 18-24Z"/></svg></div>
