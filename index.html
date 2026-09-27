@@ -4,32 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>聖經探險家｜兒童聖經互動遊戲</title>
-<meta name="description" content="用遊戲走進聖經故事。從出埃及記到創世記，在互動冒險中探索、思考與學習。">
+<meta name="description" content="用互動遊戲走進聖經故事。從出埃及記到創世記，在地圖、故事、拖曳與選擇中探索聖經。">
 <link rel="icon" href="/favicon.png">
 <style>
-:root{--ink:#20334a;--paper:#fbf3df;--gold:#dca64b;--deep:#16324a}
-*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at top,#fffaf0 0,#efe1c2 44%,#d2bb8c 100%);min-height:100vh}
-main{width:min(1180px,100%);margin:auto;padding:38px 18px 54px}.brand{text-align:center;margin-bottom:30px}.brand .kicker{font-weight:900;letter-spacing:.18em;color:#8b6d36}.brand h1{font-family:Georgia,"Noto Serif TC",serif;font-size:clamp(38px,7vw,72px);margin:8px 0;color:#183c59}.brand p{font-size:clamp(16px,2.5vw,20px);max-width:680px;margin:0 auto;color:#6d6659;line-height:1.7}
-.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.card{position:relative;overflow:hidden;border-radius:28px;min-height:430px;padding:26px;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;color:white;box-shadow:0 18px 48px #5d44265c;border:1px solid #ffffff70;transition:.2s}.card:hover{transform:translateY(-4px)}.card:focus-visible{outline:4px solid #315d87;outline-offset:4px}.exodus{background:linear-gradient(180deg,#74552e22,#241b12dd),radial-gradient(circle at 70% 20%,#f1c76c 0 8%,transparent 9%),linear-gradient(145deg,#cda65b,#7f5f31 52%,#45301f)}.creation{background:linear-gradient(180deg,#173a5a00,#173a5ae8),radial-gradient(circle at 72% 18%,#ffe477 0 6%,transparent 7%),linear-gradient(150deg,#74c4ed 0 38%,#4e9f70 38% 67%,#1d638b 67%)}.art{position:absolute;inset:0;pointer-events:none}.sun{position:absolute;right:9%;top:8%;font-size:76px;filter:drop-shadow(0 6px 12px #0003)}.mount{position:absolute;left:8%;bottom:35%;font-size:72px}.sea{position:absolute;right:4%;bottom:31%;font-size:70px}.animals{position:absolute;left:8%;top:20%;font-size:50px;letter-spacing:-8px}.title{position:relative;z-index:1;text-shadow:0 3px 14px #0008}.title small{display:inline-block;background:#fff2;color:#fff;padding:5px 9px;border-radius:999px;font-weight:900}.title h2{font-size:clamp(28px,4vw,44px);margin:10px 0 4px}.title p{margin:0 0 18px;line-height:1.6;color:#fffde8}.cta{display:inline-block;background:#fff7df;color:#20334a;border-radius:14px;padding:11px 16px;font-weight:900;text-shadow:none}.foot{text-align:center;margin-top:24px;color:#665b49}.counter{display:inline-flex;align-items:center;gap:7px;background:#fff8e7c7;border:1px solid #cdb98c;border-radius:999px;padding:9px 14px;font-weight:800}.note{margin-top:10px;font-size:13px}
-@media(max-width:760px){main{padding-top:26px}.games{grid-template-columns:1fr}.card{min-height:360px}}
+:root{--ink:#3d2e1f;--paper:#fff8e8;--sand:#f3e0b4;--gold:#d8a53b;--blue:#4f90a6;--green:#68885c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#d6f0fb 0 18%,#f4e1b3 18% 100%)}
+a{color:inherit}.header{position:sticky;top:0;z-index:10;background:#fffaf0ef;backdrop-filter:blur(12px);border-bottom:1px solid #6d4c2c22}.headerIn{width:min(1180px,94vw);margin:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 0}.brand{display:flex;align-items:center;gap:10px;font-weight:950}.mark{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#dca252,#8d5c35);color:#fff;font-size:25px;box-shadow:0 6px 16px #3d2e1f2e}.brandWords{line-height:1.05}.brandWords small{display:block;margin-top:4px;font-size:11px;letter-spacing:1.5px;color:#8c6b4d}.nav{display:flex;gap:8px}.nav a{text-decoration:none;font-weight:800;padding:8px 10px;border-radius:10px}.nav a:hover{background:#f0dfbb}
+main{width:min(1180px,94vw);margin:auto;padding:28px 0 52px}.hero{background:#fff9eb;border:2px solid #6f502f26;border-radius:28px;overflow:hidden;box-shadow:0 18px 46px #3d2e1f24}.heroCover{position:relative;min-height:430px;background:url('/games/exodus/og-cover.png') center/cover no-repeat}.heroCover:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#322214b8 0,#32221466 44%,#32221408 78%)}.heroCopy{position:absolute;z-index:2;left:clamp(20px,4vw,50px);top:50%;transform:translateY(-50%);width:min(560px,72%);color:#fff;text-shadow:0 2px 8px #0006}.eyebrow{display:inline-block;background:#e2ad47;color:#392a1e;padding:6px 11px;border-radius:999px;font-size:13px;font-weight:950;text-shadow:none}.hero h1{font-family:Georgia,"Noto Serif TC",serif;font-size:clamp(34px,5vw,58px);line-height:1.08;margin:12px 0 8px}.hero h1 span{display:block;font-size:.52em;margin-top:9px}.hero p{font-size:clamp(15px,1.5vw,19px);line-height:1.75;margin:0 0 18px}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-block;text-decoration:none;border-radius:14px;padding:12px 18px;font-weight:950}.btn.primary{background:#f6c95f;color:#37281d;text-shadow:none;box-shadow:0 7px 18px #0003}.btn.light{background:#fffdf1e8;color:#493522;text-shadow:none}.portalBody{padding:20px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#f7ead0;border:1px solid #e3cfa0;border-radius:16px;padding:13px;text-align:center}.stat strong{display:block;font-size:clamp(23px,2.6vw,34px);color:#8a4d30}.stat span{font-size:13px;font-weight:800}.note{font-size:11px;opacity:.64;margin-top:5px}
+.sectionTitle{font-size:24px;margin:28px 0 14px}.games{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.game{border-radius:22px;overflow:hidden;border:1px solid #d9c496;background:#fffaf0;box-shadow:0 10px 26px #3d2e1f12}.gameVisual{min-height:220px;position:relative;background-position:center;background-size:cover}.game.exodus .gameVisual{background-image:url('/games/exodus/og-cover.png')}.game.creation .gameVisual{background:linear-gradient(145deg,#82c9ef 0 42%,#69a65b 42% 68%,#246a91 68%)}.game.creation .gameVisual:after{content:"✨  ☁️  🌳  ☀️  🐟  🦁";position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(34px,5vw,62px);letter-spacing:8px;text-shadow:0 5px 14px #0002}.gameBody{padding:15px}.gameBody h3{margin:0 0 7px;font-size:22px}.gameBody p{margin:0 0 14px;line-height:1.65;color:#6a5a46}.play{display:inline-block;text-decoration:none;background:#7b5635;color:#fff;padding:10px 14px;border-radius:12px;font-weight:900}.trust{margin-top:22px;background:#fff8e9;border:1px solid #e3cfa2;border-radius:18px;padding:16px;line-height:1.7}.trust b{display:block;margin-bottom:5px}
+@media(max-width:800px){.heroCover{min-height:390px;background-position:center}.heroCopy{width:82%}.stats{grid-template-columns:1fr}.games{grid-template-columns:1fr}.nav{display:none}}
+@media(max-width:520px){main{width:96vw}.heroCover{min-height:430px;background-position:58% center}.heroCover:after{background:linear-gradient(180deg,#32221418 0,#322214b8 68%)}.heroCopy{left:18px;right:18px;top:auto;bottom:22px;transform:none;width:auto}.hero h1{font-size:34px}}
 </style>
 </head>
 <body>
+<header class="header"><div class="headerIn"><div class="brand"><div class="mark">📖</div><div class="brandWords"><strong>聖經探險家</strong><small>BIBLE EXPLORER</small></div></div><nav class="nav"><a href="#games">遊戲</a><a href="#about">關於</a></nav></div></header>
 <main>
-<section class="brand"><div class="kicker">BIBLE EXPLORER</div><h1>聖經探險家</h1><p>用互動遊戲走進聖經故事。每一次拖曳、選擇與冒險，都讓孩子更理解經文中的世界。</p></section>
-<section class="games" aria-label="遊戲列表">
-<a class="card exodus" href="/games/exodus/">
-<div class="art"><div class="sun">☀️</div><div class="mount">⛰️</div><div class="sea">🌊</div></div>
-<div class="title"><small>冒險闖關</small><h2>出埃及記｜曠野之路</h2><p>跟著以色列人離開埃及，走過曠野，在故事與挑戰中完成旅程。</p><span class="cta">開始冒險 →</span></div>
-</a>
-<a class="card creation" href="/games/creation/">
-<div class="art"><div class="sun">✨</div><div class="animals">🦁 🐟 🕊️</div><div class="sea">🌳</div></div>
-<div class="title"><small>拖曳創作</small><h2>創世記｜創造天地</h2><p>先排出六日創造的正確順序，再親手把光、天空、植物、星辰與生命放進世界。</p><span class="cta">開始創造 →</span></div>
-</a>
+<section class="hero">
+  <div class="heroCover">
+    <div class="heroCopy">
+      <span class="eyebrow">一起走進聖經故事</span>
+      <h1>聖經探險家<span>從地圖冒險，到親手創造世界</span></h1>
+      <p>跟著可愛的摩西走過出埃及路線，也能進入創世記，用拖曳與布置理解六日創造。</p>
+      <div class="actions"><a class="btn primary" href="/games/exodus/">開始出埃及冒險 →</a><a class="btn light" href="/games/creation/">進入創造天地</a></div>
+    </div>
+  </div>
+  <div class="portalBody">
+    <div class="stats">
+      <div class="stat"><strong id="visitCount">—</strong><span>到訪人次</span><div class="note">全站累計・每個瀏覽工作階段計一次</div></div>
+      <div class="stat"><strong>2</strong><span>目前遊戲</span><div class="note">出埃及記・創世記</div></div>
+      <div class="stat"><strong>25</strong><span>互動關卡</span><div class="note">18 關冒險＋7 關創造</div></div>
+    </div>
+  </div>
 </section>
-<footer class="foot"><div class="counter"><span id="visitCount">—</span> 到訪人次</div><div class="note">全站累計・每個瀏覽工作階段計一次</div></footer>
+<h2 class="sectionTitle" id="games">探險遊戲</h2>
+<section class="games">
+  <article class="game exodus"><div class="gameVisual"></div><div class="gameBody"><h3>出埃及記：曠野之路</h3><p>可愛摩西陪你沿著路線地圖，從埃及、紅海、西奈山一路走到尼波山。</p><a class="play" href="/games/exodus/">直接進入地圖 →</a></div></article>
+  <article class="game creation"><div class="gameVisual"></div><div class="gameBody"><h3>創世記：創造天地</h3><p>排出六日創造順序，再把正確的事物拖進世界，完成自己的創造布景。</p><a class="play" href="/games/creation/">開始創造 →</a></div></article>
+</section>
+<section class="trust" id="about"><b>為孩子設計的聖經互動學習</b>以聖經正文為基礎，讓孩子透過地圖、故事、選擇、拖曳與構圖理解經文；網站維持學習與遊戲為核心，不加入多餘的商業訊息。</section>
 </main>
 <script>
-(async()=>{const el=document.getElementById('visitCount');const url='/.netlify/functions/visit-count';try{let r;if(sessionStorage.getItem('bibleExplorerVisited')){r=await fetch(url,{cache:'no-store'})}else{r=await fetch(url,{method:'POST',cache:'no-store'});if(r.ok)sessionStorage.setItem('bibleExplorerVisited','1')}if(!r.ok)throw new Error();const d=await r.json();el.textContent=Number(d.count||0).toLocaleString('zh-TW')}catch(e){el.textContent='—'}})();
+(async()=>{const el=document.getElementById('visitCount'),url='/.netlify/functions/visit-count';try{let r;if(sessionStorage.getItem('bibleExplorerVisited'))r=await fetch(url,{cache:'no-store'});else{r=await fetch(url,{method:'POST',cache:'no-store'});if(r.ok)sessionStorage.setItem('bibleExplorerVisited','1')}if(!r.ok)throw new Error();const d=await r.json();el.textContent=Number(d.count||0).toLocaleString('zh-TW')}catch(e){el.textContent='—'}})();
 </script>
 </body></html>
