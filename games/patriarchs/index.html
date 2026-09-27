@@ -76,10 +76,33 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .map>.geoLabel{background:rgba(255,248,218,.78);border:1px solid rgba(111,76,48,.22);box-shadow:0 2px 5px #51372122}
 .map>.seaLabel{background:rgba(225,247,250,.66);padding:3px 8px;border-radius:10px}
 .map>.geo.route{display:block!important;opacity:.5}
+
+/* v10 modular illustrated terrain system */
+.map{background:linear-gradient(145deg,#d8c590,#efe0b4 56%,#ccb47a)!important}
+.map:after{display:block!important;opacity:.08!important}
+.map>.terrainArt,.map>.terrain,.map>.scenery{display:none!important}
+.map>.water,.map>.river{display:block!important}
+.map>.geo.range,.map>.geo.oasis,.map>.geo.city{display:none!important}
+.terrainModules{position:absolute;inset:0;z-index:2;pointer-events:none}
+.tile{position:absolute;filter:drop-shadow(0 8px 5px #60452830)}
+.tile svg{width:100%;height:100%;overflow:visible}
+.tile .ol{stroke:#694c34;stroke-width:5;stroke-linejoin:round}.tile .hi{fill:#ead39a}.tile .mid{fill:#a88158}.tile .dark{fill:#715943}.tile .green{fill:#698553}.tile .green2{fill:#8da467}.tile .sand{fill:#d6a55f}.tile .sand2{fill:#edc982}.tile .water2{fill:#6eafc4}
+.tile.mtn{width:250px;height:150px}.tile.hill{width:230px;height:105px}.tile.oasis{width:170px;height:115px}.tile.village{width:150px;height:110px}.tile.dune{width:230px;height:100px}.tile.grove{width:180px;height:100px}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.9</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.10</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
-<div class="water medSea"></div><svg class="terrainArt" viewBox="0 0 2400 1500" aria-hidden="true">
+<div class="water medSea"></div><div class="terrainModules">
+<div class="tile mtn" style="left:1120px;top:360px"><svg viewBox="0 0 250 150"><ellipse cx="125" cy="137" rx="112" ry="13" fill="#6d513329"/><path class="mid ol" d="M8 135L70 54l35 43 50-82 87 120Z"/><path class="dark" d="M70 54l35 43-25 38H8Z"/><path class="hi" d="M155 15l-30 50 31-17 19 26 18-24Z"/></svg></div>
+<div class="tile mtn" style="left:1370px;top:510px;transform:scale(1.15)"><svg viewBox="0 0 250 150"><ellipse cx="125" cy="137" rx="112" ry="13" fill="#6d513329"/><path class="mid ol" d="M8 135L70 54l35 43 50-82 87 120Z"/><path class="dark" d="M70 54l35 43-25 38H8Z"/><path class="hi" d="M155 15l-30 50 31-17 19 26 18-24Z"/></svg></div>
+<div class="tile mtn" style="left:720px;top:770px;transform:scale(.8)"><svg viewBox="0 0 250 150"><ellipse cx="125" cy="137" rx="112" ry="13" fill="#6d513329"/><path class="mid ol" d="M8 135L70 54l35 43 50-82 87 120Z"/><path class="dark" d="M70 54l35 43-25 38H8Z"/><path class="hi" d="M155 15l-30 50 31-17 19 26 18-24Z"/></svg></div>
+<div class="tile hill" style="left:870px;top:500px"><svg viewBox="0 0 230 105"><ellipse class="green2 ol" cx="70" cy="70" rx="66" ry="31"/><ellipse class="green ol" cx="145" cy="67" rx="78" ry="37"/><path d="M90 61q42-29 86 0" fill="none" stroke="#b6c889" stroke-width="8" stroke-linecap="round"/></svg></div>
+<div class="tile hill" style="left:1580px;top:280px;transform:scale(1.2)"><svg viewBox="0 0 230 105"><ellipse class="green2 ol" cx="70" cy="70" rx="66" ry="31"/><ellipse class="green ol" cx="145" cy="67" rx="78" ry="37"/><path d="M90 61q42-29 86 0" fill="none" stroke="#b6c889" stroke-width="8" stroke-linecap="round"/></svg></div>
+<div class="tile dune" style="left:1370px;top:980px"><svg viewBox="0 0 230 100"><path class="sand ol" d="M4 88Q58 20 116 84Q170 24 226 88Z"/><path class="sand2" d="M20 82Q62 39 110 82Q166 44 211 83Q164 65 116 89Q68 66 20 82Z"/></svg></div>
+<div class="tile dune" style="left:1780px;top:1090px;transform:scale(1.25)"><svg viewBox="0 0 230 100"><path class="sand ol" d="M4 88Q58 20 116 84Q170 24 226 88Z"/><path class="sand2" d="M20 82Q62 39 110 82Q166 44 211 83Q164 65 116 89Q68 66 20 82Z"/></svg></div>
+<div class="tile oasis" style="left:730px;top:1000px"><svg viewBox="0 0 170 115"><ellipse class="water2 ol" cx="84" cy="91" rx="58" ry="18"/><ellipse class="green" cx="84" cy="91" rx="72" ry="25" opacity=".7"/><path stroke="#775333" stroke-width="8" d="M48 84Q50 45 58 23M113 84Q111 48 105 30"/><path class="green ol" d="M58 25q-38 8-34-12 20-13 38 3 5-30 24-18 13 15-17 27 30-7 34 12-16 15-45-12ZM105 31q-30 4-27-12 16-12 31 2 4-24 19-14 9 13-14 22 23-3 25 12-15 11-34-10Z"/></svg></div>
+<div class="tile village" style="left:1670px;top:185px"><svg viewBox="0 0 150 110"><ellipse cx="75" cy="100" rx="68" ry="10" fill="#6d513329"/><path class="hi ol" d="M15 96V52h40v44M57 96V30h44v66M103 96V58h34v38"/><path fill="#a45f3f" class="ol" d="M10 53l25-23 25 23M52 31L79 7l28 24M98 59l22-20 22 20"/><path fill="#6b4a32" d="M70 70h17v26H70z"/></svg></div>
+<div class="tile village" style="left:2050px;top:1020px;transform:scale(.9)"><svg viewBox="0 0 150 110"><ellipse cx="75" cy="100" rx="68" ry="10" fill="#6d513329"/><path class="hi ol" d="M15 96V52h40v44M57 96V30h44v66M103 96V58h34v38"/><path fill="#a45f3f" class="ol" d="M10 53l25-23 25 23M52 31L79 7l28 24M98 59l22-20 22 20"/></svg></div>
+</div><svg class="terrainArt" viewBox="0 0 2400 1500" aria-hidden="true">
 <g transform="translate(720 430)"><ellipse class="shadow" cx="300" cy="230" rx="330" ry="55"/><path class="mountBack" d="M0 230L115 85l70 70L285 20l95 120 75-55 155 145Z"/><path class="mountMid" d="M70 230L185 105l70 82L350 55l120 175Z"/><path class="light" d="M285 20l-46 101 48-29 31 42 32-79Z"/><path class="mountFront" d="M170 230l105-115 58 69 78-86 115 132Z"/><path class="detail" d="M205 192l70-77m61 67l74-82"/></g>
 <g transform="translate(1160 285) scale(.82)"><ellipse class="shadow" cx="300" cy="230" rx="330" ry="55"/><path class="mountBack" d="M0 230L115 85l70 70L285 20l95 120 75-55 155 145Z"/><path class="mountMid" d="M70 230L185 105l70 82L350 55l120 175Z"/><path class="light" d="M285 20l-46 101 48-29 31 42 32-79Z"/><path class="mountFront" d="M170 230l105-115 58 69 78-86 115 132Z"/></g>
 <g transform="translate(1330 670) scale(.95)"><ellipse class="shadow" cx="300" cy="230" rx="330" ry="55"/><path class="mountBack" d="M0 230L115 85l70 70L285 20l95 120 75-55 155 145Z"/><path class="mountMid" d="M70 230L185 105l70 82L350 55l120 175Z"/><path class="mountFront" d="M170 230l105-115 58 69 78-86 115 132Z"/><path class="detail" d="M205 192l70-77m61 67l74-82"/></g>
