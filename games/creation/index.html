@@ -28,7 +28,7 @@ body{background:linear-gradient(180deg,#cbeaff 0 34%,#f2dfb3 34% 100%);overflow-
 @keyframes pop{from{transform:scale(.3) rotate(-12deg);opacity:0}to{transform:scale(1);opacity:1}}
 .tray{background:#f6e8c9;border:1px solid #dfca9b;border-radius:20px;padding:14px;position:sticky;top:76px}.tray h3{margin:0 0 8px}.tray p{font-size:13px;color:#75624b;line-height:1.5;margin:0 0 12px}
 .items{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.dragItem{touch-action:none;user-select:none;min-height:92px;border:2px solid #d6bf8d;border-radius:16px;background:#fffdf5;display:grid;place-items:center;text-align:center;padding:8px;cursor:grab;box-shadow:0 6px 14px #46321d15;transition:.15s}
-.dragItem:active{cursor:grabbing;transform:scale(.98)}.dragItem.used{opacity:.35;pointer-events:none}.art{display:inline-block;width:68px;height:56px}.art svg{width:100%;height:100%;overflow:visible}.dragItem .art{width:64px;height:52px}.dragItem b{font-size:13px;margin-top:4px}.placed .art{width:98px;height:78px;filter:drop-shadow(0 6px 5px #0003)}.orderSlot .placed .art{width:92px;height:62px}.ghost .art{width:72px;height:60px}.historyLayer{position:absolute;inset:0;pointer-events:none}.historyArt{position:absolute;filter:drop-shadow(0 5px 5px #0002);opacity:.96}.historyArt svg{width:100%;height:100%;overflow:visible}
+.dragItem:active{cursor:grabbing;transform:scale(.98)}.dragItem.limit{opacity:.38;pointer-events:none}.dragItem .countBadge{position:absolute;right:6px;top:6px;background:#765536;color:#fff;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:950}.dragItem{position:relative}.art{display:inline-block;width:68px;height:56px}.art svg{width:100%;height:100%;overflow:visible}.dragItem .art{width:64px;height:52px}.dragItem b{font-size:13px;margin-top:4px}.placed .art{width:98px;height:78px;filter:drop-shadow(0 6px 5px #0003)}.orderSlot .placed .art{width:92px;height:62px}.ghost .art{width:72px;height:60px}.historyLayer{position:absolute;inset:0;pointer-events:none}.historyArt{position:absolute;filter:drop-shadow(0 5px 5px #0002);opacity:.96}.historyArt svg{width:100%;height:100%;overflow:visible}.freeCanvas{position:absolute;inset:0;z-index:3}.zoneGuide{position:absolute;left:0;right:0;pointer-events:none;border-top:1px dashed #fff9}.zoneGuide span{position:absolute;right:8px;top:4px;background:#fff9e8cc;color:#5d4a34;border-radius:999px;padding:3px 7px;font-size:11px;font-weight:900}.zoneGuide.sky{top:0;height:46%;border-top:0}.zoneGuide.land{top:46%;height:30%}.zoneGuide.water{top:76%;height:24%}.sceneObject{position:absolute;transform:translate(-50%,-50%);width:94px;height:78px;display:grid;place-items:center;cursor:grab;touch-action:none;user-select:none;filter:drop-shadow(0 6px 5px #0003);z-index:5}.sceneObject .art{width:92px;height:72px}.sceneObject .removeObj{position:absolute;right:-6px;top:-6px;width:26px;height:26px;border:0;border-radius:50%;background:#7a5137;color:#fff;font-weight:950;cursor:pointer;box-shadow:0 3px 8px #0003}.sceneObject.badPlace{outline:3px dashed #c95f4a55;border-radius:18px}.conceptPanel{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 0}.conceptChip{padding:6px 9px;border-radius:999px;background:#eee1c4;border:1px solid #d6c092;font-size:12px;font-weight:900}.conceptChip.ok{background:#dfeeda;color:#3f743b;border-color:#a9cfa2}.conceptChip.warn{background:#f6ded6;color:#9b4938;border-color:#e0b0a5}
 .ghost{position:fixed;z-index:999;pointer-events:none;width:90px;height:90px;border-radius:20px;background:#fffdf5ee;border:3px solid #e1b74e;display:grid;place-items:center;transform:translate(-50%,-50%) rotate(3deg);box-shadow:0 15px 35px #0005;font-size:46px}
 .orderGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;min-height:420px;padding:8px}.orderSlot{min-height:180px;border:3px dashed #c9ab6b;border-radius:20px;background:#fff8e766;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px}
 .orderSlot.hover{background:#fff1a655;border-color:#d89c23}.orderSlot.filled{border-style:solid;background:#fff8e7}.orderSlot strong{font-size:24px;color:#7b5834}.orderSlot .hint{font-size:12px;color:#8c765b;margin-top:4px}.orderSlot .placed{font-size:30px;margin-top:8px}
@@ -44,7 +44,7 @@ body{background:linear-gradient(180deg,#cbeaff 0 34%,#f2dfb3 34% 100%);overflow-
 <header class="topbar"><a class="home" href="/">← 首頁</a><div class="titleWrap"><b>創世記：創造天地</b><small id="subtitle">第一關・六日創造順序</small></div><div class="hud"><div class="pill">⭐ <span id="starTotal">0</span></div><div class="pill">進度 <span id="progressText">1/7</span></div></div></header>
 <main class="gameShell">
 <section class="chapter"><div><h1>神創造天地</h1><p id="chapterVerse">「起初，神創造天地。」— 創世記 1:1</p></div><div class="progress" id="progressDots"></div></section>
-<section class="board"><div class="instruction"><h2 id="levelTitle"></h2><p id="levelInstruction"></p></div><div id="gameArea"></div><div class="message" id="message"></div><div class="actionsRow"><div class="utility"><button class="lightBtn" id="hintBtn">💡 提示</button><button class="lightBtn" id="resetBtn">↻ 重來本關</button></div><button class="nextBtn" id="nextBtn" disabled>下一關 →</button></div></section>
+<section class="board"><div class="instruction"><h2 id="levelTitle"></h2><p id="levelInstruction"></p></div><div id="gameArea"></div><div class="message" id="message"></div><div class="actionsRow"><div class="utility"><button class="lightBtn" id="hintBtn">💡 提示</button><button class="lightBtn" id="undoBtn">↶ 復原一步</button><button class="lightBtn" id="resetBtn">↻ 重來本關</button></div><div class="utility"><button class="lightBtn" id="checkBtn">✓ 檢查創造</button><button class="nextBtn" id="nextBtn" disabled>下一關 →</button></div></div></section>
 </main>
 <div class="modal" id="completeModal"><div class="card"><div class="big" id="modalIcon">🌍</div><h2 id="modalTitle">完成了！</h2><div class="stars" id="modalStars">⭐⭐⭐</div><div id="finalPreview"></div><p id="modalText"></p><div class="modalBtns"><button class="lightBtn" id="replayBtn">再玩一次</button><button class="nextBtn" id="modalNextBtn">下一關 →</button></div></div></div>
 <script>
@@ -59,22 +59,14 @@ const DAYS=[
 ];
 const LEVELS=[
  {type:'order',title:'第一關：排出六日創造順序',instruction:'把六張創造卡拖到正確的日子。先想想：光、天空、植物、星辰、魚鳥、動物與人，是怎麼依序出現的？',verse:'「起初，神創造天地。」— 創世記 1:1'},
- {type:'scene',day:1,title:'第二關：要有光',instruction:'把屬於第一日的事物放進世界。也要小心不屬於這一天的東西。',verse:'神說：「要有光」，就有了光。',items:[{id:'light',emoji:'✨',name:'光',target:'center',ok:true},{id:'dark',emoji:'🌑',name:'黑暗',target:'edge',ok:true},{id:'sun',emoji:'☀️',name:'太陽',ok:false},{id:'tree',emoji:'🌳',name:'樹木',ok:false}]},
- {type:'scene',day:2,title:'第三關：天空與水',instruction:'第二日，神把水分開，穹蒼出現了。把天空與水放到正確位置。',verse:'神稱穹蒼為「天」。',items:[{id:'sky',emoji:'☁️',name:'天空',target:'sky',ok:true},{id:'water',emoji:'💧',name:'水',target:'sea',ok:true},{id:'bird',emoji:'🕊️',name:'飛鳥',ok:false},{id:'flower',emoji:'🌼',name:'花朵',ok:false}]},
- {type:'scene',day:3,title:'第四關：陸地、海洋與植物',instruction:'第三日，旱地與海分開，地上長出植物。把它們布置到世界裡。',verse:'神稱旱地為「地」，稱水的聚處為「海」。',items:[{id:'land',emoji:'🏝️',name:'陸地',target:'land',ok:true},{id:'sea',emoji:'🌊',name:'海洋',target:'sea',ok:true},{id:'tree',emoji:'🌳',name:'樹木',target:'land2',ok:true},{id:'sun',emoji:'☀️',name:'太陽',ok:false},{id:'fish',emoji:'🐟',name:'魚',ok:false}]},
- {type:'scene',day:4,title:'第五關：日月星辰',instruction:'第四日，天空有了管理晝夜的光體。把日、月、星辰放上天空。',verse:'神造了兩個大光，大的管晝，小的管夜。',items:[{id:'sun',emoji:'☀️',name:'太陽',target:'sky1',ok:true},{id:'moon',emoji:'🌙',name:'月亮',target:'sky2',ok:true},{id:'stars',emoji:'✨',name:'星辰',target:'sky3',ok:true},{id:'lion',emoji:'🦁',name:'獅子',ok:false},{id:'bird',emoji:'🕊️',name:'飛鳥',ok:false}]},
- {type:'scene',day:5,title:'第六關：魚與飛鳥',instruction:'第五日，水中充滿生命，天空也有飛鳥。把牠們放回適合的地方。',verse:'神造出水中各樣有生命的動物，又造出各樣飛鳥。',items:[{id:'fish',emoji:'🐟',name:'魚',target:'sea1',ok:true},{id:'whale',emoji:'🐋',name:'大魚',target:'sea2',ok:true},{id:'bird',emoji:'🕊️',name:'飛鳥',target:'sky',ok:true},{id:'human',emoji:'🧑',name:'人',ok:false},{id:'tree',emoji:'🌳',name:'樹木',ok:false}]},
- {type:'scene',day:6,title:'第七關：走獸與人',instruction:'最後，把地上的走獸與人放入世界。完成六日創造！',verse:'神就照著自己的形像造人。',items:[{id:'lion',emoji:'🦁',name:'走獸',target:'land1',ok:true},{id:'cow',emoji:'🐄',name:'牲畜',target:'land2',ok:true},{id:'human1',emoji:'🧑',name:'人',target:'center1',ok:true},{id:'human2',emoji:'👩',name:'人',target:'center2',ok:true},{id:'fish',emoji:'🐟',name:'魚',ok:false}]}
+ {type:'scene',day:1,title:'第二關：要有光',instruction:'自由布置第一日。素材可以重複使用，每種最多 7 個；重點是表現「光與暗的分別」。',verse:'神說：「要有光」，就有了光。',items:[{id:'light',name:'光',ok:true,zone:'any',min:2},{id:'dark',name:'黑暗',ok:true,zone:'any',min:1},{id:'sun',name:'太陽',ok:false},{id:'tree',name:'樹木',ok:false}]},
+ {type:'scene',day:2,title:'第三關：天空與水',instruction:'自由布置第二日。雲與天空元素放在上方，水放在下方；不必對準固定位置。',verse:'神稱穹蒼為「天」。',items:[{id:'sky',name:'雲與天空',ok:true,zone:'sky',min:2},{id:'water',name:'水',ok:true,zone:'water',min:2},{id:'bird',name:'飛鳥',ok:false},{id:'flower',name:'花朵',ok:false}]},
+ {type:'scene',day:3,title:'第四關：陸地、海洋與植物',instruction:'讓陸地、海洋和植物豐富起來。樹木可以多放幾棵，做出你自己的世界。',verse:'神稱旱地為「地」，稱水的聚處為「海」。',items:[{id:'land',name:'陸地',ok:true,zone:'land',min:1},{id:'sea',name:'海洋',ok:true,zone:'water',min:1},{id:'tree',name:'樹木',ok:true,zone:'land',min:2},{id:'sun',name:'太陽',ok:false},{id:'fish',name:'魚',ok:false}]},
+ {type:'scene',day:4,title:'第五關：日月星辰',instruction:'把太陽、月亮與星辰布置在天空。你可以重複放星辰，讓天空更有層次。',verse:'神造了兩個大光，大的管晝，小的管夜。',items:[{id:'sun',name:'太陽',ok:true,zone:'sky',min:1},{id:'moon',name:'月亮',ok:true,zone:'sky',min:1},{id:'stars',name:'星辰',ok:true,zone:'sky',min:2},{id:'lion',name:'獅子',ok:false},{id:'bird',name:'飛鳥',ok:false}]},
+ {type:'scene',day:5,title:'第六關：魚與飛鳥',instruction:'讓水中有魚，天空有飛鳥。可以放很多隻，讓世界真正熱鬧起來。',verse:'神造出水中各樣有生命的動物，又造出各樣飛鳥。',items:[{id:'fish',name:'魚',ok:true,zone:'water',min:2},{id:'whale',name:'大魚',ok:true,zone:'water',min:1},{id:'bird',name:'飛鳥',ok:true,zone:'sky',min:2},{id:'human',name:'人',ok:false},{id:'tree',name:'樹木',ok:false}]},
+ {type:'scene',day:6,title:'第七關：走獸與人',instruction:'最後加入地上的動物與人。自由安排位置，完成你自己的六日創造世界。',verse:'神就照著自己的形像造人。',items:[{id:'lion',name:'走獸',ok:true,zone:'land',min:2},{id:'cow',name:'牲畜',ok:true,zone:'land',min:2},{id:'human1',name:'人',ok:true,zone:'land',min:1},{id:'human2',name:'人',ok:true,zone:'land',min:1},{id:'fish',name:'魚',ok:false}]}
 ];
-const TARGET_LAYOUTS={
-  1:[['center','38%','28%','24%','34%'],['edge','7%','52%','22%','24%']],
-  2:[['sky','28%','12%','44%','30%'],['sea','25%','72%','50%','22%']],
-  3:[['land','8%','56%','28%','20%'],['sea','56%','72%','35%','20%'],['land2','36%','50%','26%','24%']],
-  4:[['sky1','8%','12%','24%','25%'],['sky2','38%','18%','23%','24%'],['sky3','68%','10%','24%','30%']],
-  5:[['sea1','10%','74%','30%','19%'],['sea2','58%','70%','32%','22%'],['sky','35%','16%','30%','28%']],
-  6:[['land1','7%','58%','23%','18%'],['land2','30%','56%','23%','20%'],['center1','54%','49%','18%','26%'],['center2','74%','48%','18%','27%']]
-};
-let state=loadState(),levelIndex=Math.min(state.unlocked||0,6),mistakes=0,hintUsed=false,placedCount=0,selectedItem=null;
+let state=loadState(),levelIndex=Math.min(state.unlocked||0,6),mistakes=0,hintUsed=false,placedCount=0,selectedItem=null,currentObjects=[],actionHistory=[];
 const $=s=>document.querySelector(s);
 const SVG={
  light:'<svg viewBox="0 0 120 90"><defs><radialGradient id="g"><stop offset="0" stop-color="#fff8b0"/><stop offset=".55" stop-color="#f8d35d"/><stop offset="1" stop-color="#e6a934" stop-opacity=".15"/></radialGradient></defs><circle cx="60" cy="44" r="35" fill="url(#g)"/><g stroke="#f4c646" stroke-width="5" stroke-linecap="round"><path d="M60 4v12M60 72v12M20 44h13M87 44h13M31 15l9 9M80 64l9 9M89 15l-9 9M40 64l-9 9"/></g></svg>',
@@ -113,27 +105,116 @@ function cumulativeWorld(day){
  if(day>=5){parts.push('<div class="historyArt" style="left:58%;bottom:4%;width:15%;height:13%">'+art('fish')+'</div><div class="historyArt" style="left:53%;top:21%;width:18%;height:14%">'+art('bird')+'</div>')}
  return '<div class="historyLayer">'+parts.join('')+'</div>';
 }
-function loadState(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{unlocked:0,stars:{}}}catch(e){return{unlocked:0,stars:{}}}}
+function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY))||{};return {unlocked:s.unlocked||0,stars:s.stars||{},layouts:s.layouts||{}}}catch(e){return{unlocked:0,stars:{},layouts:{}}}}
 function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
 function renderProgress(){$('#progressText').textContent=(levelIndex+1)+'/7';$('#starTotal').textContent=Object.values(state.stars||{}).reduce((a,b)=>a+b,0);$('#progressDots').innerHTML=LEVELS.map((_,i)=>'<span class="step '+(i<levelIndex?'done ':i===levelIndex?'current ':'')+'">'+(i+1)+'</span>').join('');$('#subtitle').textContent='第'+(levelIndex+1)+'關・'+LEVELS[levelIndex].title.replace(/^第.+?：/,'')}
 function setMessage(text,type='info'){const m=$('#message');m.className='message show '+type;m.textContent=text;clearTimeout(setMessage.t);setMessage.t=setTimeout(()=>m.className='message',2500)}
-function renderLevel(){mistakes=0;hintUsed=false;placedCount=0;selectedItem=null;$('#nextBtn').disabled=true;const lv=LEVELS[levelIndex];$('#levelTitle').textContent=lv.title;$('#levelInstruction').textContent=lv.instruction;$('#chapterVerse').textContent=lv.verse||'';renderProgress();lv.type==='order'?renderOrder():renderScene(lv)}
+function renderLevel(){mistakes=0;hintUsed=false;placedCount=0;selectedItem=null;currentObjects=[];actionHistory=[];$('#nextBtn').disabled=true;const lv=LEVELS[levelIndex];$('#checkBtn').style.display=lv.type==='scene'?'inline-block':'none';$('#undoBtn').style.display=lv.type==='scene'?'inline-block':'none';$('#levelTitle').textContent=lv.title;$('#levelInstruction').textContent=lv.instruction;$('#chapterVerse').textContent=lv.verse||'';renderProgress();lv.type==='order'?renderOrder():renderScene(lv)}
 function renderOrder(){const shuffled=[...DAYS].sort(()=>Math.random()-.5);$('#gameArea').innerHTML='<div class="workspace"><div class="orderGrid">'+DAYS.map(d=>'<div class="orderSlot dropzone-order" data-day="'+d.day+'"><strong>第 '+d.day+' 日</strong><span class="hint">把正確的創造卡放到這裡</span></div>').join('')+'</div><aside class="tray"><h3>創造卡</h3><p>拖曳卡片；手機也可以點一下卡片，再點目的地。</p><div class="items">'+shuffled.map(d=>itemHTML({id:'day'+d.day,emoji:d.emoji,name:d.summary,day:d.day,ok:true})).join('')+'</div></aside></div>';bindItems();document.querySelectorAll('.dropzone-order').forEach(z=>z.addEventListener('click',()=>{if(selectedItem)attemptOrderDrop(selectedItem,z)}))}
 function sceneClass(day){return day===1?'world dark':day===2?'world dawn':'world'}
-function renderScene(lv){const targets=TARGET_LAYOUTS[lv.day].map(t=>'<div class="dropzone" data-target="'+t[0]+'" style="left:'+t[1]+';top:'+t[2]+';width:'+t[3]+';height:'+t[4]+'"><span>'+targetLabel(t[0],lv.day)+'</span></div>').join('');$('#gameArea').innerHTML='<div class="workspace"><div class="'+sceneClass(lv.day)+'">'+cumulativeWorld(lv.day-1)+'<span class="layerLabel skyLabel">天空</span><span class="layerLabel landLabel">陸地</span><span class="layerLabel seaLabel">水域</span><div class="targets">'+targets+'</div></div><aside class="tray"><h3>創造素材</h3><p>拖曳到世界中。放錯的東西會回到素材盤。</p><div class="items">'+lv.items.map(itemHTML).join('')+'</div></aside></div>';bindItems();document.querySelectorAll('.dropzone').forEach(z=>z.addEventListener('click',()=>{if(selectedItem)attemptSceneDrop(selectedItem,z)}))}
-function targetLabel(target,day){if(target.startsWith('sky'))return '放在天空';if(target.startsWith('sea'))return '放進水中';if(target.startsWith('land'))return '放在地上';if(target.startsWith('center'))return day===1?'讓光照進來':'放在這裡';if(target==='edge')return '黑暗';return '放這裡'}
-function itemHTML(it){return '<div class="dragItem" data-id="'+it.id+'" data-name="'+it.name+'" '+(it.day?'data-day="'+it.day+'"':'')+'>'+art(it.id)+'<b>'+it.name+'</b></div>'}
-function bindItems(){document.querySelectorAll('.dragItem').forEach(el=>{el.addEventListener('pointerdown',startPointerDrag);el.addEventListener('click',()=>{if(!el.classList.contains('used'))selectItem(el)})})}
-function selectItem(el){document.querySelectorAll('.dragItem').forEach(x=>x.style.outline='');selectedItem=el;el.style.outline='4px solid #efbd48';setMessage('已選擇「'+el.dataset.name+'」，請再點一下要放的位置。','info')}
-function startPointerDrag(e){const el=e.currentTarget;if(el.classList.contains('used'))return;const ghost=document.createElement('div');ghost.className='ghost';ghost.innerHTML=el.querySelector('.art')?.outerHTML||'';document.body.appendChild(ghost);ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';const move=ev=>{ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';document.querySelectorAll('.dropzone,.dropzone-order').forEach(z=>z.classList.remove('hover'));const hit=document.elementFromPoint(ev.clientX,ev.clientY)?.closest('.dropzone,.dropzone-order');if(hit)hit.classList.add('hover')};const up=ev=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);ghost.remove();document.querySelectorAll('.dropzone,.dropzone-order').forEach(z=>z.classList.remove('hover'));const hit=document.elementFromPoint(ev.clientX,ev.clientY)?.closest('.dropzone,.dropzone-order');if(hit)(LEVELS[levelIndex].type==='order'?attemptOrderDrop(el,hit):attemptSceneDrop(el,hit))};document.addEventListener('pointermove',move);document.addEventListener('pointerup',up,{once:true})}
-function attemptOrderDrop(item,slot){if(slot.classList.contains('filled')){mistakes++;setMessage('這一格已經放過了，換一格試試看。','bad');return}if(Number(item.dataset.day)===Number(slot.dataset.day)){slot.classList.add('filled');slot.innerHTML='<strong>第 '+slot.dataset.day+' 日</strong><div class="placed">'+art('day'+slot.dataset.day)+'<br><small>'+item.dataset.name+'</small></div>';item.classList.add('used');item.style.outline='';selectedItem=null;placedCount++;setMessage('答對了！這就是第 '+slot.dataset.day+' 日的創造。','good');if(placedCount===6)finishLevel()}else{mistakes++;setMessage('順序還不對喔，再想想這件事是在第幾日。','bad')}}
-function attemptSceneDrop(item,zone){const lv=LEVELS[levelIndex],data=lv.items.find(x=>x.id===item.dataset.id);if(zone.classList.contains('filled')){mistakes++;setMessage('這個位置已經完成了，試試別的位置。','bad');return}if(!data?.ok){mistakes++;setMessage('「'+item.dataset.name+'」不是這一天才創造的喔！','bad');return}if(data.target!==zone.dataset.target){mistakes++;setMessage('東西選對了，但位置還不對。看看它應該在天空、陸地，還是水中？','bad');return}zone.classList.add('filled');zone.innerHTML='<div class="placed">'+art(data.id)+'<br><small>'+item.dataset.name+'</small></div>';item.classList.add('used');item.style.outline='';selectedItem=null;placedCount++;setMessage('放對了！「'+item.dataset.name+'」加入世界。','good');if(placedCount===lv.items.filter(x=>x.ok).length)finishLevel()}
+function zoneFromPoint(y){if(y<46)return 'sky';if(y>=76)return 'water';return 'land'}
+function savedWorld(day){
+ const chunks=[];
+ for(let d=1;d<=day;d++){
+   const arr=state.layouts?.[d];
+   if(Array.isArray(arr)&&arr.length){
+     arr.forEach(o=>chunks.push('<div class="historyArt" style="left:'+o.x+'%;top:'+o.y+'%;width:13%;height:13%;transform:translate(-50%,-50%)">'+art(o.id)+'</div>'));
+   }else chunks.push(cumulativeWorld(d).replace('<div class="historyLayer">','').replace(/<\/div>$/,''));
+ }
+ return '<div class="historyLayer">'+chunks.join('')+'</div>';
+}
+function renderScene(lv){
+ currentObjects=[];actionHistory=[];
+ $('#gameArea').innerHTML='<div class="workspace"><div class="'+sceneClass(lv.day)+'" id="worldCanvas">'+savedWorld(lv.day-1)+'<div class="zoneGuide sky"><span>天空區</span></div><div class="zoneGuide land"><span>陸地區</span></div><div class="zoneGuide water"><span>水域區</span></div><div class="freeCanvas" id="freeCanvas"></div></div><aside class="tray"><h3>Q版創造素材</h3><p>每種素材最多可放 7 個。拖到任何位置自由布置；點素材後也可以再點畫面放置。</p><div class="items">'+lv.items.map(itemHTML).join('')+'</div><div class="conceptPanel" id="conceptPanel"></div></aside></div>';
+ bindItems();bindCanvas();updateSceneUI();
+}
+function itemHTML(it){
+ const order=it.day?' data-day="'+it.day+'"':'';
+ const count=LEVELS[levelIndex]?.type==='scene'?'<span class="countBadge" data-count="'+it.id+'">0 / 7</span>':'';
+ return '<div class="dragItem" data-id="'+it.id+'" data-name="'+it.name+'"'+order+'>'+count+art(it.id)+'<b>'+it.name+'</b></div>';
+}
+function bindItems(){
+ document.querySelectorAll('.dragItem').forEach(el=>{
+   el.addEventListener('pointerdown',startPointerDrag);
+   el.addEventListener('click',()=>{if(LEVELS[levelIndex].type==='order'){if(!el.classList.contains('used'))selectItem(el)}else if(!el.classList.contains('limit'))selectItem(el)});
+ });
+}
+function selectItem(el){
+ document.querySelectorAll('.dragItem').forEach(x=>x.style.outline='');
+ selectedItem=el;el.style.outline='4px solid #efbd48';
+ setMessage('已選擇「'+el.dataset.name+'」，現在可以點主畫面任意位置放下。','info');
+}
+function startPointerDrag(e){
+ const el=e.currentTarget;if(el.classList.contains('used')||el.classList.contains('limit'))return;
+ const ghost=document.createElement('div');ghost.className='ghost';ghost.innerHTML=el.querySelector('.art')?.outerHTML||'';document.body.appendChild(ghost);
+ ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';let moved=false;
+ const move=ev=>{if(Math.hypot(ev.clientX-e.clientX,ev.clientY-e.clientY)>6)moved=true;ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px'};
+ const up=ev=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);ghost.remove();if(!moved)return;
+   if(LEVELS[levelIndex].type==='order'){const hit=document.elementFromPoint(ev.clientX,ev.clientY)?.closest('.dropzone-order');if(hit)attemptOrderDrop(el,hit)}
+   else{const canvas=$('#worldCanvas'),r=canvas?.getBoundingClientRect();if(r&&ev.clientX>=r.left&&ev.clientX<=r.right&&ev.clientY>=r.top&&ev.clientY<=r.bottom)placeSceneItem(el.dataset.id,(ev.clientX-r.left)/r.width*100,(ev.clientY-r.top)/r.height*100)}
+ };
+ document.addEventListener('pointermove',move);document.addEventListener('pointerup',up,{once:true});
+}
+function bindCanvas(){
+ const canvas=$('#worldCanvas');
+ canvas.addEventListener('click',e=>{
+   if(e.target.closest('.sceneObject')||!selectedItem)return;
+   const r=canvas.getBoundingClientRect();placeSceneItem(selectedItem.dataset.id,(e.clientX-r.left)/r.width*100,(e.clientY-r.top)/r.height*100);
+ });
+}
+function placeSceneItem(id,x,y){
+ const lv=LEVELS[levelIndex],data=lv.items.find(i=>i.id===id);if(!data)return;
+ const used=currentObjects.filter(o=>o.id===id).length;if(used>=7){setMessage('「'+data.name+'」已經放滿 7 個囉！','bad');return}
+ x=Math.max(6,Math.min(94,x));y=Math.max(7,Math.min(93,y));
+ const zone=zoneFromPoint(y),obj={uid:Date.now()+Math.random(),id,name:data.name,x,y,zone,ok:data.ok,expected:data.zone||'any'};
+ currentObjects.push(obj);actionHistory.push({type:'add',uid:obj.uid});renderObjects();updateSceneUI();
+ if(data.ok&&conceptCorrect(obj))setMessage('很好！「'+data.name+'」放在合理的位置。','good');
+ else if(data.ok)setMessage('可以放這裡，但想想看它更適合天空、陸地還是水域。','info');
+ else setMessage('這個素材不是今天的創造重點；你可以保留觀察，也可以刪掉。','bad');
+}
+function conceptCorrect(o){return o.ok&&(o.expected==='any'||o.expected===o.zone)}
+function renderObjects(){
+ const box=$('#freeCanvas');if(!box)return;
+ box.innerHTML=currentObjects.map(o=>'<div class="sceneObject '+(conceptCorrect(o)?'':'badPlace')+'" data-uid="'+o.uid+'" style="left:'+o.x+'%;top:'+o.y+'%">'+art(o.id)+'<button class="removeObj" type="button" aria-label="移除'+o.name+'">×</button></div>').join('');
+ box.querySelectorAll('.removeObj').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();removeObject(Number(b.parentElement.dataset.uid))}));
+ box.querySelectorAll('.sceneObject').forEach(el=>enableObjectDrag(el));
+}
+function enableObjectDrag(el){
+ el.addEventListener('pointerdown',e=>{
+   if(e.target.closest('.removeObj'))return;
+   const uid=Number(el.dataset.uid),canvas=$('#worldCanvas'),r=canvas.getBoundingClientRect();let moved=false;
+   const move=ev=>{moved=true;const x=Math.max(6,Math.min(94,(ev.clientX-r.left)/r.width*100)),y=Math.max(7,Math.min(93,(ev.clientY-r.top)/r.height*100));el.style.left=x+'%';el.style.top=y+'%'};
+   const up=ev=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);if(!moved)return;const o=currentObjects.find(x=>x.uid===uid);if(o){o.x=Math.max(6,Math.min(94,(ev.clientX-r.left)/r.width*100));o.y=Math.max(7,Math.min(93,(ev.clientY-r.top)/r.height*100));o.zone=zoneFromPoint(o.y);actionHistory.push({type:'move',uid});renderObjects();updateSceneUI()}};
+   document.addEventListener('pointermove',move);document.addEventListener('pointerup',up,{once:true});
+ });
+}
+function removeObject(uid){
+ const i=currentObjects.findIndex(o=>o.uid===uid);if(i<0)return;const removed=currentObjects[i];currentObjects.splice(i,1);actionHistory.push({type:'remove',obj:removed});renderObjects();updateSceneUI();
+}
+function updateSceneUI(){
+ const lv=LEVELS[levelIndex];if(lv.type!=='scene')return;
+ lv.items.forEach(it=>{const n=currentObjects.filter(o=>o.id===it.id).length,el=document.querySelector('[data-count="'+it.id+'"]'),card=document.querySelector('.dragItem[data-id="'+it.id+'"]');if(el)el.textContent=n+' / 7';if(card)card.classList.toggle('limit',n>=7)});
+ const panel=$('#conceptPanel');if(panel)panel.innerHTML=lv.items.filter(i=>i.ok).map(it=>{const n=currentObjects.filter(o=>o.id===it.id&&conceptCorrect(o)).length,ok=n>=it.min;return '<span class="conceptChip '+(ok?'ok':'')+'">'+it.name+' '+n+'/'+it.min+'</span>'}).join('');
+}
+function checkScene(){
+ const lv=LEVELS[levelIndex];if(lv.type!=='scene')return;
+ const missing=lv.items.filter(i=>i.ok).filter(it=>currentObjects.filter(o=>o.id===it.id&&conceptCorrect(o)).length<it.min);
+ const wrong=currentObjects.filter(o=>!conceptCorrect(o));
+ if(missing.length){mistakes++;setMessage('還差一些概念：'+missing.map(x=>x.name+'至少 '+x.min+' 個').join('、')+'。','bad');return}
+ const stars=hintUsed?1:(wrong.length===0?3:wrong.length<=2?2:1);
+ finishLevel(stars);
+}
+function attemptOrderDrop(item,slot){
+ if(slot.classList.contains('filled')){mistakes++;setMessage('這一格已經放過了，換一格試試看。','bad');return}
+ if(Number(item.dataset.day)===Number(slot.dataset.day)){slot.classList.add('filled');slot.innerHTML='<strong>第 '+slot.dataset.day+' 日</strong><div class="placed">'+art('day'+slot.dataset.day)+'<br><small>'+item.dataset.name+'</small></div>';item.classList.add('used');item.style.outline='';selectedItem=null;placedCount++;setMessage('答對了！這就是第 '+slot.dataset.day+' 日的創造。','good');if(placedCount===6)finishLevel()}
+ else{mistakes++;setMessage('順序還不對喔，再想想這件事是在第幾日。','bad')}
+}
 function scoreStars(){if(hintUsed||mistakes>=3)return 1;if(mistakes>=1)return 2;return 3}
 function finalPreviewHtml(day){return '<div style="position:relative;height:220px;border-radius:18px;overflow:hidden;margin:14px 0;background:linear-gradient(180deg,#8fd3f3 0 52%,#78aa5d 52% 75%,#3f8fb5 75% 100%);border:1px solid #b99b63">'+cumulativeWorld(day)+'</div>'}
-function finishLevel(){const stars=scoreStars();state.stars[levelIndex]=Math.max(state.stars[levelIndex]||0,stars);state.unlocked=Math.max(state.unlocked,Math.min(levelIndex+1,6));saveState();renderProgress();$('#nextBtn').disabled=false;$('#modalStars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);$('#finalPreview').innerHTML=levelIndex===0?'':finalPreviewHtml(Math.min(levelIndex,6));if(levelIndex===0){$('#modalIcon').textContent='📖';$('#modalTitle').textContent='順序完成！';$('#modalText').textContent='你已經排好六日創造的順序。接下來，親手把每一天的創造放進世界吧！'}else if(levelIndex===6){$('#finalPreview').innerHTML=finalPreviewHtml(6);$('#modalIcon').textContent='🌍';$('#modalTitle').textContent='創造世界完成！';$('#modalText').textContent='從光、天空、陸地，到日月星辰、魚鳥、走獸與人，你完成了六日創造的旅程。';$('#modalNextBtn').textContent='回到第一關'}else{$('#modalIcon').textContent=DAYS[levelIndex-1]?.emoji?.slice(0,2)||'✨';$('#modalTitle').textContent='這一天完成了！';$('#modalText').textContent='做得很好！你完成了這一日的創造，可以繼續下一天。'}$('#completeModal').classList.add('show')}
+function finishLevel(forcedStars){const stars=forcedStars||scoreStars();if(levelIndex>0){state.layouts=state.layouts||{};state.layouts[LEVELS[levelIndex].day]=currentObjects.map(o=>({id:o.id,x:o.x,y:o.y,zone:o.zone,ok:o.ok,expected:o.expected,name:o.name}))}state.stars[levelIndex]=Math.max(state.stars[levelIndex]||0,stars);state.unlocked=Math.max(state.unlocked,Math.min(levelIndex+1,6));saveState();renderProgress();$('#nextBtn').disabled=false;$('#modalStars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);$('#finalPreview').innerHTML=levelIndex===0?'':finalPreviewHtml(Math.min(levelIndex,6));if(levelIndex===0){$('#modalIcon').textContent='📖';$('#modalTitle').textContent='順序完成！';$('#modalText').textContent='你已經排好六日創造的順序。接下來，親手把每一天的創造放進世界吧！'}else if(levelIndex===6){$('#finalPreview').innerHTML=finalPreviewHtml(6);$('#modalIcon').textContent='🌍';$('#modalTitle').textContent='創造世界完成！';$('#modalText').textContent='從光、天空、陸地，到日月星辰、魚鳥、走獸與人，你完成了六日創造的旅程。';$('#modalNextBtn').textContent='回到第一關'}else{$('#modalIcon').textContent=DAYS[levelIndex-1]?.emoji?.slice(0,2)||'✨';$('#modalTitle').textContent='這一天完成了！';$('#modalText').textContent='做得很好！你完成了這一日的創造，可以繼續下一天。'}$('#completeModal').classList.add('show')}
 function nextLevel(){if(levelIndex<6)levelIndex++;else levelIndex=0;$('#completeModal').classList.remove('show');renderLevel()}
-$('#nextBtn').addEventListener('click',nextLevel);$('#modalNextBtn').addEventListener('click',nextLevel);$('#replayBtn').addEventListener('click',()=>{$('#completeModal').classList.remove('show');renderLevel()});$('#resetBtn').addEventListener('click',renderLevel);
-$('#hintBtn').addEventListener('click',()=>{hintUsed=true;const lv=LEVELS[levelIndex];if(lv.type==='order'){const next=DAYS.find(d=>!document.querySelector('.orderSlot[data-day="'+d.day+'"]').classList.contains('filled'));setMessage(next?'提示：第 '+next.day+' 日是「'+next.summary+'」。':'你已經完成囉！','info')}else{const next=lv.items.find(x=>x.ok&&!document.querySelector('.dragItem[data-id="'+x.id+'"]').classList.contains('used'));setMessage(next?'提示：「'+next.name+'」要放在「'+targetLabel(next.target,lv.day)+'」的位置。':'這一關快完成了！','info')}});
+$('#nextBtn').addEventListener('click',nextLevel);$('#modalNextBtn').addEventListener('click',nextLevel);$('#replayBtn').addEventListener('click',()=>{$('#completeModal').classList.remove('show');renderLevel()});$('#resetBtn').addEventListener('click',renderLevel);$('#checkBtn').addEventListener('click',()=>{if(LEVELS[levelIndex].type==='order')setMessage('第一關會在六張卡都排對後自動完成。','info');else checkScene()});$('#undoBtn').addEventListener('click',()=>{if(LEVELS[levelIndex].type==='order'){setMessage('第一關請使用「重來本關」重新排列。','info');return}const a=actionHistory.pop();if(!a){setMessage('目前沒有可以復原的步驟。','info');return}if(a.type==='add')currentObjects=currentObjects.filter(o=>o.uid!==a.uid);else if(a.type==='remove')currentObjects.push(a.obj);renderObjects();updateSceneUI()});
+$('#hintBtn').addEventListener('click',()=>{hintUsed=true;const lv=LEVELS[levelIndex];if(lv.type==='order'){const next=DAYS.find(d=>!document.querySelector('.orderSlot[data-day="'+d.day+'"]').classList.contains('filled'));setMessage(next?'提示：第 '+next.day+' 日是「'+next.summary+'」。':'你已經完成囉！','info')}else{const need=lv.items.filter(i=>i.ok).find(it=>currentObjects.filter(o=>o.id===it.id&&conceptCorrect(o)).length<it.min);setMessage(need?'提示：今天需要「'+need.name+'」，而且要放在'+(need.zone==='sky'?'天空':need.zone==='water'?'水域':need.zone==='land'?'陸地':'畫面中')+'。':'基本概念已經齊全，可以按「檢查創造」囉！','info')}});
 renderLevel();
 </script>
 </body>
