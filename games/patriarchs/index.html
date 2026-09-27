@@ -242,8 +242,13 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .sceneArt .stars{position:absolute;inset:0;background:radial-gradient(circle at 12% 22%,#fff 0 2px,transparent 3px),radial-gradient(circle at 24% 35%,#fff 0 2px,transparent 3px),radial-gradient(circle at 38% 16%,#fff 0 2px,transparent 3px),radial-gradient(circle at 57% 27%,#fff 0 2px,transparent 3px),radial-gradient(circle at 72% 14%,#fff 0 2px,transparent 3px),radial-gradient(circle at 86% 34%,#fff 0 2px,transparent 3px)}
 .sceneArt.night{background:linear-gradient(#405477 0 58%,#b99d67 59%)}.sceneArt.night .sun{display:none}.sceneArt.egypt{background:linear-gradient(#c9e4ed 0 54%,#e7c87f 55%)}.sceneArt.egypt:after{content:"";position:absolute;right:8%;bottom:18px;border-left:48px solid transparent;border-right:48px solid transparent;border-bottom:78px solid #c69555;opacity:.82}.sceneArt.sodom{background:linear-gradient(#d9d6c3 0 54%,#c8b27c 55%)}.sceneArt.birth:after{content:"";position:absolute;right:13%;bottom:27px;width:43px;height:43px;border-radius:50%;background:#f4dfb8;box-shadow:0 0 0 9px #fff3d250}.sceneArt.moriah:before{content:"";position:absolute;left:5%;bottom:18px;border-left:72px solid transparent;border-right:72px solid transparent;border-bottom:108px solid #9a8161;opacity:.76}.sceneArt.cave:after{content:"";position:absolute;right:8%;bottom:12px;width:112px;height:74px;border-radius:60px 60px 12px 12px;background:#9c8061;box-shadow:inset 0 -35px 0 #5c4938}
 .sceneArt.wells{background:linear-gradient(#c5e0e5 0 55%,#d8c184 56%)}.sceneArt.rehoboth{background:linear-gradient(#c5e3e7 0 54%,#d7c98e 55%)}.sceneArt.beersheba{background:linear-gradient(#6b7791 0 55%,#c6ad75 56%)}.sceneArt.beersheba .sun{display:none}
+
+/* v19 unmistakable chibi story character */
+.sceneArt .hero{left:50%;bottom:6px;width:118px;height:136px;transform:translateX(-50%);z-index:8;display:block}
+.sceneArt .hero svg{display:block;width:118px;height:136px;filter:drop-shadow(0 5px 3px #5c432e55)}
+.sceneArt .sceneCaption{position:absolute;left:14px;top:12px;z-index:9;background:#fff8e9dc;border:1px solid #8a623944;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;color:#65452c}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.18</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.19</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
@@ -355,7 +360,7 @@ const events=[
 {id:'a-moriah',char:'abraham',place:'moriah',title:'最大的考驗',story:'亞伯拉罕帶著以撒前往摩利亞地。這是一場非常艱難的考驗。當事情到了最關鍵的時刻，神阻止亞伯拉罕傷害以撒；亞伯拉罕隨後看見神已經有所預備。',q:'這個事件最後讓亞伯拉罕經歷到什麼？',a:['神會親自預備','以撒必須永遠住在摩利亞','只有昂貴的祭物神才接受'],correct:0,reward:'gold',ref:'創世記 22:1–19',lesson:'亞伯拉罕稱那地方為「耶和華以勒」，表達神會預備。'},
 {id:'a-machpelah',char:'abraham',place:'hebron',title:'買下麥比拉洞',story:'撒拉去世後，亞伯拉罕需要一個地方安葬她。當地人願意提供土地，但亞伯拉罕堅持按照正式方式取得那塊田地，最後在眾人面前完成交易。',q:'亞伯拉罕為什麼堅持正式買下這塊土地？',a:['要取得屬於自己的安葬之地','要在那裡蓋王宮','要把土地轉賣賺錢'],correct:0,reward:'onyx',ref:'創世記 23章',lesson:'麥比拉成為亞伯拉罕家族在迦南正式擁有的重要土地，也成為家族的安葬之地。'},
 
-{id:'i-moriah',char:'isaac',place:'moriah',title:'和父親上山',story:'以撒跟著父親亞伯拉罕前往摩利亞地。他自己背著燔祭用的柴，亞伯拉罕手中拿著火與刀。走了一段路後，以撒發現似乎少了一樣獻祭時很重要的東西。',q:'以撒發現少了什麼，因此開口詢問父親？',a:['燔祭的羊羔','搭帳棚的繩子','回家的地圖'],correct:0,reward:'gold',ref:'創世記 22:6–14',lesson:'亞伯拉罕回答：「神必自己預備作燔祭的羊羔。」後來以撒親身經歷了神的預備。'},
+{id:'i-moriah',char:'isaac',place:'moriah',title:'為以撒尋找妻子',story:'亞伯拉罕年老時，特別吩咐僕人不要為以撒娶迦南女子，而要回到他的本地、本族去尋找妻子。僕人於是往兩河流域出發，後來遇見了利百加。',q:'利百加是哪裡人？',a:['亞伯拉罕本族、住在兩河流域的人','埃及人','迦南人'],correct:0,reward:'gold',ref:'創世記 24:1–15',lesson:'利百加來自亞伯拉罕的親族；她離開家鄉來到迦南，後來成為以撒的妻子。'},
 {id:'i-rebekah',char:'isaac',place:'lahairoi',title:'遇見利百加',story:'亞伯拉罕年老後，差遣僕人回到親族那裡，為以撒尋找妻子。經過漫長旅程，僕人帶著一位女子回到迦南。傍晚，以撒正在田間默想，看見遠處有駱駝走來。',q:'這位從遠方來到迦南、後來成為以撒妻子的女子是誰？',a:['利百加','拉結','利亞'],correct:0,reward:'onyx',ref:'創世記 24:62–67',lesson:'利百加離開自己的家鄉來到迦南，成為以撒的妻子，也進入神應許延續的家庭。'},
 {id:'i-twins',char:'isaac',place:'lahairoi',title:'雙胞胎出生',story:'以撒和利百加結婚多年卻沒有孩子，以撒便為妻子祈求。後來利百加懷孕，而且腹中的兩個孩子彼此相爭。孩子出生時，一個先出生，另一個則抓著哥哥的腳跟。',q:'這對雙胞胎兄弟是誰？',a:['以掃和雅各','該隱和亞伯','以實瑪利和以撒'],correct:0,reward:'pearl',ref:'創世記 25:19–26',lesson:'先出生的是以掃，接著出生的是雅各。這對兄弟後來的故事也成為創世記的重要部分。'},
 {id:'i-gerar',char:'isaac',place:'gerar',title:'饑荒中的選擇',story:'以撒居住的地方發生饑荒。他來到基拉耳，可能也像父親亞伯拉罕從前一樣，考慮往糧食較充足的地方去。這時，神向以撒顯現，給了他清楚的指示。',q:'神給以撒什麼吩咐？',a:['不要下埃及，要住在神所指示的地方','立刻下埃及躲避饑荒','回到哈蘭居住'],correct:0,reward:'onyx',ref:'創世記 26:1–6',lesson:'神吩咐以撒不要下埃及，要住在祂所指示的地方，並再次向以撒確認給亞伯拉罕的應許。'},
@@ -430,6 +435,11 @@ window.addEventListener('keydown',e=>{if(locked)return;const k=e.key;if(['ArrowL
 window.addEventListener('keyup',e=>{if(e.key.includes('Arrow'))moving={x:0,y:0}});
 function checkTrigger(){document.querySelectorAll('.place').forEach(el=>el.classList.remove('near'));for(const p of places){const cp=positions[active],d=Math.hypot(cp.x-p.x,cp.y-p.y),el=document.getElementById('place-'+p.id);if(d<115&&events.some(e=>e.char===active&&e.place===p.id&&!completed.has(e.id)))el&&el.classList.add('near');if(d<58){const ev=events.find(e=>e.char===active&&e.place===p.id&&!completed.has(e.id));if(ev){openEvent(ev);break}}}}
 
+function storyChibi(c){
+ const isIsaac=c==='isaac';
+ const hair=isIsaac?'#6b432b':'#eee4cf', robe=isIsaac?'#d2a15d':'#b36f3d', beard=isIsaac?'':'<path d="M37 58 Q59 86 81 58 L78 88 Q59 108 40 88Z" fill="#eee4cf" stroke="#67452e" stroke-width="4"/>';
+ return '<svg viewBox="0 0 118 136" aria-hidden="true"><path d="M27 134 Q29 93 59 87 Q89 93 91 134Z" fill="'+robe+'" stroke="#67452e" stroke-width="5"/><path d="M54 90 H65 V134 H54Z" fill="#f2dfb4"/><ellipse cx="59" cy="55" rx="31" ry="34" fill="#e8b07d" stroke="#67452e" stroke-width="5"/><path d="M29 48 Q31 15 59 15 Q88 15 90 49 Q74 35 59 36 Q43 35 29 48Z" fill="'+hair+'" stroke="#67452e" stroke-width="5"/><circle cx="47" cy="55" r="4" fill="#49321f"/><circle cx="71" cy="55" r="4" fill="#49321f"/><path d="M53 69 Q59 74 66 69" fill="none" stroke="#67452e" stroke-width="3" stroke-linecap="round"/>'+beard+'</svg>';
+}
 function eventSceneHTML(ev){
  if(!['abraham','isaac'].includes(ev.char))return '';
  const cls={
@@ -444,7 +454,7 @@ function eventSceneHTML(ev){
  if(ev.id==='i-rebekah')props+='<i class="prop camelTiny"></i>';
  if(['i-wells','i-rehoboth'].includes(ev.id))props+='<i class="prop wellTiny"></i>';
  if(ev.id==='i-moriah')props+='<i class="prop sheepTiny"></i>';
- return '<div class="sceneArt '+cls+'">'+props+'<div class="hero">'+portraitHTML(ev.char)+'</div></div>';
+ return '<div class="sceneArt '+cls+'"><span class="sceneCaption">'+(ev.char==='abraham'?'亞伯拉罕':'以撒')+'的故事插圖</span>'+props+'<div class="hero">'+storyChibi(ev.char)+'</div></div>';
 }
 function openEvent(ev){locked=true;moving={x:0,y:0};currentEvent=ev;document.getElementById('storyPortrait').innerHTML=portraitHTML(ev.char);document.getElementById('eventBadge').textContent=charInfo[ev.char].name+'的事件';const rewardNames={pearl:'⚪ 珍珠',onyx:'🔶 瑪瑙',gold:'🪙 黃金'};document.getElementById('rewardPreview').textContent='答對這題可獲得：'+rewardNames[ev.reward];document.getElementById('eventWhere').textContent=ev.ref+'｜'+places.find(p=>p.id===ev.place).name;document.getElementById('eventTitle').textContent=ev.title;document.getElementById('eventScene').innerHTML=eventSceneHTML(ev);document.getElementById('eventScene').style.display=['abraham','isaac'].includes(ev.char)?'block':'none';document.getElementById('eventStory').textContent=ev.story;document.getElementById('eventQuestion').textContent=ev.q;const box=document.getElementById('answers');box.innerHTML='';ev.a.forEach((a,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=a;b.onclick=()=>answer(i);box.appendChild(b)});const f=document.getElementById('feedback');f.className='feedback';f.textContent='';document.getElementById('continueBtn').style.display='none';document.getElementById('eventModal').classList.add('show')}
 function answer(i){const ev=currentEvent,f=document.getElementById('feedback');if(i===ev.correct){if(!completed.has(ev.id)){completed.add(ev.id);loot[ev.reward]++;updateLoot();updatePlaceStates()}const names={pearl:'珍珠 ⚪',onyx:'瑪瑙 🔶',gold:'黃金 🪙'};f.className='feedback ok';f.textContent='答對了！獲得 '+names[ev.reward]+'。 '+(ev.lesson||'這個事件已收入你的探索紀錄。');document.querySelectorAll('.answer').forEach(b=>b.disabled=true);document.getElementById('continueBtn').style.display='block'}else{f.className='feedback no';f.textContent='再想一想。可以從事件敘述與聖經中的人物行動找線索。'}}
