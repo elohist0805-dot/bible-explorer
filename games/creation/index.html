@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>創造天地｜聖經探險家</title>
+<meta name="description" content="拖曳圖卡，完成六日創造，並親手布置神所創造的世界。">
+<style>
+:root{--ink:#1d2b3f;--paper:#fff8e8;--gold:#e4a83b;--blue:#244b72;--sky:#8ec7ea;--green:#4f8a58;--bad:#b14f43;--ok:#3f8256}
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 50% 0,#fffaf0 0,#f2e5c8 46%,#d7c39a 100%);min-height:100vh}
+button,a{font:inherit}.wrap{width:min(1120px,100%);margin:auto;padding:18px 16px 42px}.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.back{color:#244b72;text-decoration:none;font-weight:800}.stats{display:flex;gap:8px;flex-wrap:wrap}.pill{background:#fffaf0cc;border:1px solid #d6c49a;border-radius:999px;padding:8px 12px;font-weight:800}
+.hero{text-align:center;padding:12px 0 4px}.hero h1{font-family:Georgia,"Noto Serif TC",serif;font-size:clamp(30px,5vw,54px);margin:6px 0;color:#233e5c}.hero p{margin:6px auto;max-width:720px;color:#5c5a50}
+.progress{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:18px 0}.step{height:8px;border-radius:99px;background:#cbbd9e}.step.on{background:linear-gradient(90deg,#d7932b,#f1c867)}
+.panel{background:rgba(255,250,238,.88);border:1px solid rgba(126,94,48,.25);border-radius:24px;box-shadow:0 16px 50px rgba(80,56,22,.14);padding:18px}
+.level-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}.level-head h2{margin:0;font-size:clamp(22px,4vw,34px)}.level-head p{margin:5px 0 0;color:#6d6659}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:14px;padding:10px 14px;font-weight:900;cursor:pointer}.btn.primary{background:#315d87;color:white}.btn.soft{background:#eee0bd;color:#473b2c}.btn:disabled{opacity:.45;cursor:not-allowed}
+.days{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.day{min-height:150px;border:2px dashed #bda87c;border-radius:18px;padding:12px;background:linear-gradient(180deg,#fffdf8,#f5ead4);transition:.2s}.day.hot{border-color:#d29331;box-shadow:0 0 0 4px #f4d99b55}.day h3{margin:0 0 8px}.placed{display:flex;gap:8px;flex-wrap:wrap}.mini{background:#fff;border:1px solid #dcc9a3;border-radius:12px;padding:7px 9px;font-weight:800}
+.tray{display:flex;gap:10px;overflow-x:auto;padding:12px 2px 4px;scrollbar-width:thin}.token{flex:0 0 auto;min-width:116px;border:1px solid #d7c7a8;background:white;border-radius:18px;padding:10px 12px;box-shadow:0 6px 18px rgba(50,35,16,.08);cursor:grab;touch-action:none;user-select:none;display:grid;place-items:center;gap:4px}.token .emo{font-size:38px;line-height:1}.token strong{font-size:14px}.token.selected{outline:4px solid #e8b55466}.token.used{opacity:.3;pointer-events:none}
+.message{min-height:38px;margin-top:10px;padding:9px 12px;border-radius:12px;background:#f1e6c9;color:#4f493f;font-weight:800}.message.ok{background:#e2f0df;color:#2e6b40}.message.bad{background:#f6dddd;color:#8a4037}
+.scene{position:relative;min-height:460px;border-radius:22px;overflow:hidden;margin-top:18px;border:1px solid #bca576;background:linear-gradient(#7bc4ed 0 44%,#72b8d8 44% 61%,#65a557 61% 100%)}.scene.day1{background:linear-gradient(100deg,#17233a 0 45%,#6f86a2 47%,#f1c25e 70%,#fff1ad 100%)}.scene.day2{background:linear-gradient(#7cc8ef 0 50%,#c8ebff 50% 54%,#2f8ec3 54%,#154d79 100%)}.scene.day3{background:linear-gradient(#8bcdf1 0 45%,#5cb0d6 45% 58%,#d4b36b 58% 66%,#6b9e54 66%)}.scene.day4{background:linear-gradient(90deg,#6eb9e4 0 48%,#172442 52% 100%)}.scene.day5{background:linear-gradient(#8bd1f4 0 48%,#2f91c4 48%,#14547c 100%)}.scene.day6{background:linear-gradient(#8ecfee 0 45%,#6a9d50 45% 100%)}
+.zone{position:absolute;border:2px dashed transparent;border-radius:18px;transition:.15s}.zone.hot{border-color:#ffe399;background:#ffffff16}.zone.sky{left:4%;right:4%;top:4%;height:42%}.zone.water{left:3%;right:3%;bottom:3%;height:42%}.zone.land{left:3%;right:3%;bottom:3%;height:38%}.zone.world{inset:4%}
+.scene-item{position:absolute;transform:translate(-50%,-50%);font-size:clamp(40px,8vw,78px);filter:drop-shadow(0 5px 8px #0003);cursor:grab;touch-action:none;user-select:none}.scene-item small{display:block;font-size:12px;background:#fff9;border-radius:9px;padding:2px 5px;text-align:center;filter:none}
+.goalbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.goal{padding:8px 10px;border-radius:999px;background:#eadfc6;font-weight:800}.goal.done{background:#dcebd9;color:#336740}
+.complete{text-align:center;padding:30px 10px}.stars{font-size:44px;letter-spacing:5px;color:#d89b2b}.world-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.world-summary>div{border-radius:16px;padding:16px;text-align:center;background:#fff;border:1px solid #d8c7a3}.world-summary .big{font-size:34px}
+.ghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-60%);opacity:.92}
+@media(max-width:720px){.days{grid-template-columns:repeat(2,1fr)}.day{min-height:130px}.scene{min-height:390px}.wrap{padding-inline:10px}.panel{padding:13px}.world-summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.token{min-width:102px}.day{padding:9px}.scene{min-height:350px}}
+</style>
+</head>
+<body>
+<main class="wrap" id="app">
+<div class="top">
+<a class="back" href="/">← 聖經遊戲入口</a>
+<div class="stats"><span class="pill" id="scorePill">本關 100 分</span><span class="pill" id="totalPill">總星星 0 ★</span></div>
+</div>
+<section class="hero"><h1>創造天地</h1><p>按照《創世記》第一章，把世界一步一步建立起來。</p></section>
+<div class="progress" id="progress"></div>
+<section class="panel" id="panel"></section>
+</main>
+<script>
+(()=>{const root=document.getElementById('app'),panel=document.getElementById('panel'),scorePill=document.getElementById('scorePill'),totalPill=document.getElementById('totalPill'),progress=document.getElementById('progress');
+const DATA=[
+{id:'light',day:1,label:'光與暗',emo:'✨🌑'},
+{id:'sky',day:2,label:'天空',emo:'☁️'},
+{id:'water',day:2,label:'水',emo:'🌊'},
+{id:'land',day:3,label:'陸地',emo:'🏝️'},
+{id:'plants',day:3,label:'植物',emo:'🌳'},
+{id:'sun',day:4,label:'太陽',emo:'☀️'},
+{id:'moon',day:4,label:'月亮星辰',emo:'🌙⭐'},
+{id:'fish',day:5,label:'魚',emo:'🐟'},
+{id:'birds',day:5,label:'飛鳥',emo:'🕊️'},
+{id:'animals',day:6,label:'陸地動物',emo:'🦁'},
+{id:'humans',day:6,label:'人',emo:'🧑‍🤝‍🧑'},
+{id:'dark',day:1,label:'黑暗',emo:'🌌'}];
+const LEVELS=[
+{title:'第一關｜六日創造',sub:'把下面的圖卡拖到正確的創造日。'},
+{day:1,title:'第二關｜第一日：光與暗',sub:'把屬於第一日的元素放進世界。',need:['light','dark'],distract:['sun','plants'],zones:{light:'world',dark:'world'}},
+{day:2,title:'第三關｜第二日：天空與水',sub:'把天空與水分開，完成第二日。',need:['sky','water'],distract:['fish','plants'],zones:{sky:'sky',water:'water'}},
+{day:3,title:'第四關｜第三日：陸地與植物',sub:'讓旱地露出，並使地上長出植物。',need:['land','plants'],distract:['sun','animals'],zones:{land:'land',plants:'land'}},
+{day:4,title:'第五關｜第四日：日月星辰',sub:'把管理晝夜的光體放到天空。',need:['sun','moon'],distract:['birds','humans'],zones:{sun:'sky',moon:'sky'}},
+{day:5,title:'第六關｜第五日：魚與飛鳥',sub:'讓水中有生命，天空有飛鳥。',need:['fish','birds'],distract:['animals','humans'],zones:{fish:'water',birds:'sky'}},
+{day:6,title:'第七關｜第六日：動物與人',sub:'加入地上的動物與人，完成六日創造。',need:['animals','humans'],distract:['sun','fish'],zones:{animals:'land',humans:'land'}}
+];
+let state={level:0,score:100,stars:Number(localStorage.getItem('creationStars')||0),selected:null,placed:{},sortPlaced:{}};
+try{const s=JSON.parse(localStorage.getItem('creationSave')||'null');if(s&&typeof s.level==='number')state={...state,...s,selected:null,score:100}}catch(e){}
+function save(){localStorage.setItem('creationSave',JSON.stringify({...state,selected:null}));localStorage.setItem('creationStars',String(state.stars))}
+function beep(ok=true){try{const A=window.AudioContext||window.webkitAudioContext,c=new A(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=ok?660:180;g.gain.value=.06;o.start();o.stop(c.currentTime+.12)}catch(e){}}
+function setMsg(text,type=''){const m=document.getElementById('msg');if(m){m.textContent=text;m.className='message '+type}}
+function updateHud(){scorePill.textContent='本關 '+state.score+' 分';totalPill.textContent='總星星 '+state.stars+' ★';progress.innerHTML=LEVELS.map((_,i)=>'<span class="step '+(i<=state.level?'on':'')+'"></span>').join('')}
+function lose(n,msg){state.score=Math.max(50,state.score-n);updateHud();setMsg(msg,'bad');beep(false)}
+function tokenHtml(x){return '<button type="button" class="token" data-token="'+x.id+'"><span class="emo">'+x.emo+'</span><strong>'+x.label+'</strong></button>'}
+function bindTokens(placeFn){document.querySelectorAll('.token').forEach(el=>{el.addEventListener('click',()=>{document.querySelectorAll('.token').forEach(t=>t.classList.remove('selected'));state.selected=el.dataset.token;el.classList.add('selected');setMsg('已選取「'+DATA.find(x=>x.id===state.selected).label+'」，也可以直接拖曳到目標位置。')});enableDrag(el,placeFn)})}
+function enableDrag(el,placeFn){el.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;const id=el.dataset.token;if(!id)return;let moved=false;const ghost=el.cloneNode(true);ghost.classList.add('ghost');ghost.style.width=el.offsetWidth+'px';document.body.appendChild(ghost);const move=ev=>{moved=true;ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';document.querySelectorAll('.drop,.zone').forEach(z=>z.classList.remove('hot'));const t=document.elementFromPoint(ev.clientX,ev.clientY)?.closest('.drop,.zone');if(t)t.classList.add('hot')};const up=ev=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);ghost.remove();document.querySelectorAll('.drop,.zone').forEach(z=>z.classList.remove('hot'));if(!moved)return;const t=document.elementFromPoint(ev.clientX,ev.clientY)?.closest('.drop,.zone');placeFn(id,t,ev.clientX,ev.clientY)};document.addEventListener('pointermove',move);document.addEventListener('pointerup',up,{once:true})})}
+function renderSort(){state.score=100;state.sortPlaced={};updateHud();panel.innerHTML='<div class="level-head"><div><h2>'+LEVELS[0].title+'</h2><p>'+LEVELS[0].sub+'</p></div><div class="actions"><button class="btn soft" id="hint">提示</button></div></div><div class="days">'+[1,2,3,4,5,6].map(d=>'<div class="day drop" data-day="'+d+'"><h3>第'+d+'日</h3><div class="placed" id="day'+d+'"></div></div>').join('')+'</div><div class="tray">'+DATA.map(tokenHtml).join('')+'</div><div id="msg" class="message">提示：第一日有光，但太陽是在第四日才出現。</div>';
+const place=(id,target)=>{if(!target)return;const day=Number(target.dataset.day);const item=DATA.find(x=>x.id===id);if(item.day!==day){lose(5,'再想想看，「'+item.label+'」不是第'+day+'日。');return}if(state.sortPlaced[id])return;state.sortPlaced[id]=day;document.getElementById('day'+day).insertAdjacentHTML('beforeend','<span class="mini">'+item.emo+' '+item.label+'</span>');document.querySelector('[data-token="'+id+'"]').classList.add('used');setMsg('答對了！「'+item.label+'」屬於第'+day+'日。','ok');beep(true);if(Object.keys(state.sortPlaced).length===DATA.length)setTimeout(()=>finishLevel(),450)};
+bindTokens(place);document.querySelectorAll('.drop').forEach(z=>z.addEventListener('click',()=>{if(state.selected)place(state.selected,z)}));document.getElementById('hint').addEventListener('click',()=>{lose(2,'小提示：第三日是陸地與植物；第五日是魚與飛鳥。')})}
+function renderScene(){state.score=100;state.placed={};updateHud();const L=LEVELS[state.level];const items=[...L.need,...L.distract].map(id=>DATA.find(x=>x.id===id));panel.innerHTML='<div class="level-head"><div><h2>'+L.title+'</h2><p>'+L.sub+'</p></div><div class="actions"><button class="btn soft" id="hint">提示</button></div></div><div class="scene day'+L.day+'" id="scene"><div class="zone sky" data-zone="sky"></div><div class="zone water" data-zone="water"></div><div class="zone land" data-zone="land"></div><div class="zone world" data-zone="world"></div></div><div class="goalbar">'+L.need.map(id=>'<span class="goal" id="goal-'+id+'">'+DATA.find(x=>x.id===id).emo+' '+DATA.find(x=>x.id===id).label+'</span>').join('')+'</div><div class="tray">'+items.map(tokenHtml).join('')+'</div><div id="msg" class="message">把正確的物件拖進場景；錯誤物件會扣分。</div>';
+const place=(id,target,x,y)=>{if(!target)return;const item=DATA.find(v=>v.id===id);if(!L.need.includes(id)){lose(5,'「'+item.label+'」不是今天新增的創造內容。');return}const needZone=L.zones[id],zone=target.dataset.zone;if(zone!==needZone&&needZone!=='world'){lose(3,'位置不太對喔！想想「'+item.label+'」應該在天空、陸地還是水中。');return}if(state.placed[id])return;const scene=document.getElementById('scene'),r=scene.getBoundingClientRect();let px=x&&y?((x-r.left)/r.width*100):(25+Math.random()*50),py=x&&y?((y-r.top)/r.height*100):(25+Math.random()*50);px=Math.max(8,Math.min(92,px));py=Math.max(10,Math.min(90,py));const n=document.createElement('div');n.className='scene-item';n.style.left=px+'%';n.style.top=py+'%';n.innerHTML=item.emo+'<small>'+item.label+'</small>';scene.appendChild(n);state.placed[id]={x:px,y:py};document.querySelector('[data-token="'+id+'"]').classList.add('used');document.getElementById('goal-'+id).classList.add('done');setMsg('很好！「'+item.label+'」放進世界了。','ok');beep(true);if(Object.keys(state.placed).length===L.need.length)setTimeout(()=>finishLevel(),500)};
+bindTokens(place);document.querySelectorAll('.zone').forEach(z=>z.addEventListener('click',e=>{if(state.selected){const r=z.getBoundingClientRect();place(state.selected,z,r.left+r.width/2,r.top+r.height/2)}}));document.getElementById('hint').addEventListener('click',()=>{lose(2,L.day===5?'小提示：魚在水中，飛鳥在天空。':'小提示：先看看本關標題，它告訴你今天新增了什麼。')})}
+function finishLevel(){const gained=state.score>=90?3:state.score>=70?2:1;state.stars+=gained;const current=state.level;save();panel.innerHTML='<div class="complete"><h2>完成了！</h2><div class="stars">'+'★'.repeat(gained)+'☆'.repeat(3-gained)+'</div><p>本關 '+state.score+' 分</p><p>'+(current===0?'你已排出六日創造的正確順序。':'世界又更完整了一步。')+'</p><button class="btn primary" id="next">'+(current<6?'前往下一關':'看看完成的世界')+'</button></div>';updateHud();document.getElementById('next').addEventListener('click',()=>{if(current<6){state.level=current+1;save();render()}else renderSummary()})}
+function renderSummary(){progress.innerHTML=LEVELS.map(()=>'<span class="step on"></span>').join('');panel.innerHTML='<div class="complete"><h2>六日創造完成！</h2><p>「神看著一切所造的都甚好。」</p><div class="world-summary"><div><div class="big">✨🌑</div>第一日<br>光與暗</div><div><div class="big">☁️🌊</div>第二日<br>天空與水</div><div><div class="big">🏝️🌳</div>第三日<br>陸地與植物</div><div><div class="big">☀️🌙⭐</div>第四日<br>日月星辰</div><div><div class="big">🐟🕊️</div>第五日<br>魚與飛鳥</div><div><div class="big">🦁🧑‍🤝‍🧑</div>第六日<br>動物與人</div></div><div class="actions" style="justify-content:center"><button class="btn primary" id="again">重新挑戰</button><a class="btn soft" href="/" style="text-decoration:none">回遊戲入口</a></div></div>';document.getElementById('again').addEventListener('click',()=>{state.level=0;state.stars=0;save();render()})}
+function render(){state.selected=null;if(state.level===0)renderSort();else renderScene();updateHud()}
+render();
+})();
+</script>
+</body></html>
