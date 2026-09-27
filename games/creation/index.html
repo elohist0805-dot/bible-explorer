@@ -48,7 +48,7 @@ body{background:linear-gradient(180deg,#cbeaff 0 34%,#f2dfb3 34% 100%);overflow-
 </main>
 <div class="modal" id="completeModal"><div class="card"><div class="big" id="modalIcon">🌍</div><h2 id="modalTitle">完成了！</h2><div class="stars" id="modalStars">⭐⭐⭐</div><div id="finalPreview"></div><p id="modalText"></p><div class="modalBtns"><button class="lightBtn" id="replayBtn">再玩一次</button><button class="nextBtn" id="modalNextBtn">下一關 →</button></div></div></div>
 <script>
-const STORAGE_KEY='bibleExplorerCreationV2';
+const STORAGE_KEY='bibleExplorerCreationV3';
 const DAYS=[
  {day:1,name:'第一日',summary:'光與暗',emoji:'💡🌑'},
  {day:2,name:'第二日',summary:'天空與水',emoji:'☁️💧'},
@@ -210,7 +210,7 @@ function attemptOrderDrop(item,slot){
  else{mistakes++;setMessage('順序還不對喔，再想想這件事是在第幾日。','bad')}
 }
 function scoreStars(){if(hintUsed||mistakes>=3)return 1;if(mistakes>=1)return 2;return 3}
-function finalPreviewHtml(day){return '<div style="position:relative;height:220px;border-radius:18px;overflow:hidden;margin:14px 0;background:linear-gradient(180deg,#8fd3f3 0 52%,#78aa5d 52% 75%,#3f8fb5 75% 100%);border:1px solid #b99b63">'+cumulativeWorld(day)+'</div>'}
+function finalPreviewHtml(day){return '<div style="position:relative;height:220px;border-radius:18px;overflow:hidden;margin:14px 0;background:linear-gradient(180deg,#8fd3f3 0 52%,#78aa5d 52% 75%,#3f8fb5 75% 100%);border:1px solid #b99b63">'+savedWorld(day)+'</div>'}
 function finishLevel(forcedStars){const stars=forcedStars||scoreStars();if(levelIndex>0){state.layouts=state.layouts||{};state.layouts[LEVELS[levelIndex].day]=currentObjects.map(o=>({id:o.id,x:o.x,y:o.y,zone:o.zone,ok:o.ok,expected:o.expected,name:o.name}))}state.stars[levelIndex]=Math.max(state.stars[levelIndex]||0,stars);state.unlocked=Math.max(state.unlocked,Math.min(levelIndex+1,6));saveState();renderProgress();$('#nextBtn').disabled=false;$('#modalStars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);$('#finalPreview').innerHTML=levelIndex===0?'':finalPreviewHtml(Math.min(levelIndex,6));if(levelIndex===0){$('#modalIcon').textContent='📖';$('#modalTitle').textContent='順序完成！';$('#modalText').textContent='你已經排好六日創造的順序。接下來，親手把每一天的創造放進世界吧！'}else if(levelIndex===6){$('#finalPreview').innerHTML=finalPreviewHtml(6);$('#modalIcon').textContent='🌍';$('#modalTitle').textContent='創造世界完成！';$('#modalText').textContent='從光、天空、陸地，到日月星辰、魚鳥、走獸與人，你完成了六日創造的旅程。';$('#modalNextBtn').textContent='回到第一關'}else{$('#modalIcon').textContent=DAYS[levelIndex-1]?.emoji?.slice(0,2)||'✨';$('#modalTitle').textContent='這一天完成了！';$('#modalText').textContent='做得很好！你完成了這一日的創造，可以繼續下一天。'}$('#completeModal').classList.add('show')}
 function nextLevel(){if(levelIndex<6)levelIndex++;else levelIndex=0;$('#completeModal').classList.remove('show');renderLevel()}
 $('#nextBtn').addEventListener('click',nextLevel);$('#modalNextBtn').addEventListener('click',nextLevel);$('#replayBtn').addEventListener('click',()=>{$('#completeModal').classList.remove('show');renderLevel()});$('#resetBtn').addEventListener('click',renderLevel);$('#checkBtn').addEventListener('click',()=>{if(LEVELS[levelIndex].type==='order')setMessage('第一關會在六張卡都排對後自動完成。','info');else checkScene()});$('#undoBtn').addEventListener('click',()=>{if(LEVELS[levelIndex].type==='order'){setMessage('第一關請使用「重來本關」重新排列。','info');return}const a=actionHistory.pop();if(!a){setMessage('目前沒有可以復原的步驟。','info');return}if(a.type==='add')currentObjects=currentObjects.filter(o=>o.uid!==a.uid);else if(a.type==='remove')currentObjects.push(a.obj);renderObjects();updateSceneUI()});
