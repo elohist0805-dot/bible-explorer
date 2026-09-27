@@ -1,0 +1,9 @@
+{
+  "name": "bible-explorer",
+  "private": true,
+  "version": "1.0.0",
+  "description": "聖經探險家：兒童聖經互動遊戲",
+  "dependencies": {
+    "@netlify/blobs": "11.1.1"
+  }
+}

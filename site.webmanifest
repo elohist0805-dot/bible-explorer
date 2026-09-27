@@ -1,0 +1,17 @@
+{
+  "name": "聖經探險家｜兒童聖經互動遊戲",
+  "short_name": "聖經探險家",
+  "description": "兒童聖經互動遊戲平台，第一部作品：出埃及記・曠野之路",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#e9d49c",
+  "theme_color": "#d9b568",
+  "lang": "zh-Hant-TW",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
