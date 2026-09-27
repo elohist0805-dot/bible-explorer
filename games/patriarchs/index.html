@@ -231,7 +231,7 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 #eventScene>.sceneArt{height:154px;width:100%;margin:0;border-radius:18px;overflow:hidden;position:relative;background:linear-gradient(#b9ddec 0 54%,#ead49b 55%);border:2px solid #b78b5140;box-shadow:inset 0 -18px 28px #a67b3920}
 .sceneArt .sun{position:absolute;width:38px;height:38px;border-radius:50%;background:#f5c75c;right:28px;top:18px;box-shadow:0 0 0 9px #ffe8a35c}
 .sceneArt .ground{position:absolute;left:-5%;right:-5%;bottom:-25px;height:82px;border-radius:50% 50% 0 0;background:#d9bd78}
-.sceneArt .hero{left:50%;bottom:0;width:190px;height:100%;transform:translateX(-50%);z-index:8;display:flex;align-items:flex-end;justify-content:center;overflow:visible}
+.sceneArt .hero{position:absolute;inset:0;width:100%;height:100%;transform:none;z-index:8;display:block;overflow:hidden;pointer-events:none}
 .sceneArt .hero .portrait{filter:drop-shadow(0 3px 2px #60432635)}
 .sceneArt .prop{position:absolute;z-index:3}.sceneArt .tent{width:82px;height:58px;bottom:18px;left:11%;background:linear-gradient(135deg,transparent 0 20%,#b56b48 21% 49%,#e4b870 50% 73%,transparent 74%)}
 .sceneArt .cityTiny{width:94px;height:57px;bottom:18px;right:9%;background:#c99761;clip-path:polygon(0 100%,0 42%,15% 42%,15% 20%,31% 20%,31% 48%,47% 48%,47% 8%,64% 8%,64% 35%,82% 35%,82% 55%,100% 55%,100% 100%)}
@@ -247,8 +247,8 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .sceneArt .hero{left:50%;bottom:6px;width:118px;height:136px;transform:translateX(-50%);z-index:8;display:block}
 .sceneArt .hero svg{display:none}
 .sceneArt .sceneCaption{position:absolute;left:14px;top:12px;z-index:9;background:#fff8e9dc;border:1px solid #8a623944;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;color:#65452c}
-.sceneArt .storyPicture{display:block;width:100%;height:100%;overflow:hidden;border-radius:18px}.sceneArt .storyCharacter{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:center 38%;filter:none;user-select:none;-webkit-user-drag:none}.sceneArt .storyCharacter[src=""]{display:none}</style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.24</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+.sceneArt .storyPicture{display:block;width:100%;height:100%;overflow:hidden;border-radius:18px}.sceneArt .storyCharacter{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 4px #5c432e30);user-select:none;-webkit-user-drag:none}.sceneArt .storyCharacter[src=""]{display:none}</style></head><body>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.25</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
