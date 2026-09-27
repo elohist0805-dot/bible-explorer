@@ -134,8 +134,41 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .terrainModules{filter:none!important}
 .terrainModules .mountains,.terrainModules .mountain,.terrainModules .village,
 .terrainModules .hamlet,.terrainModules .city{filter:drop-shadow(0 3px 2px #5d45252a)}
+
+/* v15 feathered terrain transitions */
+.macroTerrain{
+  filter:blur(22px)!important;
+  opacity:.72!important;
+  transform:scale(1.018);
+  transform-origin:center
+}
+.macroTerrain path{
+  opacity:.34!important;
+  stroke:none!important
+}
+.landmarkBelt{
+  filter:blur(10px)!important;
+  opacity:.34!important
+}
+.terrainModules .farm,.terrainModules .terrace,.terrainModules .scrub,
+.terrainModules .lowridge,.terrainModules .rivergreen{
+  filter:blur(9px)!important;
+  opacity:.42!important
+}
+.terrainModules .dunes,.terrainModules .hills,.terrainModules .rocks,
+.terrainModules .palmgrove,.terrainModules .oasis{
+  filter:blur(5px)!important;
+  opacity:.62!important
+}
+/* landmarks remain crisp enough to read */
+.terrainModules .mountains,.terrainModules .mountain,
+.terrainModules .village,.terrainModules .hamlet,.terrainModules .city,
+.geo.city,.mountain .mountIcon{
+  filter:drop-shadow(0 3px 2px #5d45252a)!important;
+  opacity:1!important
+}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.14</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.15</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
