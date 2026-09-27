@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>聖經探險家｜兒童聖經互動遊戲</title>
 <meta name="description" content="用互動遊戲走進聖經故事。從出埃及記到創世記，在地圖、故事、拖曳與選擇中探索聖經。">
-<link rel="icon" href="/favicon.png">
+<link rel="icon" href="./favicon.png">
 <style>
 :root{--ink:#3d2e1f;--paper:#fff8e8;--sand:#f3e0b4;--gold:#d8a53b;--blue:#4f90a6;--green:#68885c}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#d6f0fb 0 18%,#f4e1b3 18% 100%)}
@@ -25,7 +25,7 @@ main{width:min(1180px,94vw);margin:auto;padding:28px 0 52px}.hero{background:#ff
       <span class="eyebrow">一起走進聖經故事</span>
       <h1>聖經探險家<span>從地圖冒險，到親手創造世界</span></h1>
       <p>跟著可愛的摩西走過出埃及路線、親手完成六日創造，也能操控亞伯拉罕、以撒與雅各探索古代近東。</p>
-      <div class="actions"><a class="btn primary" href="/games/exodus/">開始出埃及冒險 →</a><a class="btn light" href="/games/creation/">進入創造天地</a></div>
+      <div class="actions"><a class="btn primary" href="./games/exodus/">開始出埃及冒險 →</a><a class="btn light" href="./games/creation/">進入創造天地</a></div>
     </div>
   </div>
   <div class="portalBody">
@@ -38,9 +38,9 @@ main{width:min(1180px,94vw);margin:auto;padding:28px 0 52px}.hero{background:#ff
 </section>
 <h2 class="sectionTitle" id="games">探險遊戲</h2>
 <section class="games">
-  <article class="game exodus"><div class="gameVisual"></div><div class="gameBody"><h3>出埃及記：曠野之路</h3><p>可愛摩西陪你沿著路線地圖，從埃及、紅海、西奈山一路走到尼波山。</p><a class="play" href="/games/exodus/">直接進入地圖 →</a></div></article>
-  <article class="game creation"><div class="gameVisual"></div><div class="gameBody"><h3>創世記：創造天地</h3><p>排出六日創造順序，再把正確的事物拖進世界，完成自己的創造布景。</p><a class="play" href="/games/creation/">開始創造 →</a></div></article>
-  <article class="game patriarchs"><div class="gameVisual"></div><div class="gameBody"><h3>創世記：族長足跡</h3><p>操控亞伯拉罕、以撒、雅各自由探索古代近東，在正確地點觸發事件並蒐集寶物。</p><a class="play" href="/games/patriarchs/">展開族長旅程 →</a></div></article>\n</section>\n<section class="trust" id="about"><b>為孩子設計的聖經互動學習</b>以聖經正文為基礎，讓孩子透過地圖、故事、選擇、拖曳與構圖理解經文；網站維持學習與遊戲為核心，不加入多餘的商業訊息。</section>
+  <article class="game exodus"><div class="gameVisual"></div><div class="gameBody"><h3>出埃及記：曠野之路</h3><p>可愛摩西陪你沿著路線地圖，從埃及、紅海、西奈山一路走到尼波山。</p><a class="play" href="./games/exodus/">直接進入地圖 →</a></div></article>
+  <article class="game creation"><div class="gameVisual"></div><div class="gameBody"><h3>創世記：創造天地</h3><p>排出六日創造順序，再把正確的事物拖進世界，完成自己的創造布景。</p><a class="play" href="./games/creation/">開始創造 →</a></div></article>
+  <article class="game patriarchs"><div class="gameVisual"></div><div class="gameBody"><h3>創世記：族長足跡</h3><p>操控亞伯拉罕、以撒、雅各自由探索古代近東，在正確地點觸發事件並蒐集寶物。</p><a class="play" href="./games/patriarchs/">展開族長旅程 →</a></div></article>\n</section>\n<section class="trust" id="about"><b>為孩子設計的聖經互動學習</b>以聖經正文為基礎，讓孩子透過地圖、故事、選擇、拖曳與構圖理解經文；網站維持學習與遊戲為核心，不加入多餘的商業訊息。</section>
 </main>
 <script>
 (async()=>{const el=document.getElementById('visitCount'),url='/.netlify/functions/visit-count';try{let r;if(sessionStorage.getItem('bibleExplorerVisited'))r=await fetch(url,{cache:'no-store'});else{r=await fetch(url,{method:'POST',cache:'no-store'});if(r.ok)sessionStorage.setItem('bibleExplorerVisited','1')}if(!r.ok)throw new Error();const d=await r.json();el.textContent=Number(d.count||0).toLocaleString('zh-TW')}catch(e){el.textContent='—'}})();
