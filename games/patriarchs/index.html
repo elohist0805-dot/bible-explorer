@@ -270,7 +270,7 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 .fullEventArt .eventArtwork{display:block;width:100%;height:100%;object-fit:contain;object-position:center center;background:#efe0bf}
 @media(max-width:700px){#eventScene>.sceneArt.fullEventArt{aspect-ratio:5/2}.fullEventArt .eventArtwork{object-fit:contain}}
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.27.34</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.28.35</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
@@ -474,7 +474,17 @@ const eventArt={
  'i-gerar':'./assets/i-gerar.webp',
  'i-wells':'./assets/i-wells.webp',
  'i-rehoboth':'./assets/i-rehoboth.webp',
- 'i-beer':'./assets/i-beer.webp'
+ 'i-beer':'./assets/i-beer.webp',
+ 'j-blessing':'./assets/j-blessing.webp',
+ 'j-bethel':'./assets/j-bethel.webp',
+ 'j-rachel':'./assets/j-rachel.webp',
+ 'j-leah':'./assets/j-leah.webp',
+ 'j-family':'./assets/j-family.webp',
+ 'j-gilead':'./assets/j-gilead.webp',
+ 'j-mahanaim':'./assets/j-mahanaim.webp',
+ 'j-peniel':'./assets/j-peniel.webp',
+ 'j-esau':'./assets/j-esau.webp',
+ 'j-return-bethel':'./assets/j-return-bethel.webp'
 };
 const storyArt={
  abraham:['./assets/abraham_story_asset.webp','../exodus/og-cover.png'],
@@ -487,12 +497,12 @@ function storyChibi(c){
  return '<picture class="storyPicture"><source srcset="'+sources[0]+'" type="image/webp"><img class="storyCharacter" src="'+sources[1]+'" alt="'+(charInfo[c]?.name||'族長')+' 精緻卡通插圖" draggable="false"></picture>';
 }
 function eventSceneHTML(ev){
- if(!['abraham','isaac'].includes(ev.char))return '';
+ if(!['abraham','isaac','jacob'].includes(ev.char))return '';
  const eventSrc=eventArt[ev.id];
  if(eventSrc){
    return '<div class="sceneArt fullEventArt"><img class="eventArtwork" src="'+eventSrc+'" alt="'+ev.title+' 事件插圖" draggable="false"></div>';
  }
- return '<div class="sceneArt fallbackEventArt"><span class="sceneCaption">'+(ev.char==='abraham'?'亞伯拉罕':'以撒')+'的故事插圖</span><div class="hero">'+storyChibi(ev.char)+'</div></div>';
+ return '<div class="sceneArt fallbackEventArt"><span class="sceneCaption">'+(ev.char==='abraham'?'亞伯拉罕':ev.char==='isaac'?'以撒':'雅各')+'的故事插圖</span><div class="hero">'+storyChibi(ev.char)+'</div></div>';
 }
 function openEvent(ev){locked=true;moving={x:0,y:0};currentEvent=ev;document.getElementById('storyPortrait').innerHTML=portraitHTML(ev.char);document.getElementById('eventBadge').textContent=charInfo[ev.char].name+'的事件';const rewardNames={pearl:'⚪ 珍珠',onyx:'🔶 瑪瑙',gold:'🪙 黃金'};document.getElementById('rewardPreview').textContent='答對這題可獲得：'+rewardNames[ev.reward];document.getElementById('eventWhere').textContent=ev.ref+'｜'+places.find(p=>p.id===ev.place).name;document.getElementById('eventTitle').textContent=ev.title;document.getElementById('eventScene').innerHTML=eventSceneHTML(ev);document.getElementById('eventScene').style.display=['abraham','isaac'].includes(ev.char)?'block':'none';document.getElementById('eventStory').textContent=ev.story;document.getElementById('eventQuestion').textContent=ev.q;const box=document.getElementById('answers');box.innerHTML='';ev.a.forEach((a,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=a;b.onclick=()=>answer(i);box.appendChild(b)});const f=document.getElementById('feedback');f.className='feedback';f.textContent='';document.getElementById('continueBtn').style.display='none';document.getElementById('eventModal').classList.add('show')}
 function answer(i){const ev=currentEvent,f=document.getElementById('feedback');if(i===ev.correct){if(!completed.has(ev.id)){completed.add(ev.id);loot[ev.reward]++;updateLoot();updatePlaceStates()}const names={pearl:'珍珠 ⚪',onyx:'瑪瑙 🔶',gold:'黃金 🪙'};f.className='feedback ok';f.textContent='答對了！獲得 '+names[ev.reward]+'。 '+(ev.lesson||'這個事件已收入你的探索紀錄。');document.querySelectorAll('.answer').forEach(b=>b.disabled=true);document.getElementById('continueBtn').style.display='block'}else{f.className='feedback no';f.textContent='再想一想。可以從事件敘述與聖經中的人物行動找線索。'}}
