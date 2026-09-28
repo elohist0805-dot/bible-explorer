@@ -34,7 +34,15 @@ radial-gradient(ellipse at 55% 74%,#8b704933 0 7%,transparent 7.5%)}
 .miniView{position:absolute;border:1.5px solid #7a5230aa;background:#fff8df22;border-radius:3px;pointer-events:none}.miniDot{position:absolute;width:11px;height:11px;border-radius:50%;background:#b83d32;border:2px solid #fff7dd;box-shadow:0 1px 4px #0008;transform:translate(-50%,-50%);transition:left .08s linear,top .08s linear}.miniTitle{position:absolute;left:7px;top:5px;font-size:10px;font-weight:950;background:#fff8dfcc;padding:2px 5px;border-radius:6px}.miniLand{position:absolute;font-size:8px;font-weight:900;color:#543d28;transform:translate(-50%,-50%);text-shadow:0 1px #fff8df}
 .panel{background:#fff7e4;border-top:3px solid #8c663e44;display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px 14px;align-items:center;z-index:15}.characters{display:flex;gap:8px}.pick{flex:1;max-width:190px;border:2px solid #d6bd8a;background:#fffdf4;border-radius:15px;padding:7px;cursor:pointer;font-weight:900;color:#543d28}.pick.active{border-color:#a66a21;background:#f7dfaa;box-shadow:0 0 0 3px #e4b95b55}.pick .ico{display:block;height:45px}.pick .portrait{transform:scale(.72);transform-origin:top center}.pick small{display:block;font-weight:700;opacity:.65}.guide{font-size:12px;line-height:1.5;max-width:290px}.guide b{display:block;font-size:13px}
 .modal{position:fixed;inset:0;background:#2b211788;z-index:50;display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.card{width:min(580px,96vw);max-height:88vh;overflow:auto;background:#fff8e8;border:4px solid #8c6038;border-radius:24px;padding:20px;box-shadow:0 18px 50px #0005;position:relative}.eventClose{position:absolute;right:12px;top:10px;width:36px;height:36px;border:0;border-radius:50%;background:#7a5230;color:#fff;font-size:23px;font-weight:900;line-height:1;cursor:pointer;display:grid;place-items:center;z-index:3;box-shadow:0 2px 6px #0003}.eventClose:hover{background:#5f3e25}.card h2{margin:0 0 5px;font-family:Georgia,"Noto Serif TC",serif}.storyHead{display:flex;align-items:center;gap:11px;margin-bottom:8px}.storyPortrait{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#f3ddb0;border:3px solid #9a6b3e;box-shadow:0 3px 8px #0002}.storyHeadText{min-width:0;flex:1}.eventBadge{display:inline-block;font-size:11px;font-weight:950;color:#fff;background:#9a692e;border-radius:999px;padding:3px 8px;margin-bottom:4px}.rewardPreview{font-size:12px;font-weight:900;background:#fff1bf;border-radius:9px;padding:7px 9px;margin:8px 0}.where{font-size:12px;color:#8b6745;font-weight:800}.story{line-height:1.7;background:#f5e7c7;border-radius:13px;padding:12px;margin:12px 0}.question{font-weight:950;margin:10px 0}.answers{display:grid;gap:8px}.answer{border:2px solid #dbc294;background:#fffdf6;border-radius:12px;padding:10px;text-align:left;font-weight:800;cursor:pointer;color:#49351f}.answer:hover{background:#f5e4bb}.feedback{display:none;margin-top:12px;border-radius:12px;padding:11px;line-height:1.6;font-weight:800}.feedback.ok{display:block;background:#e1efd1}.feedback.no{display:block;background:#f5d7c9}.continue{display:none;margin:12px auto 0;border:0;background:#775135;color:#fff;border-radius:11px;padding:10px 15px;font-weight:900;cursor:pointer}.summaryCard{text-align:center}.treasures{display:flex;justify-content:center;gap:16px;font-size:18px;margin:15px 0}.progress{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.prog{background:#f0dfbd;border-radius:12px;padding:10px}.prog b{font-size:22px;display:block}.closeTip{font-size:12px;opacity:.6;margin-top:14px}
-@media(max-width:650px){.miniMap{width:142px;height:94px;right:7px;top:7px}.loot{top:108px;right:7px}.brand small,.guide{display:none}.game{grid-template-rows:minmax(0,1fr) 112px}.panel{grid-template-columns:1fr;padding:8px}.characters{gap:5px}.pick{padding:5px;font-size:12px}.pick .ico{height:40px}.pick .portrait{transform:scale(.65)}.joy{width:96px;height:96px;left:12px;bottom:12px}.stick{width:42px;height:42px;left:24px;top:24px}.loot{font-size:11px}.hint{top:55px;max-width:78vw;text-align:center}.place span{font-size:10px}}
+@media(max-width:900px){
+.top{height:58px;padding:6px 8px;gap:6px;overflow:visible}
+.brand{font-size:15px;min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand small{display:none}
+.topBtns{flex:0 0 auto;gap:5px}
+.top button,.back{padding:8px 9px;font-size:12px;white-space:nowrap}
+.mapWrap{touch-action:none}
+}
+@media(max-width:650px){.miniMap{width:142px;height:94px;right:7px;top:7px}.loot{top:108px;right:7px}.guide{display:none}.game{grid-template-rows:minmax(0,1fr) 112px}.panel{grid-template-columns:1fr;padding:8px}.characters{gap:5px}.pick{padding:5px;font-size:12px}.pick .ico{height:40px}.pick .portrait{transform:scale(.65)}.joy{width:96px;height:96px;left:12px;bottom:12px}.stick{width:42px;height:42px;left:24px;top:24px}.loot{font-size:11px}.hint{top:55px;max-width:78vw;text-align:center}.place span{font-size:10px}}
 
 /* v5 illustrated Bible-map layer */
 .map{background:
@@ -513,14 +521,11 @@ geos.forEach(g=>{const e=document.createElement('div');e.className=g[0]==='label
 function addRoute(x1,y1,x2,y2){const e=document.createElement('div'),dx=x2-x1,dy=y2-y1;e.className='geo route';e.style.left=x1+'px';e.style.top=y1+'px';e.style.width=Math.hypot(dx,dy)+'px';e.style.transform='rotate('+Math.atan2(dy,dx)+'rad)';map.appendChild(e)}
 [[2200,1110,1780,230],[1780,230,1010,650],[1010,650,1000,760],[1000,760,430,1240],[430,1240,1000,760],[1000,760,980,955],[980,955,930,1090],[930,1090,1010,835],[930,1090,1000,760],[1000,760,1780,230],[1780,230,1210,570],[1210,570,1140,650],[1140,650,1175,705],[1175,705,1105,735],[1105,735,1000,760]].forEach(r=>addRoute(...r));
 places.forEach(p=>{const e=document.createElement('div');e.className='place'+(p.mountain?' mountain':'');e.dataset.place=p.id;e.id='place-'+p.id;e.style.left=p.x+'px';e.style.top=p.y+'px';e.innerHTML='<div class="dot">'+(p.mountain?'<i class="mountIcon"></i>':'')+'</div><span>'+p.name+'</span>';map.appendChild(e)});
-let camera={x:0,y:0};
+let camera={x:0,y:0},manualPan=false;
 const miniDot=document.getElementById('miniDot'),miniView=document.getElementById('miniView');
 function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
-function updateCamera(){
+function drawCamera(){
  const p=positions[active],vw=wrap.clientWidth,vh=wrap.clientHeight;
- const sx=p.x-camera.x,sy=p.y-camera.y,left=vw/3,right=vw*2/3,top=vh/3,bottom=vh*2/3;
- if(sx<left)camera.x=p.x-left;if(sx>right)camera.x=p.x-right;
- if(sy<top)camera.y=p.y-top;if(sy>bottom)camera.y=p.y-bottom;
  camera.x=clamp(camera.x,0,Math.max(0,WORLD.w-vw));camera.y=clamp(camera.y,0,Math.max(0,WORLD.h-vh));
  map.style.transform='translate('+(-camera.x)+'px,'+(-camera.y)+'px)';
  char.style.left=(p.x-camera.x)+'px';char.style.top=(p.y-camera.y)+'px';
@@ -528,14 +533,24 @@ function updateCamera(){
  miniView.style.left=(camera.x/WORLD.w*100)+'%';miniView.style.top=(camera.y/WORLD.h*100)+'%';
  miniView.style.width=(Math.min(vw,WORLD.w)/WORLD.w*100)+'%';miniView.style.height=(Math.min(vh,WORLD.h)/WORLD.h*100)+'%';
 }
+function updateCamera(){
+ const p=positions[active],vw=wrap.clientWidth,vh=wrap.clientHeight;
+ if(!manualPan){
+   const sx=p.x-camera.x,sy=p.y-camera.y,left=vw/3,right=vw*2/3,top=vh/3,bottom=vh*2/3;
+   if(sx<left)camera.x=p.x-left;if(sx>right)camera.x=p.x-right;
+   if(sy<top)camera.y=p.y-top;if(sy>bottom)camera.y=p.y-bottom;
+ }
+ drawCamera();
+}
 function updatePlaceStates(){
  document.querySelectorAll('.place').forEach(el=>{const id=el.dataset.place,related=events.filter(e=>e.char===active&&e.place===id),unfinished=related.filter(e=>!completed.has(e.id));el.classList.toggle('relevant',unfinished.length>0);el.classList.toggle('done',related.length>0&&unfinished.length===0);el.classList.remove('near')});
 }
 function render(){document.getElementById('charTag').textContent=charInfo[active].name;document.getElementById('charFace').innerHTML=portraitHTML(active);updateCamera();updatePlaceStates()}
-function switchChar(c){active=c;camera.x=positions[c].x-wrap.clientWidth/2;camera.y=positions[c].y-wrap.clientHeight/2;document.querySelectorAll('.pick').forEach(b=>b.classList.toggle('active',b.dataset.char===c));render();document.getElementById('hint').textContent='現在探索：'+charInfo[c].name+'｜發光的地點可能藏著他的事件'}
+function switchChar(c){active=c;manualPan=false;camera.x=positions[c].x-wrap.clientWidth/2;camera.y=positions[c].y-wrap.clientHeight/2;document.querySelectorAll('.pick').forEach(b=>b.classList.toggle('active',b.dataset.char===c));render();document.getElementById('hint').textContent='現在探索：'+charInfo[c].name+'｜發光的地點可能藏著他的事件'}
 document.querySelectorAll('.pick').forEach(b=>b.addEventListener('click',()=>switchChar(b.dataset.char)));window.addEventListener('resize',render);
 function tick(){
  if(!locked&&(moving.x||moving.y)){
+   manualPan=false;
    const p=positions[active],oldX=p.x,oldY=p.y;
    p.x=clamp(p.x+moving.x*4.2,24,WORLD.w-24);
    p.y=clamp(p.y+moving.y*4.2,35,WORLD.h-35);
@@ -563,6 +578,25 @@ window.addEventListener('mouseup',joyEnd);
 joy.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];if(t)startJoy(t.clientX,t.clientY)},{passive:false});
 joy.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];if(t)moveJoy(t.clientX,t.clientY)},{passive:false});
 joy.addEventListener('touchend',joyEnd,{passive:false});
+let panPointer=null,panLastX=0,panLastY=0,panMoved=false;
+function canPanTarget(t){return !t.closest('.joy,.miniMap,.loot,.panel,.top,.modal,.place')}
+wrap.addEventListener('pointerdown',e=>{
+  if(locked||e.pointerType==='mouse'||!canPanTarget(e.target))return;
+  panPointer=e.pointerId;panLastX=e.clientX;panLastY=e.clientY;panMoved=false;manualPan=true;
+  try{wrap.setPointerCapture(e.pointerId)}catch(_){}
+});
+wrap.addEventListener('pointermove',e=>{
+  if(e.pointerId!==panPointer)return;
+  const dx=e.clientX-panLastX,dy=e.clientY-panLastY;
+  if(Math.abs(dx)+Math.abs(dy)>2)panMoved=true;
+  camera.x-=dx;camera.y-=dy;panLastX=e.clientX;panLastY=e.clientY;
+  drawCamera();
+  e.preventDefault();
+});
+function endPan(e){if(e.pointerId===panPointer){panPointer=null}}
+wrap.addEventListener('pointerup',endPan);
+wrap.addEventListener('pointercancel',endPan);
+
 window.addEventListener('keydown',e=>{if(locked)return;const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(k))e.preventDefault();if(k==='ArrowLeft')moving.x=-1;if(k==='ArrowRight')moving.x=1;if(k==='ArrowUp')moving.y=-1;if(k==='ArrowDown')moving.y=1});
 window.addEventListener('keyup',e=>{if(e.key.includes('Arrow'))moving={x:0,y:0}});
 function checkTrigger(){document.querySelectorAll('.place').forEach(el=>el.classList.remove('near'));for(const p of places){const cp=positions[active],d=Math.hypot(cp.x-p.x,cp.y-p.y),el=document.getElementById('place-'+p.id);if(d<115&&events.some(e=>e.char===active&&e.place===p.id&&!completed.has(e.id)))el&&el.classList.add('near');if(d<58){const ev=events.find(e=>e.char===active&&e.place===p.id&&!completed.has(e.id));if(ev){openEvent(ev);break}}}}
