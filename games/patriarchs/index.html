@@ -269,8 +269,35 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 #eventScene>.sceneArt.fullEventArt{width:100%;height:auto;aspect-ratio:5/2;min-height:0;max-height:none;background:#efe0bf;border-radius:18px;overflow:hidden}
 .fullEventArt .eventArtwork{display:block;width:100%;height:100%;object-fit:contain;object-position:center center;background:#efe0bf}
 @media(max-width:700px){#eventScene>.sceneArt.fullEventArt{aspect-ratio:5/2}.fullEventArt .eventArtwork{object-fit:contain}}
+
+/* v39 ancient people / political influence layer */
+.ethnoRegions{
+  position:absolute;inset:0;z-index:5;pointer-events:none;user-select:none
+}
+.ethnoRegions svg{width:2400px;height:1500px;overflow:visible}
+.ethnoRegions .territory{
+  stroke:#765c3c;stroke-width:4;stroke-dasharray:18 14;stroke-linecap:round;
+  fill-opacity:.075;stroke-opacity:.56
+}
+.ethnoRegions .territory.egyptPeople{fill:#c9b56a}
+.ethnoRegions .territory.canaanKings{fill:#98a96d}
+.ethnoRegions .territory.chaldeans{fill:#c89c66}
+.ethnoRegions .territoryLabel{
+  font-family:Georgia,"Noto Serif TC","Microsoft JhengHei",serif;
+  font-weight:900;font-size:42px;letter-spacing:10px;
+  fill:#6d573d;fill-opacity:.27;
+  paint-order:stroke;stroke:#fff2ce;stroke-width:5px;stroke-opacity:.16
+}
+.ethnoRegions .territorySub{
+  font-family:"Noto Serif TC","Microsoft JhengHei",serif;
+  font-weight:800;font-size:18px;letter-spacing:4px;
+  fill:#6d573d;fill-opacity:.28
+}
+/* replace the old boxed region names with the softer political-area layer */
+.map>.region{display:none!important}
+
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.28.38</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.28.39</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
@@ -347,7 +374,19 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 <div class="landmarkBelt" style="left:700px;top:1010px;width:430px;height:160px"><svg viewBox="0 0 430 160"><g class="stone"><ellipse cx="55" cy="125" rx="42" ry="25"/><ellipse cx="115" cy="112" rx="48" ry="31"/><ellipse cx="185" cy="128" rx="44" ry="24"/></g><path class="tentA" d="M235 135l50-85 52 85Z"/><path class="tentB" d="M310 138l42-65 55 65Z"/><path d="M285 50v86M352 73v65" stroke="#684934" stroke-width="5"/></svg></div>
 <div class="landmarkBelt" style="left:1530px;top:115px;width:420px;height:155px"><svg viewBox="0 0 420 155"><g class="tree"><circle cx="40" cy="90" r="24"/><circle cx="92" cy="67" r="31"/><circle cx="148" cy="93" r="26"/><circle cx="330" cy="75" r="32"/><circle cx="382" cy="98" r="24"/></g><g class="trunk"><path d="M40 114v28M92 98v44M148 118v24M330 106v36M382 122v20"/></g><path class="field" d="M185 85l105-17 25 65-126 7Z"/><path d="M197 96l102-17M201 112l105-17M207 128l104-17" stroke="#e2cf7c" stroke-width="6"/></svg></div>
 <div class="landmarkBelt" style="left:1880px;top:870px;width:390px;height:150px"><svg viewBox="0 0 390 150"><path class="field" d="M25 75l125-28 42 82-151 9Z"/><path class="field" d="M190 64l120-20 49 79-151 12Z"/><path d="M40 87l130-29M47 105l132-29M207 76l128-22M216 95l128-22" stroke="#dfc875" stroke-width="7"/><g class="tree"><circle cx="160" cy="53" r="23"/><circle cx="350" cy="48" r="22"/></g><g class="trunk"><path d="M160 76v50M350 70v52"/></g></svg></div>
-<div class="landmarkBelt" style="left:300px;top:1190px;width:300px;height:145px"><svg viewBox="0 0 300 145"><path class="field" d="M15 65l100-30 34 91-122 8Z"/><path class="field" d="M145 55l90-24 45 86-116 14Z"/><path d="M28 78l104-31M34 98l105-31M160 67l97-25M170 88l96-25" stroke="#e4ce77" stroke-width="7"/><g class="tree"><circle cx="125" cy="45" r="21"/><circle cx="268" cy="48" r="20"/></g></svg></div></div><div class="water deadSea"></div><div class="river jordan"></div><div class="river nile"></div><div class="river euphrates"></div><div class="river tigris"></div><div class="seaLabel">地 中 海</div><div class="region egypt">埃及</div><div class="region canaan">迦南</div><div class="region meso">兩河流域</div>
+<div class="landmarkBelt" style="left:300px;top:1190px;width:300px;height:145px"><svg viewBox="0 0 300 145"><path class="field" d="M15 65l100-30 34 91-122 8Z"/><path class="field" d="M145 55l90-24 45 86-116 14Z"/><path d="M28 78l104-31M34 98l105-31M160 67l97-25M170 88l96-25" stroke="#e4ce77" stroke-width="7"/><g class="tree"><circle cx="125" cy="45" r="21"/><circle cx="268" cy="48" r="20"/></g></svg></div></div><div class="water deadSea"></div><div class="river jordan"></div><div class="river nile"></div><div class="river euphrates"></div><div class="river tigris"></div><div class="ethnoRegions" aria-hidden="true"><svg viewBox="0 0 2400 1500">
+<path class="territory egyptPeople" d="M120 930 C235 870 410 875 560 955 C655 1010 690 1135 660 1270 C635 1395 520 1470 330 1470 C185 1450 105 1345 92 1200 C82 1080 88 990 120 930 Z"/>
+<text class="territoryLabel" x="365" y="1195" text-anchor="middle">埃及人</text>
+<text class="territorySub" x="365" y="1232" text-anchor="middle">尼羅河流域</text>
+
+<path class="territory canaanKings" d="M690 420 C825 350 1045 350 1210 415 C1320 470 1380 610 1360 760 C1345 910 1265 1050 1125 1120 C970 1165 810 1110 725 985 C655 875 640 710 660 570 C668 505 676 458 690 420 Z"/>
+<text class="territoryLabel" x="1000" y="765" text-anchor="middle">迦南諸王</text>
+<text class="territorySub" x="1000" y="803" text-anchor="middle">城邦與諸族分布地</text>
+
+<path class="territory chaldeans" d="M1810 790 C1915 735 2090 750 2245 835 C2350 930 2370 1080 2325 1225 C2278 1360 2160 1430 1995 1385 C1870 1335 1800 1220 1785 1080 C1770 960 1775 865 1810 790 Z"/>
+<text class="territoryLabel" x="2080" y="1105" text-anchor="middle">迦勒底人</text>
+<text class="territorySub" x="2080" y="1143" text-anchor="middle">吾珥一帶</text>
+</svg></div><div class="seaLabel">地 中 海</div><div class="region egypt">埃及</div><div class="region canaan">迦南</div><div class="region meso">兩河流域</div>
 </div><div class="hint" id="hint">選一位族長，再用左下圓盤探索地圖</div><div class="compass" aria-hidden="true">✦<small>北</small></div><div class="char" id="char"><span class="tag" id="charTag">亞伯拉罕</span><span class="face" id="charFace"></span></div>
 <div class="miniMap" id="miniMap"><div class="miniSea"></div><div class="miniDead"></div><div class="miniJordan"></div><div class="miniNile"></div><div class="miniEuphrates"></div><div class="miniTigris"></div><div class="miniTitle">全區地圖</div><span class="miniSeaName">地中海</span><span class="miniLand egyptMini">埃及</span><span class="miniLand canaanMini">迦南</span><span class="miniLand" style="left:74%;top:16%">哈蘭</span><span class="miniLand" style="left:91%;top:74%">吾珥</span><div class="miniView" id="miniView"></div><div class="miniDot" id="miniDot"></div></div><div class="joy" id="joy"><div class="stick" id="stick"></div></div><div class="loot">⚪ <b id="pearl">0</b> 🔶 <b id="onyx">0</b> 🪙 <b id="gold">0</b></div></section>
 <section class="panel"><div class="characters">
