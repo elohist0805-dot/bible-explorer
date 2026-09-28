@@ -512,4 +512,8 @@ document.getElementById('continueBtn').onclick=closeEvent;document.getElementByI
 function showSummary(){locked=true;document.getElementById('sPearl').textContent=loot.pearl;document.getElementById('sOnyx').textContent=loot.onyx;document.getElementById('sGold').textContent=loot.gold;const chars=['abraham','isaac','jacob'];document.getElementById('summaryProgress').innerHTML=chars.map(c=>{const total=events.filter(e=>e.char===c).length,done=events.filter(e=>e.char===c&&completed.has(e.id)).length;return '<div class="prog"><span>'+charInfo[c].name+'</span><b>'+done+' / '+total+'</b><small>事件</small></div>'}).join('');document.getElementById('summaryText').textContent='已探索 '+completed.size+' 個事件，還有 '+(events.length-completed.size)+' 個事件等待發現。';document.getElementById('summaryModal').classList.add('show')}
 document.getElementById('summaryBtn').onclick=showSummary;document.getElementById('summaryModal').addEventListener('click',e=>{if(e.target===e.currentTarget){e.currentTarget.classList.remove('show');locked=false}});
 try{camera.x=positions[active].x-wrap.clientWidth/2;camera.y=positions[active].y-wrap.clientHeight/2;render();document.body.dataset.gameReady='true'}catch(err){console.error('Patriarchs init failed:',err);document.getElementById('hint').textContent='遊戲初始化失敗，請重新整理頁面';}
-</script></body></html>
+</script>
+<script>
+(()=>{const url='/.netlify/functions/visit-count';if(sessionStorage.getItem('bibleExplorerVisited'))return;fetch(url,{method:'POST',cache:'no-store'}).then(r=>{if(r.ok)sessionStorage.setItem('bibleExplorerVisited','1')}).catch(()=>{})})();
+</script>
+</body></html>
