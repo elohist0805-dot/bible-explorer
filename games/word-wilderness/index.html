@@ -24,7 +24,7 @@ button,input{font:inherit}
 .titlebox{position:absolute;z-index:5;left:16px;top:16px;max-width:min(510px,76vw);background:#fff9e9dd;border:1px solid #d6bd84;border-radius:18px;padding:12px 15px;box-shadow:0 10px 30px #50351e1c}
 .titlebox h1{margin:0;font-family:Georgia,"Noto Serif TC",serif;font-size:clamp(24px,4vw,38px)}
 .titlebox p{margin:5px 0 0;font-size:13px;line-height:1.55;color:#6b563d}.titlebox.hide{opacity:.22;transform:scale(.94);transform-origin:left top;transition:.3s}
-.fallfield{position:absolute;inset:0 0 126px;overflow:hidden;z-index:3}.lanes{position:absolute;inset:0 0 126px;z-index:2;pointer-events:none;display:grid;grid-template-columns:repeat(16,1fr);opacity:.28}.lane{border-left:1px dashed #7e603f55}.lane:first-child{border-left:0}.lane:after{content:"";position:absolute;bottom:0;width:1px;height:100%;background:linear-gradient(180deg,transparent,#7e603f22)}
+.fallfield{position:absolute;inset:0 0 126px;overflow:hidden;z-index:3}.lanes{position:absolute;inset:0 0 126px;z-index:2;pointer-events:none;display:grid;grid-template-columns:repeat(var(--lane-count,16),1fr);opacity:.28}.lane{border-left:1px dashed #7e603f55}.lane:first-child{border-left:0}.lane:after{content:"";position:absolute;bottom:0;width:1px;height:100%;background:linear-gradient(180deg,transparent,#7e603f22)}
 .stackfield{position:absolute;left:0;right:0;bottom:126px;height:235px;pointer-events:none;z-index:4}
 .word{position:absolute;top:0;left:0;width:64px;height:64px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#fffdf2,#f0d99e);border:2px solid #8d6737;box-shadow:0 8px 18px #4f34292d, inset 0 0 0 3px #fff7d8;color:#3f2d1d;font-family:"Noto Serif TC","PMingLiU",serif;font-size:36px;font-weight:900;will-change:transform;user-select:none}
 .word:before,.word:after{content:"";position:absolute;top:9px;bottom:9px;width:6px;border-radius:6px;background:#91683d}.word:before{left:-5px}.word:after{right:-5px}
@@ -36,7 +36,41 @@ button,input{font:inherit}
 .inputrow{display:flex;align-items:center;gap:8px}.inputWrap{position:relative;flex:1}.typebox{width:100%;border:2px solid #efd18b;background:#fffdf5;color:#402d1f;border-radius:14px;padding:12px 14px;font-size:20px;outline:none;box-shadow:inset 0 2px 0 #00000009}.typebox:focus{border-color:#ffd978;box-shadow:0 0 0 4px #ffd97833}.hint{font-size:11px;color:#ead7b8;line-height:1.45;white-space:nowrap}
 .toast{position:absolute;z-index:30;left:50%;top:24%;transform:translate(-50%,-50%) scale(.9);background:#3f2d1fe8;color:#fff8de;border:1px solid #e6c67d;border-radius:15px;padding:11px 16px;opacity:0;pointer-events:none;font-weight:900;transition:.18s}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .overlay{position:absolute;z-index:50;inset:0;background:#2d1d12c7;display:grid;place-items:center;padding:18px}.panel{width:min(560px,94vw);background:#fff8e8;border:2px solid #caa566;border-radius:24px;box-shadow:0 28px 80px #0007;padding:24px;text-align:center}.panel h2{font-family:Georgia,"Noto Serif TC",serif;font-size:34px;margin:0 0 8px}.panel p{line-height:1.7;color:#6b563d}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.rule{background:#f3e4bf;border-radius:14px;padding:10px;font-size:12px;line-height:1.5}.rule b{display:block;font-size:22px}.start{border:0;border-radius:14px;background:#7a5636;color:#fff;font-weight:950;padding:13px 22px;font-size:18px;cursor:pointer;box-shadow:0 8px 18px #5d3e2744}.smallbtn{margin-left:8px;border:1px solid #a98755;border-radius:12px;background:#fffaf0;color:#5c432c;font-weight:900;padding:11px 15px;cursor:pointer}.scoregrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}.scoregrid div{background:#f3e4bf;border-radius:12px;padding:10px}.scoregrid b{display:block;font-size:24px}.learned{margin-top:10px;text-align:left;background:#fffdf5;border:1px solid #e0c993;border-radius:14px;padding:10px;font-size:12px;line-height:1.7;max-height:110px;overflow:auto}.hidden{display:none!important}
-@media(max-width:700px){.topbar{padding:8px}.brand{display:none}.chip{min-width:60px;padding:5px}.chip b{font-size:16px}.titlebox{top:10px;left:10px;max-width:86vw}.titlebox p{font-size:12px}.tabernacleAsset{right:-5%;bottom:16%;width:min(55vw,390px)}.mosesAsset{left:-2%;bottom:15.5%;height:min(27vh,240px)}.fallfield{bottom:140px}.stackfield{bottom:140px;height:212px}.word{width:58px;height:58px;font-size:32px}.bottom{padding:8px}.inputrow{display:block}.hint{margin-top:6px;white-space:normal}.rules{grid-template-columns:1fr}.panel{padding:18px}.panel h2{font-size:29px}}
+@media(max-width:1180px),(pointer:coarse){
+html,body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.shell{height:auto;min-height:100dvh;display:block}
+.topbar{position:sticky;top:0;padding:8px;z-index:80}
+.brand{display:none}
+.chip{min-width:58px;padding:5px 7px}
+.chip b{font-size:16px}
+.game{min-height:820px;height:auto;overflow:hidden;position:relative}
+.titlebox{top:10px;left:10px;max-width:82vw}
+.titlebox p{font-size:12px}
+.tabernacleAsset{right:-4%;bottom:150px;width:min(58vw,430px)}
+.mosesAsset{left:-2%;bottom:150px;height:min(30vh,260px)}
+.fallfield{bottom:154px}
+.lanes{bottom:154px}
+.stackfield{bottom:154px;height:235px}
+.word{width:52px;height:52px;font-size:29px;border-radius:12px}
+.bottom{position:absolute;padding:8px}
+.inputrow{display:block}
+.hint{margin-top:6px;white-space:normal}
+.rules{grid-template-columns:1fr}
+.panel{padding:18px}
+.panel h2{font-size:29px}
+.overlay{position:absolute}
+}
+@media(max-width:700px){
+.game{min-height:760px}
+.titlebox{max-width:86vw}
+.tabernacleAsset{right:-8%;bottom:145px;width:min(70vw,360px)}
+.mosesAsset{left:-6%;bottom:145px;height:min(26vh,220px)}
+.word{width:46px;height:46px;font-size:26px}
+.stackfield{height:210px}
+.topstats{gap:4px}
+.chip{min-width:52px}
+.back{padding:8px 9px}
+}
 </style>
 </head>
 <body>
@@ -97,18 +131,20 @@ const BANK=[
 ['曠','曠野'],['幔','會幕的幔子'],['膏','膏油／膏立'],['櫃','約櫃'],['燔','燔祭'],['壇','祭壇'],['杖','摩西的杖'],['荊','荊棘'],['棘','荊棘'],['羔','逾越節羊羔'],['酵','無酵餅'],['蘸','蘸血'],['袍','祭司袍'],['踵','腳跟／後裔意象'],['俯','俯伏'],['匐','俯伏相關用字'],['磐','磐石'],['莢','皂莢木'],['橛','帳幕的橛子'],['鉤','金鉤／銀鉤'],['鏟','壇上的器具'],['盂','器皿'],['爵','杯爵／器皿'],['鬚','鬍鬚'],['鬢','兩鬢'],['篩','篩麥子'],['肋','肋骨'],['髓','骨髓'],['腓','腓利門等譯名用字'],['轄','車轄'],['鞍','驢鞍'],['褥','褥子'],['竿','竿子'],['皂','皂莢木'],['甕','甕器'],['鐃','鐃鈸'],['鈸','鐃鈸'],['磯','海邊磯石'],['鴿','鴿子'],['雛','雛鴿'],['鵪','鵪鶉'],['鶉','鵪鶉'],['蝗','蝗蟲'],['虻','虻蟲'],['疥','疥瘡'],['癬','癬疥'],['瘡','災病與醫治'],['骸','骸骨'],['轅','車轅'],['軛','負軛'],['錨','船錨'],['艙','船艙'],['篷','船篷'],['縵','布幔相關字'],['纛','旗幟古字'],['簸','簸箕'],['箕','簸箕'],['糠','糠秕'],['秕','糠秕'],['穗','麥穗'],['鐮','鐮刀'],['鋤','鋤頭'],['葡','葡萄'],['萄','葡萄'],['榨','酒榨'],['窖','酒窖'],['橄','橄欖'],['欖','橄欖'],['檀','檀香木'],['翡','翡翠']
 ];
 const els={field:document.getElementById('fallfield'),stack:document.getElementById('stackfield'),input:document.getElementById('typebox'),score:document.getElementById('score'),combo:document.getElementById('combo'),time:document.getElementById('time'),maxPile:document.getElementById('maxPile'),piletext:document.getElementById('piletext'),pilemeter:document.getElementById('pilemeter'),toast:document.getElementById('toast'),title:document.getElementById('titlebox'),start:document.getElementById('startOverlay'),end:document.getElementById('endOverlay')};
-const STACK_COLS=16, SAFE_STACK_LEVEL=3, GAMEOVER_STACK_LEVEL=4;
+const DESKTOP_STACK_COLS=16, MOBILE_STACK_COLS=10, SAFE_STACK_LEVEL=3, GAMEOVER_STACK_LEVEL=4;
+function preferredStackCols(){return (window.matchMedia("(pointer: coarse)").matches||window.innerWidth<=1180)?MOBILE_STACK_COLS:DESKTOP_STACK_COLS}
 let state,raf,last,spawnClock,isComposing=false,toastTimer;
-function reset(){cancelAnimationFrame(raf);state={running:false,falling:[],stacks:Array.from({length:STACK_COLS},()=>[]),score:0,combo:0,maxCombo:0,hits:0,missInputs:0,missedLandings:0,startAt:0,elapsed:0,seen:new Map(),lastPick:-1};els.field.innerHTML='';els.stack.innerHTML='';els.score.textContent='0';els.combo.textContent='0';els.time.textContent='0:00';els.maxPile.textContent='0';els.input.value='';updatePileMeter();}
+function applyLaneLayout(cols){document.getElementById('game').style.setProperty('--lane-count',cols);document.querySelectorAll('#lanes .lane').forEach((el,i)=>el.style.display=i<cols?'block':'none')}
+function reset(){cancelAnimationFrame(raf);const cols=preferredStackCols();state={running:false,cols,falling:[],stacks:Array.from({length:cols},()=>[]),score:0,combo:0,maxCombo:0,hits:0,missInputs:0,missedLandings:0,startAt:0,elapsed:0,seen:new Map(),lastPick:-1};applyLaneLayout(cols);els.field.innerHTML='';els.stack.innerHTML='';els.score.textContent='0';els.combo.textContent='0';els.time.textContent='0:00';els.maxPile.textContent='0';els.input.value='';updatePileMeter();}
 function startGame(){reset();state.running=true;state.startAt=performance.now();last=state.startAt;spawnClock=1050;els.start.classList.add('hidden');els.end.classList.add('hidden');els.title.classList.add('hide');els.input.focus();spawn();raf=requestAnimationFrame(loop)}
 function pickWord(){let idx=Math.floor(Math.random()*BANK.length);if(BANK.length>1&&idx===state.lastPick)idx=(idx+1)%BANK.length;state.lastPick=idx;return BANK[idx]}
 function wordSize(){return window.innerWidth<=700?58:64}
 function stackAreaHeight(){return els.stack.clientHeight}
-function colWidth(){return Math.max(1,els.stack.clientWidth/STACK_COLS)}
+function colWidth(){return Math.max(1,els.stack.clientWidth/state.cols)}
 function laneX(col){const size=wordSize();return Math.max(4,Math.min(els.field.clientWidth-size-4,col*colWidth()+(colWidth()-size)/2))}
-function spawn(){if(!state.running)return;const [char,label]=pickWord();const node=document.createElement('div');node.className='word';node.textContent=char;const col=Math.floor(Math.random()*STACK_COLS);const x=laneX(col);const obj={char,label,node,col,x,y:-74,speed:24+Math.random()*10+Math.min(30,state.elapsed*.34),mode:'falling'};node.style.transform=`translate(${x}px,${obj.y}px)`;els.field.appendChild(node);state.falling.push(obj)}
+function spawn(){if(!state.running)return;const [char,label]=pickWord();const node=document.createElement('div');node.className='word';node.textContent=char;const col=Math.floor(Math.random()*state.cols);const x=laneX(col);const obj={char,label,node,col,x,y:-74,speed:24+Math.random()*10+Math.min(30,state.elapsed*.34),mode:'falling'};node.style.transform=`translate(${x}px,${obj.y}px)`;els.field.appendChild(node);state.falling.push(obj)}
 function loop(now){if(!state.running)return;const dt=Math.min(.05,(now-last)/1000);last=now;state.elapsed=(now-state.startAt)/1000;spawnClock-=dt*1000;const interval=Math.max(760,1850-state.elapsed*5.2);if(spawnClock<=0){spawn();spawnClock=interval*(.85+Math.random()*.3)}const floor=els.field.clientHeight-wordSize()-6;for(let i=state.falling.length-1;i>=0;i--){const w=state.falling[i];w.y+=w.speed*dt;w.node.style.setProperty('--pos',`translate(${w.x}px,${w.y}px)`);w.node.style.transform=`translate(${w.x}px,${w.y}px)`;w.node.classList.toggle('danger',w.y>floor-120);if(w.y>=floor){land(i);if(!state.running)return}}updateTime();raf=requestAnimationFrame(loop)}
-function nearestCol(x){const center=x+wordSize()/2;return Math.max(0,Math.min(STACK_COLS-1,Math.floor(center/colWidth())))}
+function nearestCol(x){const center=x+wordSize()/2;return Math.max(0,Math.min(state.cols-1,Math.floor(center/colWidth())))}
 function repositionStack(col){const size=wordSize();const gap=6;const pile=state.stacks[col];const baseY=stackAreaHeight()-size-4;const x=laneX(col);pile.forEach((w,idx)=>{w.mode='landed';w.col=col;w.level=idx+1;w.landX=x;w.node.classList.add('landed');w.node.classList.remove('danger');w.node.style.left=`${x}px`;w.node.style.top=`${baseY-idx*(size-gap)}px`;w.node.style.transform='none';w.node.style.setProperty('--pos','translate(0,0)');});}
 function land(i){const w=state.falling.splice(i,1)[0];const col=w.col;w.landX=laneX(col);state.missedLandings++;w.node.classList.remove('danger');w.node.classList.add('landed');w.node.style.transform='none';w.node.style.left=`${w.landX}px`;w.node.style.top='0px';if(w.node.parentNode!==els.stack){els.stack.appendChild(w.node)}state.stacks[col].push(w);requestAnimationFrame(()=>repositionStack(col));state.combo=0;els.combo.textContent='0';showToast(`${w.char} 落地了｜${w.label}`,false);updatePileMeter();if(state.stacks[col].length>=GAMEOVER_STACK_LEVEL)gameOver()}
 function updatePileMeter(){const maxPile=Math.max(0,...state.stacks.map(s=>s.length));els.maxPile.textContent=String(maxPile);els.piletext.textContent=`最高堆疊 ${maxPile} 層｜第 3 層仍安全，第 4 層出現第 1 個字時結束`;[...els.pilemeter.children].forEach((el,i)=>el.classList.toggle('on',i<maxPile));}
@@ -121,7 +157,7 @@ function hitFalling(i){const w=state.falling.splice(i,1)[0];award(w);removeWithB
 function hitLanded(col,idx){const pile=state.stacks[col];const w=pile.splice(idx,1)[0];state.missedLandings=Math.max(0,state.missedLandings-1);award(w);removeWithBurst(w);setTimeout(()=>{if(pile.length&&idx===0&&Number.isFinite(w.landX))pile[0].landX=w.landX;repositionStack(col);updatePileMeter();},20)}
 function showToast(msg,good){clearTimeout(toastTimer);els.toast.textContent=msg;els.toast.style.background=good?'#536f3eea':'#5b3829ea';els.toast.classList.add('show');toastTimer=setTimeout(()=>els.toast.classList.remove('show'),1050)}
 function gameOver(){state.running=false;cancelAnimationFrame(raf);const attempts=state.hits+state.missInputs+state.missedLandings;const acc=attempts?Math.round(state.hits/attempts*100):0;document.getElementById('finalScore').textContent=state.score.toLocaleString('zh-TW');document.getElementById('finalHit').textContent=state.hits;document.getElementById('finalAcc').textContent=acc+'%';document.getElementById('finalCombo').textContent=state.maxCombo;document.getElementById('endLine').textContent=`某一堆文字已出現第 4 層，超過會幕高度。你在曠野中堅持了 ${els.time.textContent}，共收下 ${state.hits} 個文字。`;const learned=document.getElementById('learned');learned.innerHTML=state.seen.size?'<b>本局遇見的聖經用字：</b><br>'+[...state.seen].map(([c,l])=>`<b>${c}</b>・${l}`).join('　'):'這次還沒來得及收下文字，再試一次吧！';els.end.classList.remove('hidden');els.title.classList.remove('hide')}
-function clampAndReposition(){state?.falling?.forEach(w=>{w.x=laneX(w.col);w.node.style.transform=`translate(${w.x}px,${w.y}px)`});state?.stacks?.forEach((_,col)=>repositionStack(col))}
+function clampAndReposition(){if(state&&!state.running){const cols=preferredStackCols();if(cols!==state.cols){state.cols=cols;state.stacks=Array.from({length:cols},()=>[]);applyLaneLayout(cols)}}state?.falling?.forEach(w=>{w.x=laneX(w.col);w.node.style.transform=`translate(${w.x}px,${w.y}px)`});state?.stacks?.forEach((_,col)=>repositionStack(col))}
 els.input.addEventListener('compositionstart',()=>isComposing=true);els.input.addEventListener('compositionend',()=>{isComposing=false;setTimeout(processInput,0)});els.input.addEventListener('input',()=>{if(!isComposing)setTimeout(processInput,0)});els.input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!isComposing){e.preventDefault();processInput()}});document.getElementById('startBtn').onclick=startGame;document.getElementById('againBtn').onclick=startGame;window.addEventListener('resize',clampAndReposition);loadSceneAssets();reset();
 </script>
 </body>
