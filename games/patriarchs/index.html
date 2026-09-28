@@ -320,7 +320,7 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 }
 
 </style></head><body>
-<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.28.40</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
+<header class="top"><div class="brand">🗺️ 族長足跡 <small>亞伯拉罕・以撒・雅各｜v2026.09.28.41</small></div><div class="topBtns"><button class="summaryBtn" id="summaryBtn">🏆 總結</button><a class="back" href="../../">回入口</a></div></header>
 <main class="game"><section class="mapWrap" id="mapWrap"><div class="map" id="map">
 <div class="water medSea"></div><div class="macroTerrain"><svg viewBox="0 0 2400 1500" aria-hidden="true">
 <!-- Egypt / Nile valley -->
@@ -623,7 +623,17 @@ function showSummary(){locked=true;document.getElementById('sPearl').textContent
 document.getElementById('summaryBtn').onclick=showSummary;document.getElementById('summaryModal').addEventListener('click',e=>{if(e.target===e.currentTarget){e.currentTarget.classList.remove('show');locked=false}});
 try{camera.x=positions[active].x-wrap.clientWidth/2;camera.y=positions[active].y-wrap.clientHeight/2;updateMileageUI(true);render();document.body.dataset.gameReady='true'}catch(err){console.error('Patriarchs init failed:',err);document.getElementById('hint').textContent='遊戲初始化失敗，請重新整理頁面';}
 </script>
+
+
 <script>
-(()=>{const url='https://dulcet-cassata-12d7ef.netlify.app/.netlify/functions/visit-count';if(sessionStorage.getItem('bibleExplorerVisited'))return;fetch(url,{method:'POST',cache:'no-store'}).then(r=>{if(r.ok)sessionStorage.setItem('bibleExplorerVisited','1')}).catch(()=>{})})();
+(async()=>{
+  const url='https://counterapi.com/api/elohist0805-dot.github.io/visit/bible-explorer-global';
+  const key='bibleExplorerCounterApiVisited';
+  if(sessionStorage.getItem(key))return;
+  try{
+    const r=await fetch(url,{cache:'no-store',mode:'cors'});
+    if(r.ok)sessionStorage.setItem(key,'1');
+  }catch(_){}
+})();
 </script>
 </body></html>
