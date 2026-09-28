@@ -19,17 +19,12 @@ button,input{font:inherit}
 .game{position:relative;min-height:0;overflow:hidden}
 .skyGlow{position:absolute;inset:0;background:linear-gradient(180deg,transparent 0 55%,#b2834050 75%,#80552d80 100%);pointer-events:none}
 .dunes{position:absolute;left:-5%;right:-5%;bottom:0;height:34%;background:radial-gradient(80% 55% at 20% 100%,#d7b36c 0 60%,transparent 61%),radial-gradient(85% 50% at 72% 100%,#c89f5c 0 58%,transparent 59%);opacity:.96;pointer-events:none}
-.tabernacle{position:absolute;right:5%;bottom:15%;width:220px;height:210px;opacity:.93;filter:drop-shadow(0 14px 18px #4f321644);pointer-events:none;z-index:1}
-.tabernacle .base{position:absolute;left:26px;right:26px;bottom:0;height:118px;border:4px solid #5a3a25;border-radius:8px;background:linear-gradient(180deg,#f7eed2 0 72%,#d9c292 72% 100%)}
-.tabernacle .base:before{content:"";position:absolute;inset:8px;background:repeating-linear-gradient(90deg,#efe0bd 0 15px,#dcc08f 15px 30px);opacity:.9;border-radius:3px}
-.tabernacle .door{position:absolute;left:calc(50% - 22px);bottom:0;width:44px;height:82px;background:linear-gradient(180deg,#5c78a3 0 33%,#f1e2b5 33% 66%,#b75b49 66% 100%);border:3px solid #5a3a25;border-bottom:0;border-radius:8px 8px 0 0}
-.tabernacle .roof{position:absolute;left:14px;right:14px;bottom:112px;height:72px;background:linear-gradient(180deg,#b3654b 0 18%,#e7dcc0 18% 58%,#8c5d3f 58% 100%);clip-path:polygon(10% 100%,0 24%,14% 0,86% 0,100% 24%,90% 100%);border:4px solid #5a3a25}
-.tabernacle .pole{position:absolute;bottom:0;width:9px;height:138px;background:#72533a;border-radius:4px}.tabernacle .pole.left{left:18px}.tabernacle .pole.right{right:18px}
-.tabernacle .label{position:absolute;left:50%;bottom:-22px;transform:translateX(-50%);font-weight:900;font-size:12px;color:#fff7dd;background:#6d4a2f;border:1px solid #e2bf7c;border-radius:999px;padding:4px 10px;box-shadow:0 6px 10px #00000020}
+.tabernacleAsset{position:absolute;right:3.5%;bottom:14.5%;width:min(42vw,560px);height:auto;z-index:1;pointer-events:none;filter:drop-shadow(0 12px 14px #4f32163a)}
+.mosesAsset{position:absolute;left:2.2%;bottom:14.2%;height:min(34vh,330px);width:auto;z-index:2;pointer-events:none;filter:drop-shadow(0 10px 12px #4f321633)}
 .titlebox{position:absolute;z-index:5;left:16px;top:16px;max-width:min(510px,76vw);background:#fff9e9dd;border:1px solid #d6bd84;border-radius:18px;padding:12px 15px;box-shadow:0 10px 30px #50351e1c}
 .titlebox h1{margin:0;font-family:Georgia,"Noto Serif TC",serif;font-size:clamp(24px,4vw,38px)}
 .titlebox p{margin:5px 0 0;font-size:13px;line-height:1.55;color:#6b563d}.titlebox.hide{opacity:.22;transform:scale(.94);transform-origin:left top;transition:.3s}
-.fallfield{position:absolute;inset:0 0 126px;overflow:hidden;z-index:3}.lanes{position:absolute;inset:0 0 126px;z-index:2;pointer-events:none;display:grid;grid-template-columns:repeat(8,1fr);opacity:.28}.lane{border-left:1px dashed #7e603f55}.lane:first-child{border-left:0}.lane:after{content:"";position:absolute;bottom:0;width:1px;height:100%;background:linear-gradient(180deg,transparent,#7e603f22)}
+.fallfield{position:absolute;inset:0 0 126px;overflow:hidden;z-index:3}.lanes{position:absolute;inset:0 0 126px;z-index:2;pointer-events:none;display:grid;grid-template-columns:repeat(16,1fr);opacity:.28}.lane{border-left:1px dashed #7e603f55}.lane:first-child{border-left:0}.lane:after{content:"";position:absolute;bottom:0;width:1px;height:100%;background:linear-gradient(180deg,transparent,#7e603f22)}
 .stackfield{position:absolute;left:0;right:0;bottom:126px;height:235px;pointer-events:none;z-index:4}
 .word{position:absolute;top:0;left:0;width:64px;height:64px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#fffdf2,#f0d99e);border:2px solid #8d6737;box-shadow:0 8px 18px #4f34292d, inset 0 0 0 3px #fff7d8;color:#3f2d1d;font-family:"Noto Serif TC","PMingLiU",serif;font-size:36px;font-weight:900;will-change:transform;user-select:none}
 .word:before,.word:after{content:"";position:absolute;top:9px;bottom:9px;width:6px;border-radius:6px;background:#91683d}.word:before{left:-5px}.word:after{right:-5px}
@@ -41,7 +36,7 @@ button,input{font:inherit}
 .inputrow{display:flex;align-items:center;gap:8px}.inputWrap{position:relative;flex:1}.typebox{width:100%;border:2px solid #efd18b;background:#fffdf5;color:#402d1f;border-radius:14px;padding:12px 14px;font-size:20px;outline:none;box-shadow:inset 0 2px 0 #00000009}.typebox:focus{border-color:#ffd978;box-shadow:0 0 0 4px #ffd97833}.hint{font-size:11px;color:#ead7b8;line-height:1.45;white-space:nowrap}
 .toast{position:absolute;z-index:30;left:50%;top:24%;transform:translate(-50%,-50%) scale(.9);background:#3f2d1fe8;color:#fff8de;border:1px solid #e6c67d;border-radius:15px;padding:11px 16px;opacity:0;pointer-events:none;font-weight:900;transition:.18s}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .overlay{position:absolute;z-index:50;inset:0;background:#2d1d12c7;display:grid;place-items:center;padding:18px}.panel{width:min(560px,94vw);background:#fff8e8;border:2px solid #caa566;border-radius:24px;box-shadow:0 28px 80px #0007;padding:24px;text-align:center}.panel h2{font-family:Georgia,"Noto Serif TC",serif;font-size:34px;margin:0 0 8px}.panel p{line-height:1.7;color:#6b563d}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.rule{background:#f3e4bf;border-radius:14px;padding:10px;font-size:12px;line-height:1.5}.rule b{display:block;font-size:22px}.start{border:0;border-radius:14px;background:#7a5636;color:#fff;font-weight:950;padding:13px 22px;font-size:18px;cursor:pointer;box-shadow:0 8px 18px #5d3e2744}.smallbtn{margin-left:8px;border:1px solid #a98755;border-radius:12px;background:#fffaf0;color:#5c432c;font-weight:900;padding:11px 15px;cursor:pointer}.scoregrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}.scoregrid div{background:#f3e4bf;border-radius:12px;padding:10px}.scoregrid b{display:block;font-size:24px}.learned{margin-top:10px;text-align:left;background:#fffdf5;border:1px solid #e0c993;border-radius:14px;padding:10px;font-size:12px;line-height:1.7;max-height:110px;overflow:auto}.hidden{display:none!important}
-@media(max-width:700px){.topbar{padding:8px}.brand{display:none}.chip{min-width:60px;padding:5px}.chip b{font-size:16px}.titlebox{top:10px;left:10px;max-width:86vw}.titlebox p{font-size:12px}.tabernacle{right:-18px;bottom:16%;transform:scale(.8)}.fallfield{bottom:140px}.stackfield{bottom:140px;height:212px}.word{width:58px;height:58px;font-size:32px}.bottom{padding:8px}.inputrow{display:block}.hint{margin-top:6px;white-space:normal}.rules{grid-template-columns:1fr}.panel{padding:18px}.panel h2{font-size:29px}}
+@media(max-width:700px){.topbar{padding:8px}.brand{display:none}.chip{min-width:60px;padding:5px}.chip b{font-size:16px}.titlebox{top:10px;left:10px;max-width:86vw}.titlebox p{font-size:12px}.tabernacleAsset{right:-5%;bottom:16%;width:min(55vw,390px)}.mosesAsset{left:-2%;bottom:15.5%;height:min(27vh,240px)}.fallfield{bottom:140px}.stackfield{bottom:140px;height:212px}.word{width:58px;height:58px;font-size:32px}.bottom{padding:8px}.inputrow{display:block}.hint{margin-top:6px;white-space:normal}.rules{grid-template-columns:1fr}.panel{padding:18px}.panel h2{font-size:29px}}
 </style>
 </head>
 <body>
@@ -59,16 +54,10 @@ button,input{font:inherit}
   <main class="game" id="game">
     <div class="skyGlow"></div>
     <div class="dunes"></div>
-    <div class="tabernacle" aria-hidden="true">
-      <div class="pole left"></div>
-      <div class="pole right"></div>
-      <div class="roof"></div>
-      <div class="base"></div>
-      <div class="door"></div>
-      <div class="label">會幕</div>
-    </div>
+    <img id="tabernacleAsset" class="tabernacleAsset" alt="" aria-hidden="true">
+    <img id="mosesAsset" class="mosesAsset" alt="" aria-hidden="true">
     <div class="titlebox" id="titlebox"><h1>文字曠野</h1><p>冷僻字從天空落下；落地後不會消失，而會堆疊在曠野中。請用你熟悉的中文輸入法把字一一清掉，別讓堆疊高過會幕。</p></div>
-    <div class="lanes" id="lanes" aria-hidden="true"><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div></div><div class="fallfield" id="fallfield"></div>
+    <div class="lanes" id="lanes" aria-hidden="true"><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div><div class="lane"></div></div><div class="fallfield" id="fallfield"></div>
     <div class="stackfield" id="stackfield"></div>
     <div class="toast" id="toast"></div>
     <div class="bottom">
@@ -96,11 +85,19 @@ button,input{font:inherit}
   </main>
 </div>
 <script>
+const TABERNACLE_PARTS=[];
+const MOSES_PARTS=[];
+function loadSceneAssets(){
+  const tab=document.getElementById('tabernacleAsset');
+  const mos=document.getElementById('mosesAsset');
+  if(TABERNACLE_PARTS.length) tab.src='data:image/webp;base64,'+TABERNACLE_PARTS.join('');
+  if(MOSES_PARTS.length) mos.src='data:image/webp;base64,'+MOSES_PARTS.join('');
+}
 const BANK=[
 ['曠','曠野'],['幔','會幕的幔子'],['膏','膏油／膏立'],['櫃','約櫃'],['燔','燔祭'],['壇','祭壇'],['杖','摩西的杖'],['荊','荊棘'],['棘','荊棘'],['羔','逾越節羊羔'],['酵','無酵餅'],['蘸','蘸血'],['袍','祭司袍'],['踵','腳跟／後裔意象'],['俯','俯伏'],['匐','俯伏相關用字'],['磐','磐石'],['莢','皂莢木'],['橛','帳幕的橛子'],['鉤','金鉤／銀鉤'],['鏟','壇上的器具'],['盂','器皿'],['爵','杯爵／器皿'],['鬚','鬍鬚'],['鬢','兩鬢'],['篩','篩麥子'],['肋','肋骨'],['髓','骨髓'],['腓','腓利門等譯名用字'],['轄','車轄'],['鞍','驢鞍'],['褥','褥子'],['竿','竿子'],['皂','皂莢木'],['甕','甕器'],['鐃','鐃鈸'],['鈸','鐃鈸'],['磯','海邊磯石'],['鴿','鴿子'],['雛','雛鴿'],['鵪','鵪鶉'],['鶉','鵪鶉'],['蝗','蝗蟲'],['虻','虻蟲'],['疥','疥瘡'],['癬','癬疥'],['瘡','災病與醫治'],['骸','骸骨'],['轅','車轅'],['軛','負軛'],['錨','船錨'],['艙','船艙'],['篷','船篷'],['縵','布幔相關字'],['纛','旗幟古字'],['簸','簸箕'],['箕','簸箕'],['糠','糠秕'],['秕','糠秕'],['穗','麥穗'],['鐮','鐮刀'],['鋤','鋤頭'],['葡','葡萄'],['萄','葡萄'],['榨','酒榨'],['窖','酒窖'],['橄','橄欖'],['欖','橄欖'],['檀','檀香木'],['翡','翡翠']
 ];
 const els={field:document.getElementById('fallfield'),stack:document.getElementById('stackfield'),input:document.getElementById('typebox'),score:document.getElementById('score'),combo:document.getElementById('combo'),time:document.getElementById('time'),maxPile:document.getElementById('maxPile'),piletext:document.getElementById('piletext'),pilemeter:document.getElementById('pilemeter'),toast:document.getElementById('toast'),title:document.getElementById('titlebox'),start:document.getElementById('startOverlay'),end:document.getElementById('endOverlay')};
-const STACK_COLS=8, SAFE_STACK_LEVEL=3, GAMEOVER_STACK_LEVEL=4;
+const STACK_COLS=16, SAFE_STACK_LEVEL=3, GAMEOVER_STACK_LEVEL=4;
 let state,raf,last,spawnClock,isComposing=false,toastTimer;
 function reset(){cancelAnimationFrame(raf);state={running:false,falling:[],stacks:Array.from({length:STACK_COLS},()=>[]),score:0,combo:0,maxCombo:0,hits:0,missInputs:0,missedLandings:0,startAt:0,elapsed:0,seen:new Map(),lastPick:-1};els.field.innerHTML='';els.stack.innerHTML='';els.score.textContent='0';els.combo.textContent='0';els.time.textContent='0:00';els.maxPile.textContent='0';els.input.value='';updatePileMeter();}
 function startGame(){reset();state.running=true;state.startAt=performance.now();last=state.startAt;spawnClock=1050;els.start.classList.add('hidden');els.end.classList.add('hidden');els.title.classList.add('hide');els.input.focus();spawn();raf=requestAnimationFrame(loop)}
@@ -125,7 +122,7 @@ function hitLanded(col,idx){const pile=state.stacks[col];const w=pile.splice(idx
 function showToast(msg,good){clearTimeout(toastTimer);els.toast.textContent=msg;els.toast.style.background=good?'#536f3eea':'#5b3829ea';els.toast.classList.add('show');toastTimer=setTimeout(()=>els.toast.classList.remove('show'),1050)}
 function gameOver(){state.running=false;cancelAnimationFrame(raf);const attempts=state.hits+state.missInputs+state.missedLandings;const acc=attempts?Math.round(state.hits/attempts*100):0;document.getElementById('finalScore').textContent=state.score.toLocaleString('zh-TW');document.getElementById('finalHit').textContent=state.hits;document.getElementById('finalAcc').textContent=acc+'%';document.getElementById('finalCombo').textContent=state.maxCombo;document.getElementById('endLine').textContent=`某一堆文字已出現第 4 層，超過會幕高度。你在曠野中堅持了 ${els.time.textContent}，共收下 ${state.hits} 個文字。`;const learned=document.getElementById('learned');learned.innerHTML=state.seen.size?'<b>本局遇見的聖經用字：</b><br>'+[...state.seen].map(([c,l])=>`<b>${c}</b>・${l}`).join('　'):'這次還沒來得及收下文字，再試一次吧！';els.end.classList.remove('hidden');els.title.classList.remove('hide')}
 function clampAndReposition(){state?.falling?.forEach(w=>{w.x=laneX(w.col);w.node.style.transform=`translate(${w.x}px,${w.y}px)`});state?.stacks?.forEach((_,col)=>repositionStack(col))}
-els.input.addEventListener('compositionstart',()=>isComposing=true);els.input.addEventListener('compositionend',()=>{isComposing=false;setTimeout(processInput,0)});els.input.addEventListener('input',()=>{if(!isComposing)setTimeout(processInput,0)});els.input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!isComposing){e.preventDefault();processInput()}});document.getElementById('startBtn').onclick=startGame;document.getElementById('againBtn').onclick=startGame;window.addEventListener('resize',clampAndReposition);reset();
+els.input.addEventListener('compositionstart',()=>isComposing=true);els.input.addEventListener('compositionend',()=>{isComposing=false;setTimeout(processInput,0)});els.input.addEventListener('input',()=>{if(!isComposing)setTimeout(processInput,0)});els.input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!isComposing){e.preventDefault();processInput()}});document.getElementById('startBtn').onclick=startGame;document.getElementById('againBtn').onclick=startGame;window.addEventListener('resize',clampAndReposition);loadSceneAssets();reset();
 </script>
 </body>
 </html>
