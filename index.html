@@ -48,7 +48,34 @@ main{width:min(1180px,94vw);margin:auto;padding:28px 0 52px}.hero{background:#ff
 </section>
 <section class="trust" id="about"><b>為孩子設計的聖經互動學習</b>以聖經正文為基礎，讓孩子透過地圖、故事、選擇、拖曳與構圖理解經文；網站維持學習與遊戲為核心，不加入多餘的商業訊息。</section>
 </main>
+
+
 <script>
-(async()=>{const el=document.getElementById('visitCount'),url='https://dulcet-cassata-12d7ef.netlify.app/.netlify/functions/visit-count';try{let r;if(sessionStorage.getItem('bibleExplorerVisited'))r=await fetch(url,{cache:'no-store'});else{r=await fetch(url,{method:'POST',cache:'no-store'});if(r.ok)sessionStorage.setItem('bibleExplorerVisited','1')}if(!r.ok)throw new Error();const d=await r.json();el.textContent=Number(d.count||0).toLocaleString('zh-TW')}catch(e){el.textContent='—'}})();
+(async()=>{
+  const el=document.getElementById('visitCount');
+  const url='https://counterapi.com/api/elohist0805-dot.github.io/visit/bible-explorer-global';
+  const key='bibleExplorerCounterApiVisited';
+  try{
+    let r;
+    if(sessionStorage.getItem(key)){
+      r=await fetch(url+'?readOnly=true',{cache:'no-store',mode:'cors'});
+    }else{
+      r=await fetch(url,{cache:'no-store',mode:'cors'});
+      if(r.ok)sessionStorage.setItem(key,'1');
+    }
+    if(!r.ok)throw new Error('counter response '+r.status);
+    const d=await r.json();
+    const n=Number(d.value);
+    if(!Number.isFinite(n))throw new Error('invalid counter payload');
+    el.textContent=n.toLocaleString('zh-TW');
+  }catch(e){
+    try{
+      const r=await fetch(url+'?readOnly=true',{cache:'no-store',mode:'cors'});
+      const d=await r.json();
+      const n=Number(d.value);
+      el.textContent=Number.isFinite(n)?n.toLocaleString('zh-TW'):'—';
+    }catch(_){el.textContent='—'}
+  }
+})();
 </script>
 </body></html>
