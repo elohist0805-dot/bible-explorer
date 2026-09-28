@@ -231,8 +231,18 @@ $('#hintBtn').addEventListener('click',()=>{hintUsed=true;const lv=LEVELS[levelI
 renderLevel();
 </script>
 
+
+
 <script>
-(()=>{const url='https://dulcet-cassata-12d7ef.netlify.app/.netlify/functions/visit-count';if(sessionStorage.getItem('bibleExplorerVisited'))return;fetch(url,{method:'POST',cache:'no-store'}).then(r=>{if(r.ok)sessionStorage.setItem('bibleExplorerVisited','1')}).catch(()=>{})})();
+(async()=>{
+  const url='https://counterapi.com/api/elohist0805-dot.github.io/visit/bible-explorer-global';
+  const key='bibleExplorerCounterApiVisited';
+  if(sessionStorage.getItem(key))return;
+  try{
+    const r=await fetch(url,{cache:'no-store',mode:'cors'});
+    if(r.ok)sessionStorage.setItem(key,'1');
+  }catch(_){}
+})();
 </script>
 </body>
 </html>
