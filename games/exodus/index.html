@@ -1062,18 +1062,21 @@ $('#audioVolume').oninput=(e)=>AudioGame.setVolume(Number(e.target.value)/100);
   const note=document.getElementById('visitCountNote');
 
   async function refreshGlobalVisitCount(){
+    const url='https://counterapi.com/api/elohist0805-dot.github.io/visit/bible-explorer-global';
+    const sessionKey='bibleExplorerCounterApiVisited';
     try{
-      const alreadyCounted=sessionStorage.getItem('bibleExplorerGlobalVisitCounted')==='1';
-      const res=await fetch('/.netlify/functions/visit-count',{
-        method:alreadyCounted?'GET':'POST',
-        headers:{'Accept':'application/json'},
-        cache:'no-store'
+      const alreadyCounted=sessionStorage.getItem(sessionKey)==='1';
+      const res=await fetch(url+(alreadyCounted?'?readOnly=true':''),{
+        cache:'no-store',
+        mode:'cors'
       });
       if(!res.ok) throw new Error('counter unavailable');
       const data=await res.json();
-      if(!alreadyCounted) sessionStorage.setItem('bibleExplorerGlobalVisitCounted','1');
-      if(vc) vc.textContent=Number(data.count||0).toLocaleString('zh-TW');
-      if(note) note.textContent='全站累計・每個瀏覽工作階段計一次';
+      const count=Number(data.value);
+      if(!Number.isFinite(count)) throw new Error('invalid counter payload');
+      if(!alreadyCounted) sessionStorage.setItem(sessionKey,'1');
+      if(vc) vc.textContent=count.toLocaleString('zh-TW');
+      if(note) note.textContent='開站至今蒞臨的探險家們';
     }catch(err){
       if(vc) vc.textContent='—';
       if(note) note.textContent='統計暫時無法讀取，不影響遊戲';
