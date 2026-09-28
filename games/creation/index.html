@@ -230,5 +230,9 @@ $('#achievementModal').addEventListener('click',closeAchievementFromBackdrop);$(
 $('#hintBtn').addEventListener('click',()=>{hintUsed=true;const lv=LEVELS[levelIndex];if(lv.type==='order'){const next=DAYS.find(d=>!document.querySelector('.orderSlot[data-day="'+d.day+'"]').classList.contains('filled'));setMessage(next?'提示：第 '+next.day+' 日是「'+next.summary+'」。':'你已經完成囉！','info')}else{const need=lv.items.filter(i=>i.ok).find(it=>currentObjects.filter(o=>o.id===it.id&&conceptCorrect(o)).length<it.min);setMessage(need?'提示：今天需要「'+need.name+'」，而且要放在'+(need.zone==='sky'?'天空':need.zone==='water'?'水域':need.zone==='land'?'陸地':'畫面中')+'。':'基本概念已經齊全，可以按「檢查創造」囉！','info')}});
 renderLevel();
 </script>
+
+<script>
+(()=>{const url='/.netlify/functions/visit-count';if(sessionStorage.getItem('bibleExplorerVisited'))return;fetch(url,{method:'POST',cache:'no-store'}).then(r=>{if(r.ok)sessionStorage.setItem('bibleExplorerVisited','1')}).catch(()=>{})})();
+</script>
 </body>
 </html>
