@@ -40,7 +40,7 @@ body{min-height:100vh} button{font:inherit}
 .stick{position:absolute;width:54px;height:54px;left:34px;top:34px;border-radius:50%;background:#8a6b45;border:4px solid #f8e7bd;box-shadow:0 4px 8px #0006;transform:translate(0,0)}
 .joy::after{content:"移動";position:absolute;left:0;right:0;bottom:-23px;text-align:center;font-size:11px;color:#bfb59b}
 .battleBtns button{min-height:50px;border:1px solid #65705c;border-radius:12px;background:#263027;color:#fff;font-weight:700;touch-action:none}
-.battleBtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:center}.battleBtns .attack{background:#76473f}.battleBtns .ambush{background:#334f6a}.battleBtns .exit{background:#3c423b}.battleTip{grid-column:1/-1;font-size:12px;color:#c8bea4;line-height:1.5;text-align:center}
+.battleBtns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:center}.battleBtns .ambush{background:#334f6a}.battleBtns .exit{background:#3c423b}.autoAttackStatus{min-height:50px;border:1px solid #65705c;border-radius:12px;background:#263027;color:#f2d98d;font-weight:700;display:flex;align-items:center;justify-content:center;padding:8px;text-align:center}.battleTip{grid-column:1/-1;font-size:12px;color:#c8bea4;line-height:1.5;text-align:center}
 #battleMessage{position:absolute;left:50%;top:75px;transform:translateX(-50%);z-index:4;background:#0a0d0acc;border:1px solid #5c6856;border-radius:10px;padding:7px 11px;font-size:13px;pointer-events:none;opacity:0;transition:opacity .2s}.damageFloat{position:absolute;font-weight:800;pointer-events:none;animation:floatUp .7s ease-out forwards}@keyframes floatUp{to{transform:translateY(-35px);opacity:0}}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.mapwrap{min-height:590px}.side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.panel{min-width:0}}
 @media(max-width:620px){#game{padding:7px}.mapwrap{min-height:520px}.side{grid-template-columns:1fr}.brand h1{font-size:22px}.stats{width:100%}.badge{flex:1;text-align:center}.city span{font-size:11px}.battleControls{grid-template-columns:130px 1fr;padding:7px;gap:7px}.joy{width:108px;height:108px}.stick{width:46px;height:46px;left:28px;top:28px}.battleBtns button{min-height:44px;font-size:13px}.battleBtns{grid-template-columns:1fr 1fr}.battleBtns .exit{grid-column:1/-1}.battleTip{font-size:11px}}
@@ -74,7 +74,7 @@ body{min-height:100vh} button{font:inherit}
 
   <div id="battleScreen" aria-label="艾城即時戰場">
     <div class="battleHud">
-      <div class="hpBlock"><div class="hpLabel"><span>約書亞 HP</span><b id="playerHpText">120 / 120</b></div><div class="hpbar"><i id="playerHpBar"></i></div></div>
+      <div class="hpBlock"><div class="hpLabel"><span>約書亞 HP</span><b id="playerHpText">120 / 120</b></div><div class="hpbar"><i id="playerHpBar"></i></div><div class="hpLabel" style="margin-top:4px"><span id="playerLevelText">Lv.1</span><span id="playerXpText">EXP 0 / 40</span></div></div>
       <div class="battleTitle">艾城戰場<br><span id="enemyCount">敵軍 12</span></div>
       <div class="hpBlock"><div class="hpLabel"><span>敵將 HP</span><b id="bossHpText">180 / 180</b></div><div class="hpbar enemy"><i id="bossHpBar"></i></div></div>
     </div>
@@ -84,8 +84,8 @@ body{min-height:100vh} button{font:inherit}
         <div class="joy" id="battleJoy" aria-label="圓形方向控制"><div class="stick" id="battleStick"></div></div>
       </div>
       <div class="battleBtns">
-        <button class="attack" id="attackBtn">⚔ 攻擊</button><button class="ambush" id="ambushBtn">伏兵出擊</button><button class="exit" id="exitBattle">退出戰場</button>
-        <div class="battleTip">滑鼠或手指拖曳圓形搖桿移動。新版約書亞 Sprite 會依待機、走路、攻擊、受傷、號令、勝利與倒地切換動作。</div>
+        <div class="autoAttackStatus">⚔ 接敵後自動攻擊</div><button class="ambush" id="ambushBtn">伏兵出擊</button><button class="exit" id="exitBattle">退出戰場</button>
+        <div class="battleTip">玩家只控制領袖移動方向；進入攻擊距離後，領袖會自動鎖定最近敵人並攻擊。領袖與友軍都能取得經驗並升級。</div>
       </div>
     </div>
   </div>
@@ -102,7 +102,17 @@ body{min-height:100vh} button{font:inherit}
 <script>
 (function(){
 const $=function(s){return document.querySelector(s)};
-const state={x:420,y:610,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false};
+const state={x:420,y:610,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null};
+const PROGRESS_KEY="canaan_joshua_progress_v1";
+function loadProgress(){
+  try{return JSON.parse(localStorage.getItem(PROGRESS_KEY)||"null")||{joshua:{level:1,xp:0},soldiers:{}}}
+  catch(e){return {joshua:{level:1,xp:0},soldiers:{}}}
+}
+function saveProgress(){
+  if(!state.progression)return;
+  try{localStorage.setItem(PROGRESS_KEY,JSON.stringify(state.progression))}catch(e){}
+}
+state.progression=loadProgress();
 const cities={gilgal:{x:430,y:550,name:"吉甲"},jericho:{x:515,y:500,name:"耶利哥"},ai:{x:625,y:450,name:"艾城"},gibeon:{x:590,y:535,name:"基遍"},jerusalem:{x:560,y:610,name:"耶路撒冷"},hazor:{x:590,y:185,name:"夏瑣"}};
 const army=$("#army"),marmy=$("#marmy"),log=$("#log"),objective=$("#objective");
 function say(t){log.textContent=t}
@@ -148,29 +158,83 @@ loadJoshuaSprite();
 const JFW=80,JFH=80;
 const JFRAMES={idleR:0,walkR1:1,walkR2:2,attackR:3,idleL:4,walkL1:5,walkL2:6,attackL:7,hurt:8,command:9,victory:10,defeated:11};
 let battleState=null,raf=0,last=0,keys={},joyMove={x:0,y:0};
-function unit(team,x,y,hp,role){return {team:team,x:x,y:y,hp:hp,maxHp:hp,role:role||"soldier",speed:team==="player"?145:team==="ally"?76:64,attackCd:0,hitFlash:0,dead:false,dir:1,anim:"idle",animLock:0,animClock:0,moving:false}}
+function xpNeed(level){return 40+(level-1)*25}
+function unit(team,x,y,hp,role,id,profile){
+  profile=profile||{level:1,xp:0};
+  var lv=Math.max(1,profile.level||1);
+  var isLeader=role==="joshua"||role==="leader"||role==="boss";
+  var baseAtk=role==="joshua"?28:role==="boss"?14:role==="ambush"?13:team==="ally"?10:8;
+  var hpGain=isLeader?12:6;
+  var atkGain=isLeader?3:2;
+  var maxHp=hp+(lv-1)*hpGain;
+  return {team:team,x:x,y:y,hp:maxHp,maxHp:maxHp,role:role||"soldier",id:id||"",level:lv,xp:Math.max(0,profile.xp||0),atk:baseAtk+(lv-1)*atkGain,speed:team==="player"?145:team==="ally"?76:64,attackCd:0,hitFlash:0,dead:false,dir:1,anim:"idle",animLock:0,animClock:0,moving:false}
+}
+function profileFor(id,role){
+  if(role==="joshua")return state.progression.joshua;
+  if(!state.progression.soldiers[id])state.progression.soldiers[id]={level:1,xp:0};
+  return state.progression.soldiers[id];
+}
+function syncProfile(u){
+  if(u.team!=="player"&&u.team!=="ally")return;
+  var p=u.role==="joshua"?state.progression.joshua:state.progression.soldiers[u.id];
+  if(p){p.level=u.level;p.xp=u.xp}
+}
+function grantXp(u,amount){
+  if(!u||u.dead||(u.team!=="player"&&u.team!=="ally"))return;
+  u.xp+=amount;
+  var leveled=false;
+  while(u.xp>=xpNeed(u.level)){
+    u.xp-=xpNeed(u.level);
+    u.level++;
+    var hpGain=u.role==="joshua"||u.role==="leader"?12:6;
+    var atkGain=u.role==="joshua"||u.role==="leader"?3:2;
+    u.maxHp+=hpGain;u.hp=Math.min(u.maxHp,u.hp+hpGain);u.atk+=atkGain;leveled=true;
+  }
+  syncProfile(u);saveProgress();
+  if(leveled){
+    if(u.role==="joshua")showBattleMessage("約書亞升到 Lv."+u.level+"！ HP與攻擊力提升。");
+    else showBattleMessage("友軍 "+u.id+" 升到 Lv."+u.level+"！");
+  }
+  updateHud();
+}
 function startBattle(){
   modal.classList.remove("show");battleScreen.classList.add("show");
-  battleState={running:true,ambush:false,won:false,lost:false,player:unit("player",160,330,120,"joshua"),allies:[],enemies:[],boss:null,time:0};
-  for(var i=0;i<7;i++)battleState.allies.push(unit("ally",115+(i%3)*38,370+Math.floor(i/3)*34,55,"soldier"));
-  for(var j=0;j<11;j++)battleState.enemies.push(unit("enemy",610+(j%4)*42,270+Math.floor(j/4)*48,48,"soldier"));
-  battleState.boss=unit("enemy",765,200,180,"boss");battleState.enemies.push(battleState.boss);
+  battleState={running:true,ambush:false,won:false,lost:false,player:unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
+  for(var i=0;i<7;i++){var sid="soldier"+(i+1);battleState.allies.push(unit("ally",115+(i%3)*38,370+Math.floor(i/3)*34,55,"soldier",sid,profileFor(sid,"soldier")))}
+  for(var j=0;j<11;j++)battleState.enemies.push(unit("enemy",610+(j%4)*42,270+Math.floor(j/4)*48,48,"soldier","enemy"+(j+1),{level:1,xp:0}));
+  battleState.boss=unit("enemy",765,200,180,"boss","boss",{level:3,xp:0});battleState.enemies.push(battleState.boss);
   $("#ambushBtn").disabled=false;showBattleMessage(joshuaSpriteReady?"新版約書亞角色已載入。":"約書亞角色素材載入中…");updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
 }
 $("#battleDemo").addEventListener("click",startBattle);
 $("#exitBattle").addEventListener("click",endBattle);
-function endBattle(){if(battleState)battleState.running=false;cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};say("已離開艾城戰場演練。戰略地圖與即時戰場會共同構成正式玩法。")}
+function endBattle(){if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};say("已離開艾城戰場演練。角色等級與經驗值已保留。")}
 function resizeCanvas(){var box=canvas.getBoundingClientRect();var ratio=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.max(620,Math.floor(box.width*ratio));canvas.height=Math.max(360,Math.floor(box.height*ratio));ctx.setTransform(ratio,0,0,ratio,0,0);return {w:box.width,h:box.height}}
 function dist(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.hypot(dx,dy)}
 function nearest(from,list){var best=null,bd=1e9;for(var i=0;i<list.length;i++){var u=list[i];if(u.dead)continue;var d=dist(from,u);if(d<bd){bd=d;best=u}}return {u:best,d:bd}}
 function moveToward(a,b,speed,dt){if(!b)return;var dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;a.x+=dx/d*speed*dt;a.y+=dy/d*speed*dt;a.dir=dx>=0?1:-1}
 function setPlayerAnim(name,lock){if(!battleState)return;var p=battleState.player;p.anim=name;if(lock)p.animLock=Math.max(p.animLock,lock)}
-function doDamage(target,amount){if(!target||target.dead)return;target.hp=Math.max(0,target.hp-amount);target.hitFlash=.12;if(target.team==="player"){setPlayerAnim("hurt",.22)}if(target.hp<=0){target.dead=true;if(target.team==="player"){target.anim="defeated";target.animLock=999}}updateHud()}
-function attack(attacker,target,amount,range){if(!target||target.dead||attacker.attackCd>0||dist(attacker,target)>range)return false;attacker.attackCd=.55;doDamage(target,amount);return true}
-function playerAttack(){if(!battleState||!battleState.running||battleState.player.dead)return;setPlayerAnim("attack",.22);var n=nearest(battleState.player,battleState.enemies);if(n.u&&n.d<72){attack(battleState.player,n.u,battleState.player.role==="joshua"?28:18,72);showBattleMessage("約書亞揮劍！ -28")}else showBattleMessage("敵人太遠，靠近後再攻擊。")}
-$("#attackBtn").addEventListener("click",playerAttack);
-$("#ambushBtn").addEventListener("click",function(){if(!battleState||battleState.ambush)return;battleState.ambush=true;setPlayerAnim("command",.5);for(var i=0;i<6;i++)battleState.allies.push(unit("ally",820-(i%3)*36,410+Math.floor(i/3)*34,60,"ambush"));$("#ambushBtn").disabled=true;showBattleMessage("伏兵從艾城後方出擊！敵軍陷入夾擊。")});
-function updateHud(){if(!battleState)return;var p=battleState.player,b=battleState.boss;$("#playerHpText").textContent=Math.ceil(p.hp)+" / "+p.maxHp;$("#playerHpBar").style.width=(p.hp/p.maxHp*100)+"%";$("#bossHpText").textContent=Math.ceil(b.hp)+" / "+b.maxHp;$("#bossHpBar").style.width=(b.hp/b.maxHp*100)+"%";var alive=battleState.enemies.filter(function(u){return !u.dead}).length;$("#enemyCount").textContent="敵軍 "+alive}
+function doDamage(target,amount,attacker){
+  if(!target||target.dead)return;
+  target.hp=Math.max(0,target.hp-amount);target.hitFlash=.12;
+  if(target.team==="player"){setPlayerAnim("hurt",.22)}
+  if(target.hp<=0){
+    target.dead=true;
+    if(target.team==="player"){target.anim="defeated";target.animLock=999}
+    if(attacker&&(attacker.team==="player"||attacker.team==="ally")){
+      grantXp(attacker,target.role==="boss"?40:12);
+    }
+  }
+  updateHud()
+}
+function attack(attacker,target,amount,range){
+  if(!target||target.dead||attacker.attackCd>0||dist(attacker,target)>range)return false;
+  attacker.attackCd=attacker.role==="joshua"?0.48:0.62;
+  if(attacker.role==="joshua")setPlayerAnim("attack",.20);
+  doDamage(target,amount,attacker);
+  return true
+}
+$("#ambushBtn").addEventListener("click",function(){if(!battleState||battleState.ambush)return;battleState.ambush=true;setPlayerAnim("command",.5);for(var i=0;i<6;i++){var aid="ambush"+(i+1);battleState.allies.push(unit("ally",820-(i%3)*36,410+Math.floor(i/3)*34,60,"ambush",aid,profileFor(aid,"soldier")))}$("#ambushBtn").disabled=true;showBattleMessage("伏兵從艾城後方出擊！敵軍陷入夾擊。")});
+function updateHud(){if(!battleState)return;var p=battleState.player,b=battleState.boss;$("#playerHpText").textContent=Math.ceil(p.hp)+" / "+p.maxHp;$("#playerHpBar").style.width=(p.hp/p.maxHp*100)+"%";$("#playerLevelText").textContent="Lv."+p.level+"  ATK "+p.atk;$("#playerXpText").textContent="EXP "+p.xp+" / "+xpNeed(p.level);$("#bossHpText").textContent=Math.ceil(b.hp)+" / "+b.maxHp;$("#bossHpBar").style.width=(b.hp/b.maxHp*100)+"%";var alive=battleState.enemies.filter(function(u){return !u.dead}).length;$("#enemyCount").textContent="敵軍 "+alive}
 function showBattleMessage(t){var el=$("#battleMessage");el.textContent=t;el.style.opacity="1";clearTimeout(el._timer);el._timer=setTimeout(function(){el.style.opacity="0"},1500)}
 function update(dt){
   var bs=battleState,p=bs.player;if(!bs.running)return;
@@ -181,8 +245,10 @@ function update(dt){
   if(mx||my){var m=Math.hypot(mx,my)||1;var strength=Math.min(1,m);p.x+=mx/m*p.speed*dt*strength;p.y+=my/m*p.speed*dt*strength;p.dir=mx>=0?1:-1}
   if(p.animLock<=0){p.anim=p.moving?"walk":"idle"}
   p.x=Math.max(24,Math.min(876,p.x));p.y=Math.max(125,Math.min(510,p.y));
-  bs.allies.forEach(function(a){if(a.dead)return;a.attackCd=Math.max(0,a.attackCd-dt);a.hitFlash=Math.max(0,a.hitFlash-dt);var n=nearest(a,bs.enemies);if(n.u){if(n.d>45)moveToward(a,n.u,a.speed,dt);else attack(a,n.u,a.role==="ambush"?13:10,48)}});
-  bs.enemies.forEach(function(e){if(e.dead)return;e.attackCd=Math.max(0,e.attackCd-dt);e.hitFlash=Math.max(0,e.hitFlash-dt);var targets=[p].concat(bs.allies);var n=nearest(e,targets);if(n.u){if(n.d>46)moveToward(e,n.u,e.role==="boss"?54:e.speed,dt);else attack(e,n.u,e.role==="boss"?14:8,49)}});
+  var pn=nearest(p,bs.enemies);
+  if(pn.u&&pn.d<72&&p.attackCd<=0){p.dir=pn.u.x>=p.x?1:-1;attack(p,pn.u,p.atk,72)}
+  bs.allies.forEach(function(a){if(a.dead)return;a.attackCd=Math.max(0,a.attackCd-dt);a.hitFlash=Math.max(0,a.hitFlash-dt);var n=nearest(a,bs.enemies);if(n.u){if(n.d>45)moveToward(a,n.u,a.speed,dt);else attack(a,n.u,a.atk,48)}});
+  bs.enemies.forEach(function(e){if(e.dead)return;e.attackCd=Math.max(0,e.attackCd-dt);e.hitFlash=Math.max(0,e.hitFlash-dt);var targets=[p].concat(bs.allies);var n=nearest(e,targets);if(n.u){if(n.d>46)moveToward(e,n.u,e.role==="boss"?54:e.speed,dt);else attack(e,n.u,e.atk,49)}});
   if(p.dead&&!bs.lost){bs.lost=true;bs.running=false;p.anim="defeated";p.animLock=999;showBattleMessage("約書亞倒下，演練失敗。");setTimeout(function(){if(confirm("戰敗，是否重新挑戰？"))startBattle();else endBattle()},900)}
   var alive=bs.enemies.some(function(u){return !u.dead});if(!alive&&!bs.won){bs.won=true;bs.running=false;p.anim="victory";p.animLock=999;showBattleMessage("艾城戰場演練勝利！");state.morale=Math.min(100,state.morale+3);sync();setTimeout(function(){alert("戰場演練勝利！\n\n約書亞現在已使用正式 Sprite 動畫。");endBattle()},1100)}
 }
@@ -248,7 +314,8 @@ function drawUnit(u){
   if(u.role==="boss"){ctx.fillStyle="#e0b45f";ctx.fillRect(-9,-27,18,4)}
   if(u.team==="player"){ctx.fillStyle="#f4e39e";ctx.font="bold 10px sans-serif";ctx.textAlign="center";ctx.fillText("約",0,-30)}
   ctx.restore();
-  var w=u.role==="boss"?38:28;ctx.fillStyle="#1a1a1a";ctx.fillRect(u.x-w/2,u.y-39,w,4);ctx.fillStyle=u.team==="enemy"?"#c45e54":"#78aa70";ctx.fillRect(u.x-w/2,u.y-39,w*(u.hp/u.maxHp),4)
+  var w=u.role==="boss"?38:28;ctx.fillStyle="#1a1a1a";ctx.fillRect(u.x-w/2,u.y-39,w,4);ctx.fillStyle=u.team==="enemy"?"#c45e54":"#78aa70";ctx.fillRect(u.x-w/2,u.y-39,w*(u.hp/u.maxHp),4);
+  if(u.team==="ally"){ctx.fillStyle="#f4e39e";ctx.font="bold 9px sans-serif";ctx.textAlign="center";ctx.fillText("Lv."+u.level,u.x,u.y-44)}
 }
 function draw(){
   var s=resizeCanvas(),w=s.w,h=s.h;ctx.clearRect(0,0,w,h);
@@ -261,7 +328,7 @@ function draw(){
   ctx.restore()
 }
 function loop(now){if(!battleState)return;var dt=Math.min(.032,(now-last)/1000);last=now;if(battleState.running)update(dt);draw();if(battleScreen.classList.contains("show"))raf=requestAnimationFrame(loop)}
-window.addEventListener("keydown",function(e){if(!battleScreen.classList.contains("show"))return;var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if(k===" "){e.preventDefault();playerAttack()}if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(k)>=0)e.preventDefault()});
+window.addEventListener("keydown",function(e){if(!battleScreen.classList.contains("show"))return;var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(k)>=0)e.preventDefault()});
 window.addEventListener("keyup",function(e){var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});
 const battleJoy=$("#battleJoy"),battleStick=$("#battleStick");let joyActive=false;
 function setJoy(clientX,clientY){
