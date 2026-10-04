@@ -35,12 +35,15 @@ body{min-height:100vh} button{font:inherit}
 .hpBlock{min-width:0}.hpLabel{font-size:12px;color:#d8cfb5;margin-bottom:3px;display:flex;justify-content:space-between;gap:8px}.hpbar{height:10px;background:#0b0d0b;border:1px solid #424b3e;border-radius:6px;overflow:hidden}.hpbar i{display:block;height:100%;width:100%;background:#6e9c66;transition:width .15s}.hpbar.enemy i{background:#ad5f56}.battleTitle{text-align:center;font-size:13px;color:#e7d291;white-space:nowrap}
 #battleCanvas{width:100%;height:auto;display:block;background:#8b815d;touch-action:none;flex:1;min-height:360px}
 .battleControls{display:grid;grid-template-columns:180px 1fr;gap:12px;padding:10px;background:#121812;border-top:1px solid #394437}
-.dpad{width:164px;height:120px;display:grid;grid-template-columns:54px 54px 54px;grid-template-rows:54px 54px;gap:4px;align-content:center}
-.dpad button,.battleBtns button{min-height:50px;border:1px solid #65705c;border-radius:12px;background:#263027;color:#fff;font-weight:700;touch-action:none}.dpad .up{grid-column:2}.dpad .left{grid-column:1;grid-row:2}.dpad .down{grid-column:2;grid-row:2}.dpad .right{grid-column:3;grid-row:2}
+.joyWrap{display:flex;align-items:center;justify-content:center}
+.joy{position:relative;width:128px;height:128px;border-radius:50%;background:#fff8e61c;border:3px solid #b99a6277;touch-action:none;box-shadow:inset 0 0 22px #0005}
+.stick{position:absolute;width:54px;height:54px;left:34px;top:34px;border-radius:50%;background:#8a6b45;border:4px solid #f8e7bd;box-shadow:0 4px 8px #0006;transform:translate(0,0)}
+.joy::after{content:"移動";position:absolute;left:0;right:0;bottom:-23px;text-align:center;font-size:11px;color:#bfb59b}
+.battleBtns button{min-height:50px;border:1px solid #65705c;border-radius:12px;background:#263027;color:#fff;font-weight:700;touch-action:none}
 .battleBtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:center}.battleBtns .attack{background:#76473f}.battleBtns .ambush{background:#334f6a}.battleBtns .exit{background:#3c423b}.battleTip{grid-column:1/-1;font-size:12px;color:#c8bea4;line-height:1.5;text-align:center}
 #battleMessage{position:absolute;left:50%;top:75px;transform:translateX(-50%);z-index:4;background:#0a0d0acc;border:1px solid #5c6856;border-radius:10px;padding:7px 11px;font-size:13px;pointer-events:none;opacity:0;transition:opacity .2s}.damageFloat{position:absolute;font-weight:800;pointer-events:none;animation:floatUp .7s ease-out forwards}@keyframes floatUp{to{transform:translateY(-35px);opacity:0}}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.mapwrap{min-height:590px}.side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.panel{min-width:0}}
-@media(max-width:620px){#game{padding:7px}.mapwrap{min-height:520px}.side{grid-template-columns:1fr}.brand h1{font-size:22px}.stats{width:100%}.badge{flex:1;text-align:center}.city span{font-size:11px}.battleControls{grid-template-columns:150px 1fr;padding:7px;gap:7px}.dpad{width:146px;grid-template-columns:46px 46px 46px;grid-template-rows:46px 46px}.dpad button,.battleBtns button{min-height:44px;font-size:13px}.battleBtns{grid-template-columns:1fr 1fr}.battleBtns .exit{grid-column:1/-1}.battleTip{font-size:11px}}
+@media(max-width:620px){#game{padding:7px}.mapwrap{min-height:520px}.side{grid-template-columns:1fr}.brand h1{font-size:22px}.stats{width:100%}.badge{flex:1;text-align:center}.city span{font-size:11px}.battleControls{grid-template-columns:130px 1fr;padding:7px;gap:7px}.joy{width:108px;height:108px}.stick{width:46px;height:46px;left:28px;top:28px}.battleBtns button{min-height:44px;font-size:13px}.battleBtns{grid-template-columns:1fr 1fr}.battleBtns .exit{grid-column:1/-1}.battleTip{font-size:11px}}
 </style>
 </head>
 <body>
@@ -77,12 +80,12 @@ body{min-height:100vh} button{font:inherit}
     </div>
     <div style="position:relative;flex:1;min-height:360px"><canvas id="battleCanvas" width="900" height="540"></canvas><div id="battleMessage"></div></div>
     <div class="battleControls">
-      <div class="dpad">
-        <button class="up" data-move="up">▲</button><button class="left" data-move="left">◀</button><button class="down" data-move="down">▼</button><button class="right" data-move="right">▶</button>
+      <div class="joyWrap">
+        <div class="joy" id="battleJoy" aria-label="圓形方向控制"><div class="stick" id="battleStick"></div></div>
       </div>
       <div class="battleBtns">
         <button class="attack" id="attackBtn">⚔ 攻擊</button><button class="ambush" id="ambushBtn">伏兵出擊</button><button class="exit" id="exitBattle">退出戰場</button>
-        <div class="battleTip">鍵盤：WASD／方向鍵移動，Space 攻擊。靠近敵人後攻擊會扣血；友軍會自行迎戰。</div>
+        <div class="battleTip">滑鼠或手指拖曳左側圓形搖桿移動；桌機仍可使用 WASD／方向鍵。Space 或「攻擊」按鈕揮劍。</div>
       </div>
     </div>
   </div>
@@ -122,7 +125,7 @@ world.addEventListener("wheel",function(e){e.preventDefault();var old=scale;scal
 
 /* battle engine */
 const battleScreen=$("#battleScreen"),canvas=$("#battleCanvas"),ctx=canvas.getContext("2d");
-let battleState=null,raf=0,last=0,keys={};
+let battleState=null,raf=0,last=0,keys={},joyMove={x:0,y:0};
 function unit(team,x,y,hp,role){return {team:team,x:x,y:y,hp:hp,maxHp:hp,role:role||"soldier",speed:team==="player"?145:team==="ally"?76:64,attackCd:0,hitFlash:0,dead:false,dir:1}}
 function startBattle(){
   modal.classList.remove("show");battleScreen.classList.add("show");
@@ -149,8 +152,9 @@ function showBattleMessage(t){var el=$("#battleMessage");el.textContent=t;el.sty
 function update(dt){
   var bs=battleState,p=bs.player;if(!bs.running)return;
   p.attackCd=Math.max(0,p.attackCd-dt);p.hitFlash=Math.max(0,p.hitFlash-dt);
-  var mx=(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0),my=(keys.ArrowDown||keys.s?1:0)-(keys.ArrowUp||keys.w?1:0);
-  if(mx||my){var m=Math.hypot(mx,my)||1;p.x+=mx/m*p.speed*dt;p.y+=my/m*p.speed*dt;p.dir=mx>=0?1:-1}
+  var kx=(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0),ky=(keys.ArrowDown||keys.s?1:0)-(keys.ArrowUp||keys.w?1:0);
+  var mx=kx||ky?kx:joyMove.x,my=kx||ky?ky:joyMove.y;
+  if(mx||my){var m=Math.hypot(mx,my)||1;var strength=Math.min(1,m);p.x+=mx/m*p.speed*dt*strength;p.y+=my/m*p.speed*dt*strength;p.dir=mx>=0?1:-1}
   p.x=Math.max(24,Math.min(876,p.x));p.y=Math.max(125,Math.min(510,p.y));
   bs.allies.forEach(function(a){if(a.dead)return;a.attackCd=Math.max(0,a.attackCd-dt);a.hitFlash=Math.max(0,a.hitFlash-dt);var n=nearest(a,bs.enemies);if(n.u){if(n.d>45)moveToward(a,n.u,a.speed,dt);else attack(a,n.u,a.role==="ambush"?13:10,48)}});
   bs.enemies.forEach(function(e){if(e.dead)return;e.attackCd=Math.max(0,e.attackCd-dt);e.hitFlash=Math.max(0,e.hitFlash-dt);var targets=[p].concat(bs.allies);var n=nearest(e,targets);if(n.u){if(n.d>46)moveToward(e,n.u,e.role==="boss"?54:e.speed,dt);else attack(e,n.u,e.role==="boss"?14:8,49)}});
@@ -183,7 +187,16 @@ function draw(){
 function loop(now){if(!battleState)return;var dt=Math.min(.032,(now-last)/1000);last=now;if(battleState.running)update(dt);draw();if(battleScreen.classList.contains("show"))raf=requestAnimationFrame(loop)}
 window.addEventListener("keydown",function(e){if(!battleScreen.classList.contains("show"))return;var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if(k===" "){e.preventDefault();playerAttack()}if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(k)>=0)e.preventDefault()});
 window.addEventListener("keyup",function(e){var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});
-document.querySelectorAll("[data-move]").forEach(function(b){var map={up:"ArrowUp",down:"ArrowDown",left:"ArrowLeft",right:"ArrowRight"},k=map[b.dataset.move];function on(){keys[k]=true}function off(){keys[k]=false}b.addEventListener("pointerdown",function(e){e.preventDefault();on()});b.addEventListener("pointerup",off);b.addEventListener("pointercancel",off);b.addEventListener("pointerleave",off)});
+const battleJoy=$("#battleJoy"),battleStick=$("#battleStick");let joyActive=false;
+function setJoy(clientX,clientY){
+  var r=battleJoy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=clientX-cx,dy=clientY-cy,max=r.width*.31,d=Math.hypot(dx,dy)||1,k=Math.min(1,max/d),sx=dx*k,sy=dy*k;
+  battleStick.style.transform="translate("+sx+"px,"+sy+"px)";
+  joyMove={x:sx/max,y:sy/max};
+}
+function endJoy(){joyActive=false;joyMove={x:0,y:0};battleStick.style.transform="translate(0,0)"}
+battleJoy.addEventListener("pointerdown",function(e){e.preventDefault();joyActive=true;battleJoy.setPointerCapture(e.pointerId);setJoy(e.clientX,e.clientY)});
+battleJoy.addEventListener("pointermove",function(e){if(!joyActive)return;e.preventDefault();setJoy(e.clientX,e.clientY)});
+battleJoy.addEventListener("pointerup",endJoy);battleJoy.addEventListener("pointercancel",endJoy);
 render();sync();
 })();
 </script>
