@@ -28,6 +28,14 @@ radial-gradient(ellipse at 55% 74%,#8b704933 0 7%,transparent 7.5%)}
 .hint{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:12;background:#fff7dfdd;border:1px solid #76502e44;border-radius:999px;padding:7px 13px;font-size:12px;font-weight:850;box-shadow:0 4px 12px #0001}.compass{position:absolute;left:22px;top:18px;z-index:11;width:58px;height:58px;border-radius:50%;background:#fff5d8cc;border:3px solid #795536;color:#8c4f2d;font-size:34px;display:grid;place-items:center;box-shadow:0 3px 9px #0002}.compass small{position:absolute;top:-15px;font-size:11px;color:#49351f}
 .joy{position:absolute;left:18px;bottom:18px;width:112px;height:112px;border-radius:50%;z-index:14;background:#fff8e6a8;border:3px solid #7c5a3888;touch-action:none;box-shadow:inset 0 0 22px #704e2b22}.stick{position:absolute;width:48px;height:48px;left:29px;top:29px;border-radius:50%;background:#7c5736dd;border:4px solid #f8e7bd;box-shadow:0 3px 7px #0003}
 .loot{position:absolute;right:12px;top:150px;z-index:13;background:#fff8e8e8;border:1px solid #7e5b3633;border-radius:13px;padding:8px 11px;font-weight:900;font-size:13px;display:flex;gap:10px}.loot b{font-size:15px}
+.mapGem{position:absolute;z-index:9;width:34px;height:34px;transform:translate(-50%,-50%);display:grid;place-items:center;pointer-events:none;filter:drop-shadow(0 4px 5px #0005);animation:gemFloat 1.8s ease-in-out infinite}
+.mapGem .gemShape{width:27px;height:27px;display:block;transform:rotate(45deg);border-radius:6px 2px 7px 2px;border:3px solid #fff8dccc;box-shadow:0 0 0 4px #fff4a82e,0 0 18px currentColor,inset 4px 4px 7px #ffffff88}
+.mapGem.wisdom{color:#4495d6}.mapGem.faith{color:#55a86a}.mapGem.courage{color:#e0a12e}.mapGem.love{color:#d95b68}.mapGem.hope{color:#8a67ca}
+.mapGem.wisdom .gemShape{background:#4ba4df}.mapGem.faith .gemShape{background:#5db872}.mapGem.courage .gemShape{background:#e9b13c}.mapGem.love .gemShape{background:#e86875}.mapGem.hope .gemShape{background:#9875d5}
+@keyframes gemFloat{0%,100%{margin-top:0;filter:drop-shadow(0 4px 5px #0005)}50%{margin-top:-7px;filter:drop-shadow(0 7px 8px #0004) brightness(1.12)}}
+.gemCard{text-align:center}.gemTitle{font-size:25px;font-weight:950;margin:2px 0 4px}.gemSub{font-size:13px;opacity:.72;margin-bottom:10px}.gemQuestion{font-size:1.45rem;line-height:1.45;font-weight:950;background:#f5e7c7;border-radius:13px;padding:14px;margin:12px 0;overflow-wrap:anywhere}
+.gemSummary{margin:10px 0;padding:9px 10px;border-radius:12px;background:#f7e9c8;font-weight:850;line-height:1.7}
+
 .miniMap{position:absolute;right:12px;top:12px;width:190px;height:126px;z-index:16;background:#ead6a4;border:3px solid #795536;border-radius:14px;box-shadow:0 5px 16px #0003;overflow:hidden}
 .miniMap:before{content:"";position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(145deg,#d9c487,#efdba2 58%,#c9b271)}
 .miniSea{position:absolute;left:0;top:32%;width:31%;height:68%;background:#83bfd0;border-radius:0 55% 0 0;opacity:.85}.miniRiver{position:absolute;width:3px;height:45%;background:#68abc2;right:18%;top:4%;transform:rotate(10deg);border-radius:5px}
@@ -419,14 +427,15 @@ linear-gradient(145deg,#d8c187,#f1dda5 56%,#c8ad6c)}
 <text class="territorySub" x="2080" y="1143" text-anchor="middle">吾珥一帶</text>
 </svg></div><div class="seaLabel">地 中 海</div><div class="region egypt">埃及</div><div class="region canaan">迦南</div><div class="region meso">兩河流域</div>
 </div><div class="hint" id="hint">選一位族長，再用左下圓盤探索地圖</div><div class="compass" aria-hidden="true">✦<small>北</small></div><div class="char" id="char"><span class="tag" id="charTag">亞伯拉罕</span><span class="face" id="charFace"></span></div>
-<div class="miniMap" id="miniMap"><div class="miniSea"></div><div class="miniDead"></div><div class="miniJordan"></div><div class="miniNile"></div><div class="miniEuphrates"></div><div class="miniTigris"></div><div class="miniTitle">全區地圖</div><span class="miniSeaName">地中海</span><span class="miniLand egyptMini">埃及</span><span class="miniLand canaanMini">迦南</span><span class="miniLand" style="left:74%;top:16%">哈蘭</span><span class="miniLand" style="left:91%;top:74%">吾珥</span><div class="miniView" id="miniView"></div><div class="miniDot" id="miniDot"></div></div><div class="joy" id="joy"><div class="stick" id="stick"></div></div><div class="loot">⚪ <b id="pearl">0</b> 🔶 <b id="onyx">0</b> 🪙 <b id="gold">0</b></div></section>
+<div class="miniMap" id="miniMap"><div class="miniSea"></div><div class="miniDead"></div><div class="miniJordan"></div><div class="miniNile"></div><div class="miniEuphrates"></div><div class="miniTigris"></div><div class="miniTitle">全區地圖</div><span class="miniSeaName">地中海</span><span class="miniLand egyptMini">埃及</span><span class="miniLand canaanMini">迦南</span><span class="miniLand" style="left:74%;top:16%">哈蘭</span><span class="miniLand" style="left:91%;top:74%">吾珥</span><div class="miniView" id="miniView"></div><div class="miniDot" id="miniDot"></div></div><div class="joy" id="joy"><div class="stick" id="stick"></div></div><div class="loot">⚪ <b id="pearl">0</b> 🔶 <b id="onyx">0</b> 🪙 <b id="gold">0</b> 💎 <b id="bonusGems">0</b></div></section>
 <section class="panel"><div class="characters">
 <button class="pick active" data-char="abraham"><span class="ico"><span class="portrait abraham"><i class="body"></i><i class="robe"></i><i class="head"></i><i class="hair"></i><i class="beard"></i></span></span>亞伯拉罕<small>信心之父</small><span class="mileage" data-mileage="abraham">🧭 0 km</span></button>
 <button class="pick" data-char="isaac"><span class="ico"><span class="portrait isaac"><i class="body"></i><i class="robe"></i><i class="head"></i><i class="hair"></i><i class="beard"></i></span></span>以撒<small>應許之子</small><span class="mileage" data-mileage="isaac">🧭 0 km</span></button>
 <button class="pick" data-char="jacob"><span class="ico"><span class="portrait jacob"><i class="body"></i><i class="robe"></i><i class="head"></i><i class="hair"></i><i class="beard"></i></span></span>雅各<small>以色列</small><span class="mileage" data-mileage="jacob">🧭 0 km</span></button>
 </div><div class="guide"><b>自由探索玩法</b>人物走近與他有關的地點，就會發現聖經事件。讀故事、答問題、收集寶物；探索沒有固定順序。</div></section></main>
 <div class="modal" id="eventModal"><div class="card" id="eventCard"><button class="eventClose" id="eventClose" type="button" aria-label="關閉事件">×</button><div class="storyHead"><div class="storyPortrait" id="storyPortrait"></div><div class="storyHeadText"><div class="eventBadge" id="eventBadge">發現事件</div><div class="where" id="eventWhere"></div><h2 id="eventTitle"></h2></div></div><div class="eventScene" id="eventScene" aria-hidden="true"></div><div class="story" id="eventStory"></div><div class="rewardPreview" id="rewardPreview"></div><div class="question" id="eventQuestion"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><button class="continue" id="continueBtn">繼續探索</button></div></div>
-<div class="modal" id="summaryModal"><div class="card summaryCard"><h2>🏆 本次族長探險總結</h2><p>你可以隨時繼續探索，沒有固定的終點。</p><div class="treasures"><span>⚪ 珍珠 <b id="sPearl">0</b></span><span>🔶 瑪瑙 <b id="sOnyx">0</b></span><span>🪙 黃金 <b id="sGold">0</b></span></div><div class="progress" id="summaryProgress"></div><p id="summaryText"></p><div class="closeTip">輕觸這張卡片以外的空白處即可關閉</div></div></div>
+<div class="modal" id="gemModal"><div class="card gemCard"><button class="eventClose" id="gemClose" type="button" aria-label="關閉猜謎">×</button><div class="eventBadge">💎 聖經晶石</div><div class="gemTitle" id="gemTitle">發現智慧石！</div><div class="gemSub">答對簡單的聖經猜謎，就能把這顆晶石收入收藏。</div><div class="gemQuestion" id="gemQuestion"></div><div class="answers" id="gemAnswers"></div><div class="feedback" id="gemFeedback"></div><button class="continue" id="gemContinue">繼續探索</button></div></div>
+<div class="modal" id="summaryModal"><div class="card summaryCard"><h2>🏆 本次族長探險總結</h2><p>你可以隨時繼續探索，沒有固定的終點。</p><div class="treasures"><span>⚪ 珍珠 <b id="sPearl">0</b></span><span>🔶 瑪瑙 <b id="sOnyx">0</b></span><span>🪙 黃金 <b id="sGold">0</b></span></div><div class="gemSummary" id="gemSummary">💎 聖經晶石：尚未發現</div><div class="progress" id="summaryProgress"></div><p id="summaryText"></p><div class="closeTip">輕觸這張卡片以外的空白處即可關閉</div></div></div>
 <script>
 const WORLD={w:2400,h:1500};
 const places=[
@@ -474,6 +483,49 @@ const events=[
 const charInfo={abraham:{name:'亞伯拉罕'},isaac:{name:'以撒'},jacob:{name:'雅各'}};
 function portraitHTML(c){return '<span class="portrait '+c+'"><i class="body"></i><i class="robe"></i><i class="head"></i><i class="hair"></i><i class="beard"></i></span>'}
 let active='abraham',positions={abraham:{x:1780,y:230},isaac:{x:900,y:1160},jacob:{x:930,y:1090}},moving={x:0,y:0},completed=new Set(),loot={pearl:0,onyx:0,gold:0},locked=false,currentEvent=null;
+const gemTypes=[
+ {key:'wisdom',name:'智慧石',icon:'🔵'},
+ {key:'faith',name:'信心石',icon:'🟢'},
+ {key:'courage',name:'勇氣石',icon:'🟡'},
+ {key:'love',name:'愛心石',icon:'🔴'},
+ {key:'hope',name:'盼望石',icon:'🟣'}
+];
+const bibleRiddles=[
+ {q:'誰照神的吩咐建造方舟？',a:['挪亞','摩西','大衛'],correct:0,ref:'創世記 6章'},
+ {q:'神用什麼記號表示不再用洪水毀滅全地？',a:['彩虹','星星','雲柱'],correct:0,ref:'創世記 9章'},
+ {q:'誰帶領以色列人離開埃及？',a:['摩西','約書亞','撒母耳'],correct:0,ref:'出埃及記'},
+ {q:'以色列人過紅海時，海水怎樣了？',a:['分開成乾地','變成冰','完全消失'],correct:0,ref:'出埃及記 14章'},
+ {q:'神在曠野賜給以色列人的食物叫什麼？',a:['嗎哪','葡萄','無花果'],correct:0,ref:'出埃及記 16章'},
+ {q:'十誡是在什麼山頒布的？',a:['西奈山','橄欖山','迦密山'],correct:0,ref:'出埃及記 19–20章'},
+ {q:'誰接續摩西帶領百姓進入迦南？',a:['約書亞','亞倫','基甸'],correct:0,ref:'約書亞記 1章'},
+ {q:'耶利哥城牆最後怎樣倒塌？',a:['百姓呼喊後倒塌','被洪水沖倒','被火燒毀'],correct:0,ref:'約書亞記 6章'},
+ {q:'誰用甩石打敗歌利亞？',a:['大衛','掃羅','所羅門'],correct:0,ref:'撒母耳記上 17章'},
+ {q:'以智慧聞名、建造聖殿的王是誰？',a:['所羅門','希西家','約西亞'],correct:0,ref:'列王紀上'},
+ {q:'誰在獅子坑中蒙神保守？',a:['但以理','以利亞','以利沙'],correct:0,ref:'但以理書 6章'},
+ {q:'哪位先知曾被大魚吞下？',a:['約拿','以賽亞','阿摩司'],correct:0,ref:'約拿書'},
+ {q:'耶穌出生在哪一座城？',a:['伯利恆','拿撒勒','耶路撒冷'],correct:0,ref:'馬太福音 2章'},
+ {q:'耶穌的母親是誰？',a:['馬利亞','馬大','以利沙伯'],correct:0,ref:'路加福音 1–2章'},
+ {q:'耶穌用五餅二魚餵飽了多少人？',a:['約五千人','約五十人','約五百人'],correct:0,ref:'馬太福音 14章'},
+ {q:'耶穌平靜風浪時，門徒正在什麼交通工具上？',a:['船上','馬車上','駱駝上'],correct:0,ref:'馬可福音 4章'},
+ {q:'誰曾爬上桑樹想看耶穌？',a:['撒該','彼得','尼哥底母'],correct:0,ref:'路加福音 19章'},
+ {q:'耶穌使哪一位已死四天的人復活？',a:['拉撒路','司提反','巴拿巴'],correct:0,ref:'約翰福音 11章'},
+ {q:'耶穌十二門徒中，曾經三次不認主的是誰？',a:['彼得','約翰','多馬'],correct:0,ref:'路加福音 22章'},
+ {q:'耶穌復活後第幾天升天？',a:['第四十天','第七天','第一百天'],correct:0,ref:'使徒行傳 1章'},
+ {q:'五旬節時，門徒領受了什麼？',a:['聖靈','王冠','嗎哪'],correct:0,ref:'使徒行傳 2章'},
+ {q:'保羅信主以前叫什麼名字？',a:['掃羅','西門','司提反'],correct:0,ref:'使徒行傳 9章'},
+ {q:'聖經最後一卷書是哪一卷？',a:['啟示錄','使徒行傳','希伯來書'],correct:0,ref:'新約聖經'},
+ {q:'主禱文一開始稱神為什麼？',a:['我們在天上的父','萬軍的王','以色列的士師'],correct:0,ref:'馬太福音 6章'},
+ {q:'耶穌說最大的誡命首先是要怎樣？',a:['盡心愛神','累積財寶','成為君王'],correct:0,ref:'馬太福音 22章'}
+];
+const gemSpawnPoints=[
+ {x:1510,y:250},{x:1600,y:470},{x:1450,y:720},{x:1300,y:900},
+ {x:1170,y:1120},{x:850,y:1250},{x:720,y:980},{x:820,y:570},
+ {x:1060,y:390},{x:1860,y:520},{x:2050,y:830},{x:1900,y:1240},
+ {x:1550,y:1190},{x:550,y:1080}
+];
+let activeGems=[],currentGem=null,gemSeq=0,bonusGemCount=0;
+const gemCollection={wisdom:0,faith:0,courage:0,love:0,hope:0};
+
 const mileage={abraham:0,isaac:0,jacob:0};
 let mileageShown={abraham:-1,isaac:-1,jacob:-1};
 
@@ -599,7 +651,86 @@ wrap.addEventListener('pointercancel',endPan);
 
 window.addEventListener('keydown',e=>{if(locked)return;const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(k))e.preventDefault();if(k==='ArrowLeft')moving.x=-1;if(k==='ArrowRight')moving.x=1;if(k==='ArrowUp')moving.y=-1;if(k==='ArrowDown')moving.y=1});
 window.addEventListener('keyup',e=>{if(e.key.includes('Arrow'))moving={x:0,y:0}});
-function checkTrigger(){document.querySelectorAll('.place').forEach(el=>el.classList.remove('near'));for(const p of places){const cp=positions[active],d=Math.hypot(cp.x-p.x,cp.y-p.y),el=document.getElementById('place-'+p.id);if(d<115&&events.some(e=>e.char===active&&e.place===p.id&&!completed.has(e.id)))el&&el.classList.add('near');if(d<58){const ev=events.find(e=>e.char===active&&e.place===p.id&&!completed.has(e.id));if(ev){openEvent(ev);break}}}}
+function checkTrigger(){
+ document.querySelectorAll('.place').forEach(el=>el.classList.remove('near'));
+ for(const p of places){
+   const cp=positions[active],d=Math.hypot(cp.x-p.x,cp.y-p.y),el=document.getElementById('place-'+p.id);
+   if(d<115&&events.some(e=>e.char===active&&e.place===p.id&&!completed.has(e.id)))el&&el.classList.add('near');
+   if(d<58){
+     const ev=events.find(e=>e.char===active&&e.place===p.id&&!completed.has(e.id));
+     if(ev){openEvent(ev);return}
+   }
+ }
+ checkGemTrigger();
+}
+
+function spawnGem(){
+ if(activeGems.length>=2)return;
+ const available=gemSpawnPoints.filter(p=>
+   activeGems.every(g=>Math.hypot(g.x-p.x,g.y-p.y)>220)&&
+   Object.values(positions).every(ch=>Math.hypot(ch.x-p.x,ch.y-p.y)>140)&&
+   places.every(pl=>Math.hypot(pl.x-p.x,pl.y-p.y)>95)
+ );
+ if(!available.length)return;
+ const point=available[Math.floor(Math.random()*available.length)];
+ const type=gemTypes[Math.floor(Math.random()*gemTypes.length)];
+ const el=document.createElement('div');
+ const id='bonus-gem-'+(++gemSeq);
+ el.id=id;el.className='mapGem '+type.key;el.style.left=point.x+'px';el.style.top=point.y+'px';
+ el.innerHTML='<span class="gemShape" aria-hidden="true"></span>';
+ map.appendChild(el);
+ activeGems.push({id,x:point.x,y:point.y,type,el});
+}
+function removeGem(g){
+ if(!g)return;
+ try{g.el&&g.el.remove()}catch(_){}
+ activeGems=activeGems.filter(x=>x.id!==g.id);
+}
+function checkGemTrigger(){
+ if(locked)return;
+ const cp=positions[active];
+ const g=activeGems.find(x=>Math.hypot(cp.x-x.x,cp.y-x.y)<48);
+ if(g)openGemQuiz(g);
+}
+function openGemQuiz(g){
+ locked=true;moving={x:0,y:0};currentGem=g;
+ const r=bibleRiddles[Math.floor(Math.random()*bibleRiddles.length)];
+ currentGem.riddle=r;
+ document.getElementById('gemTitle').textContent='發現'+g.type.name+'！';
+ document.getElementById('gemQuestion').textContent=r.q;
+ const box=document.getElementById('gemAnswers');box.innerHTML='';
+ r.a.forEach((a,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=a;b.onclick=()=>answerGem(i);box.appendChild(b)});
+ const fb=document.getElementById('gemFeedback');fb.className='feedback';fb.textContent='';
+ document.getElementById('gemContinue').style.display='none';
+ document.getElementById('gemModal').classList.add('show');
+}
+function answerGem(i){
+ if(!currentGem)return;
+ const r=currentGem.riddle,fb=document.getElementById('gemFeedback');
+ document.querySelectorAll('#gemAnswers .answer').forEach(b=>b.disabled=true);
+ if(i===r.correct){
+   bonusGemCount++;gemCollection[currentGem.type.key]++;
+   document.getElementById('bonusGems').textContent=bonusGemCount;
+   fb.className='feedback ok';
+   fb.textContent='答對了！獲得'+currentGem.type.name+'。 '+r.ref;
+ }else{
+   fb.className='feedback no';
+   fb.textContent='這次差一點！正確答案是「'+r.a[r.correct]+'」。 '+r.ref;
+ }
+ removeGem(currentGem);
+ currentGem=null;
+ document.getElementById('gemContinue').style.display='block';
+}
+function closeGemQuiz(){
+ document.getElementById('gemModal').classList.remove('show');
+ locked=false;moving={x:0,y:0};currentGem=null;render();
+}
+document.getElementById('gemContinue').onclick=closeGemQuiz;
+document.getElementById('gemClose').onclick=()=>{if(currentGem){removeGem(currentGem);currentGem=null}closeGemQuiz()};
+document.getElementById('gemModal').addEventListener('click',e=>{if(e.target===e.currentTarget){if(currentGem){removeGem(currentGem);currentGem=null}closeGemQuiz()}});
+setTimeout(()=>spawnGem(),4500);
+setTimeout(()=>spawnGem(),11000);
+setInterval(()=>{if(!locked&&activeGems.length<2)spawnGem()},18000);
 
 const eventArt={
  'a-ur':'./assets/a-ur.webp',
@@ -653,7 +784,18 @@ function answer(i){const ev=currentEvent,f=document.getElementById('feedback');i
 function updateLoot(){['pearl','onyx','gold'].forEach(k=>document.getElementById(k).textContent=loot[k])}
 function closeEvent(){document.getElementById('eventModal').classList.remove('show');locked=false;moving={x:0,y:0};positions[active].x=Math.min(WORLD.w-24,positions[active].x+70);render()}
 document.getElementById('continueBtn').onclick=closeEvent;document.getElementById('eventClose').onclick=closeEvent;document.getElementById('eventModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeEvent()});
-function showSummary(){locked=true;document.getElementById('sPearl').textContent=loot.pearl;document.getElementById('sOnyx').textContent=loot.onyx;document.getElementById('sGold').textContent=loot.gold;const chars=['abraham','isaac','jacob'];document.getElementById('summaryProgress').innerHTML=chars.map(c=>{const total=events.filter(e=>e.char===c).length,done=events.filter(e=>e.char===c&&completed.has(e.id)).length;return '<div class="prog"><span>'+charInfo[c].name+'</span><b>'+done+' / '+total+'</b><small>事件</small><span class="mileageSummary">🧭 行旅 '+Math.round(mileage[c]).toLocaleString('zh-TW')+' km</span></div>'}).join('');document.getElementById('summaryText').textContent='已探索 '+completed.size+' 個事件，還有 '+(events.length-completed.size)+' 個事件等待發現。';document.getElementById('summaryModal').classList.add('show')}
+function showSummary(){
+ locked=true;
+ document.getElementById('sPearl').textContent=loot.pearl;
+ document.getElementById('sOnyx').textContent=loot.onyx;
+ document.getElementById('sGold').textContent=loot.gold;
+ const gemText=gemTypes.map(t=>t.icon+' '+t.name+' '+gemCollection[t.key]).join('　');
+ document.getElementById('gemSummary').textContent='💎 聖經晶石 '+bonusGemCount+' 顆｜'+gemText;
+ const chars=['abraham','isaac','jacob'];
+ document.getElementById('summaryProgress').innerHTML=chars.map(c=>{const total=events.filter(e=>e.char===c).length,done=events.filter(e=>e.char===c&&completed.has(e.id)).length;return '<div class="prog"><span>'+charInfo[c].name+'</span><b>'+done+' / '+total+'</b><small>事件</small><span class="mileageSummary">🧭 行旅 '+Math.round(mileage[c]).toLocaleString('zh-TW')+' km</span></div>'}).join('');
+ document.getElementById('summaryText').textContent='已探索 '+completed.size+' 個事件，還有 '+(events.length-completed.size)+' 個事件等待發現。聖經晶石是額外探索彩蛋，不影響主線完成度。';
+ document.getElementById('summaryModal').classList.add('show')
+}
 document.getElementById('summaryBtn').onclick=showSummary;document.getElementById('summaryModal').addEventListener('click',e=>{if(e.target===e.currentTarget){e.currentTarget.classList.remove('show');locked=false}});
 try{camera.x=positions[active].x-wrap.clientWidth/2;camera.y=positions[active].y-wrap.clientHeight/2;updateMileageUI(true);render();document.body.dataset.gameReady='true'}catch(err){console.error('Patriarchs init failed:',err);document.getElementById('hint').textContent='遊戲初始化失敗，請重新整理頁面';}
 </script>
