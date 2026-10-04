@@ -5,195 +5,185 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>迦南戰記-約書亞記</title>
 <style>
-:root{
-  --ink:#f5ecd7;--muted:#c7b98f;--panel:#171b18e8;--panel2:#22271f;
-  --gold:#d8b768;--blue:#74a8d8;--red:#c66a61;--green:#7ca36c;--sand:#b99a62;
-}
+:root{--ink:#f5ecd7;--muted:#c7b98f;--panel:#171b18e8;--gold:#d8b768;--blue:#74a8d8;--red:#c66a61;--green:#7ca36c}
 *{box-sizing:border-box}
 html,body{margin:0;background:#0e120f;color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif}
-body{min-height:100vh}
-button{font:inherit}
+body{min-height:100vh} button{font:inherit}
 #game{max-width:1400px;margin:auto;padding:12px}
 .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
-.brand h1{font-size:clamp(20px,3vw,34px);margin:0;color:#f2d98d;letter-spacing:.08em}
-.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
-.stats{display:flex;gap:8px;flex-wrap:wrap}
-.badge{background:#20261f;border:1px solid #3a4338;border-radius:10px;padding:7px 10px;font-size:13px}
+.brand h1{font-size:clamp(20px,3vw,34px);margin:0;color:#f2d98d;letter-spacing:.08em}.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.stats{display:flex;gap:8px;flex-wrap:wrap}.badge{background:#20261f;border:1px solid #3a4338;border-radius:10px;padding:7px 10px;font-size:13px}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:12px}
 .mapwrap{position:relative;min-height:690px;border:1px solid #3b4338;border-radius:16px;overflow:hidden;background:#7b6a44}
-#world{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab}
-#world.dragging{cursor:grabbing}
-#maplayer{position:absolute;width:1200px;height:900px;transform-origin:0 0;
-  background:
-  radial-gradient(circle at 49% 48%,rgba(229,214,157,.35),transparent 12%),
-  radial-gradient(circle at 58% 25%,rgba(96,118,69,.45),transparent 18%),
-  linear-gradient(90deg,#576f68 0 18%,#a88b58 18% 100%);
-}
-.terrain{position:absolute;inset:0;pointer-events:none;background:
-  linear-gradient(100deg,transparent 0 30%,rgba(66,89,50,.28) 30% 36%,transparent 36% 100%),
-  repeating-linear-gradient(0deg,transparent 0 35px,rgba(255,255,255,.025) 36px 37px);
-}
+#world{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab}#world.dragging{cursor:grabbing}
+#maplayer{position:absolute;width:1200px;height:900px;transform-origin:0 0;background:radial-gradient(circle at 49% 48%,rgba(229,214,157,.35),transparent 12%),radial-gradient(circle at 58% 25%,rgba(96,118,69,.45),transparent 18%),linear-gradient(90deg,#576f68 0 18%,#a88b58 18% 100%)}
+.terrain{position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 0 30%,rgba(66,89,50,.28) 30% 36%,transparent 36% 100%),repeating-linear-gradient(0deg,transparent 0 35px,rgba(255,255,255,.025) 36px 37px)}
 .river{position:absolute;left:330px;top:70px;width:28px;height:670px;background:#5c8fb3;border-radius:45%;transform:rotate(-3deg);box-shadow:0 0 0 5px rgba(62,82,83,.22)}
-.sea{position:absolute;left:0;top:0;width:220px;height:900px;background:linear-gradient(#527e8e,#456d7e)}
-.deadsea{position:absolute;left:275px;top:515px;width:110px;height:220px;background:#4b7786;border-radius:48% 48% 45% 52%;transform:rotate(-8deg)}
-.region{position:absolute;color:rgba(244,231,191,.22);font-weight:800;font-size:34px;letter-spacing:.18em;pointer-events:none}
-.road{position:absolute;height:4px;background:rgba(74,52,28,.55);transform-origin:left center;border-radius:5px}
-.city{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;color:var(--ink);cursor:pointer;text-align:center}
-.city .fort{width:38px;height:30px;margin:auto;background:#8f7652;border:3px solid #d7c499;border-radius:5px 5px 9px 9px;box-shadow:0 3px 0 #5d4b33}
-.city.enemy .fort{background:#7f4743;border-color:#d29a92}
-.city.friendly .fort{background:#4f708a;border-color:#9cc1dc}
-.city.locked{filter:grayscale(.8);opacity:.65}
-.city span{display:block;margin-top:4px;font-size:13px;font-weight:700;text-shadow:0 2px 3px #000}
-.city .flag{position:absolute;left:28px;top:-11px;width:18px;height:14px;background:var(--red);clip-path:polygon(0 0,100% 20%,80% 100%,0 82%)}
-.city.friendly .flag{background:var(--blue)}
-.army{position:absolute;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:#27465d;border:3px solid #bcd6e8;display:grid;place-items:center;font-size:27px;box-shadow:0 7px 16px #0007;z-index:8;transition:left .8s linear,top .8s linear}
-.army::after{content:"約書亞軍";position:absolute;top:58px;white-space:nowrap;font-size:12px;background:#111b;padding:3px 6px;border-radius:6px}
-.minimap{height:180px;border:1px solid #424b3e;border-radius:12px;background:linear-gradient(90deg,#4d7180 0 18%,#9a8457 18%);position:relative;overflow:hidden}
-.minimap .river{left:84px;top:14px;width:7px;height:140px}
-.minimap .deadsea{left:72px;top:105px;width:26px;height:54px}
-.mcity{position:absolute;width:8px;height:8px;border-radius:50%;background:#8d3e38;border:1px solid #f0b6ad}
-.marmy{position:absolute;width:10px;height:10px;border-radius:50%;background:#62a6d3;border:2px solid #def0fb;transform:translate(-50%,-50%)}
-.panel{background:var(--panel);border:1px solid #3c463a;border-radius:16px;padding:14px}
-.panel h2{font-size:17px;margin:0 0 10px;color:#efd98c}
-.panel h3{font-size:14px;margin:14px 0 7px;color:#d9c897}
-.log{background:#0c100ddd;border-radius:10px;padding:10px;min-height:115px;font-size:13px;line-height:1.7;color:#ded6bf}
-.actions{display:grid;gap:8px}
-.btn{border:1px solid #65705c;background:#2d372d;color:#f4ecd6;padding:10px 12px;border-radius:10px;cursor:pointer}
-.btn:hover{background:#3a4737}
-.btn.primary{background:#5d6f3f;border-color:#879c5a}
-.btn.warn{background:#704440;border-color:#a96a63}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.objective{border-left:4px solid var(--gold);padding-left:10px;color:#eee1bc;line-height:1.6;font-size:14px}
-.legend{font-size:12px;color:#c9bea3;display:flex;gap:10px;flex-wrap:wrap}
-.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
-.modal{position:absolute;inset:0;background:#080b08db;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
-.modal.show{display:flex}
-.card{width:min(620px,100%);background:#1d241d;border:1px solid #56624e;border-radius:18px;padding:20px}
-.card h2{color:#f3dc91;margin-top:0}
-.battlefield{height:220px;border-radius:12px;background:linear-gradient(#7b8b66 0 42%,#9b8557 42%);position:relative;overflow:hidden;margin:12px 0}
-.wall{position:absolute;left:0;right:0;top:45px;height:70px;background:repeating-linear-gradient(90deg,#8d7652 0 35px,#9d845e 35px 70px);border-top:8px solid #5d4e37;border-bottom:7px solid #5d4e37}
-.troops{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font-size:38px;letter-spacing:8px}
-.progress{height:10px;background:#0d120e;border-radius:8px;overflow:hidden;margin:8px 0}.progress>div{height:100%;background:#c5a85e;width:0}
+.sea{position:absolute;left:0;top:0;width:220px;height:900px;background:linear-gradient(#527e8e,#456d7e)}.deadsea{position:absolute;left:275px;top:515px;width:110px;height:220px;background:#4b7786;border-radius:48% 48% 45% 52%;transform:rotate(-8deg)}
+.region{position:absolute;color:rgba(244,231,191,.22);font-weight:800;font-size:34px;letter-spacing:.18em;pointer-events:none}.road{position:absolute;height:4px;background:rgba(74,52,28,.55);transform-origin:left center;border-radius:5px}
+.city{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;color:var(--ink);cursor:pointer;text-align:center}.city .fort{width:38px;height:30px;margin:auto;background:#8f7652;border:3px solid #d7c499;border-radius:5px 5px 9px 9px;box-shadow:0 3px 0 #5d4b33}
+.city.enemy .fort{background:#7f4743;border-color:#d29a92}.city.friendly .fort{background:#4f708a;border-color:#9cc1dc}.city.locked{filter:grayscale(.8);opacity:.65}.city span{display:block;margin-top:4px;font-size:13px;font-weight:700;text-shadow:0 2px 3px #000}.city .flag{position:absolute;left:28px;top:-11px;width:18px;height:14px;background:var(--red);clip-path:polygon(0 0,100% 20%,80% 100%,0 82%)}.city.friendly .flag{background:var(--blue)}
+.army{position:absolute;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:#27465d;border:3px solid #bcd6e8;display:grid;place-items:center;font-size:27px;box-shadow:0 7px 16px #0007;z-index:8;transition:left .8s linear,top .8s linear}.army::after{content:"約書亞軍";position:absolute;top:58px;white-space:nowrap;font-size:12px;background:#111b;padding:3px 6px;border-radius:6px}
+.minimap{height:180px;border:1px solid #424b3e;border-radius:12px;background:linear-gradient(90deg,#4d7180 0 18%,#9a8457 18%);position:relative;overflow:hidden}.minimap .river{left:84px;top:14px;width:7px;height:140px}.minimap .deadsea{left:72px;top:105px;width:26px;height:54px}.mcity{position:absolute;width:8px;height:8px;border-radius:50%;background:#8d3e38;border:1px solid #f0b6ad}.marmy{position:absolute;width:10px;height:10px;border-radius:50%;background:#62a6d3;border:2px solid #def0fb;transform:translate(-50%,-50%)}
+.panel{background:var(--panel);border:1px solid #3c463a;border-radius:16px;padding:14px}.panel h2{font-size:17px;margin:0 0 10px;color:#efd98c}.panel h3{font-size:14px;margin:14px 0 7px;color:#d9c897}.log{background:#0c100ddd;border-radius:10px;padding:10px;min-height:115px;font-size:13px;line-height:1.7;color:#ded6bf}.actions{display:grid;gap:8px}.btn{border:1px solid #65705c;background:#2d372d;color:#f4ecd6;padding:10px 12px;border-radius:10px;cursor:pointer}.btn:hover{background:#3a4737}.btn.primary{background:#5d6f3f;border-color:#879c5a}.btn.warn{background:#704440;border-color:#a96a63}.btn.blue{background:#294a63;border-color:#5d86a1}.btn:disabled{opacity:.45;cursor:not-allowed}.objective{border-left:4px solid var(--gold);padding-left:10px;color:#eee1bc;line-height:1.6;font-size:14px}.legend{font-size:12px;color:#c9bea3;display:flex;gap:10px;flex-wrap:wrap}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+.modal{position:absolute;inset:0;background:#080b08db;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}.card{width:min(620px,100%);background:#1d241d;border:1px solid #56624e;border-radius:18px;padding:20px}.card h2{color:#f3dc91;margin-top:0}.battlefield{height:220px;border-radius:12px;background:linear-gradient(#7b8b66 0 42%,#9b8557 42%);position:relative;overflow:hidden;margin:12px 0}.wall{position:absolute;left:0;right:0;top:45px;height:70px;background:repeating-linear-gradient(90deg,#8d7652 0 35px,#9d845e 35px 70px);border-top:8px solid #5d4e37;border-bottom:7px solid #5d4e37}.troops{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font-size:38px;letter-spacing:8px}.progress{height:10px;background:#0d120e;border-radius:8px;overflow:hidden;margin:8px 0}.progress>div{height:100%;background:#c5a85e;width:0}
+
+/* real-time battle */
+#battleScreen{position:absolute;inset:0;z-index:40;background:#0b100c;display:none;flex-direction:column}
+#battleScreen.show{display:flex}
+.battleHud{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;padding:8px;background:#151c16;border-bottom:1px solid #394437}
+.hpBlock{min-width:0}.hpLabel{font-size:12px;color:#d8cfb5;margin-bottom:3px;display:flex;justify-content:space-between;gap:8px}.hpbar{height:10px;background:#0b0d0b;border:1px solid #424b3e;border-radius:6px;overflow:hidden}.hpbar i{display:block;height:100%;width:100%;background:#6e9c66;transition:width .15s}.hpbar.enemy i{background:#ad5f56}.battleTitle{text-align:center;font-size:13px;color:#e7d291;white-space:nowrap}
+#battleCanvas{width:100%;height:auto;display:block;background:#8b815d;touch-action:none;flex:1;min-height:360px}
+.battleControls{display:grid;grid-template-columns:180px 1fr;gap:12px;padding:10px;background:#121812;border-top:1px solid #394437}
+.dpad{width:164px;height:120px;display:grid;grid-template-columns:54px 54px 54px;grid-template-rows:54px 54px;gap:4px;align-content:center}
+.dpad button,.battleBtns button{min-height:50px;border:1px solid #65705c;border-radius:12px;background:#263027;color:#fff;font-weight:700;touch-action:none}.dpad .up{grid-column:2}.dpad .left{grid-column:1;grid-row:2}.dpad .down{grid-column:2;grid-row:2}.dpad .right{grid-column:3;grid-row:2}
+.battleBtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:center}.battleBtns .attack{background:#76473f}.battleBtns .ambush{background:#334f6a}.battleBtns .exit{background:#3c423b}.battleTip{grid-column:1/-1;font-size:12px;color:#c8bea4;line-height:1.5;text-align:center}
+#battleMessage{position:absolute;left:50%;top:75px;transform:translateX(-50%);z-index:4;background:#0a0d0acc;border:1px solid #5c6856;border-radius:10px;padding:7px 11px;font-size:13px;pointer-events:none;opacity:0;transition:opacity .2s}.damageFloat{position:absolute;font-weight:800;pointer-events:none;animation:floatUp .7s ease-out forwards}@keyframes floatUp{to{transform:translateY(-35px);opacity:0}}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.mapwrap{min-height:590px}.side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.panel{min-width:0}}
-@media(max-width:620px){#game{padding:7px}.mapwrap{min-height:520px}.side{grid-template-columns:1fr}.brand h1{font-size:22px}.stats{width:100%}.badge{flex:1;text-align:center}.city span{font-size:11px}}
+@media(max-width:620px){#game{padding:7px}.mapwrap{min-height:520px}.side{grid-template-columns:1fr}.brand h1{font-size:22px}.stats{width:100%}.badge{flex:1;text-align:center}.city span{font-size:11px}.battleControls{grid-template-columns:150px 1fr;padding:7px;gap:7px}.dpad{width:146px;grid-template-columns:46px 46px 46px;grid-template-rows:46px 46px}.dpad button,.battleBtns button{min-height:44px;font-size:13px}.battleBtns{grid-template-columns:1fr 1fr}.battleBtns .exit{grid-column:1/-1}.battleTip{font-size:11px}}
 </style>
 </head>
 <body>
 <div id="game">
-  <div class="topbar">
-    <div class="brand"><h1>迦南戰記-約書亞記</h1><p>策略 RPG 原型 · 第一章：過約旦河與耶利哥</p></div>
-    <div class="stats"><div class="badge">軍勢 <b id="troop">600</b></div><div class="badge">士氣 <b id="morale">82</b></div><div class="badge">糧秣 <b id="food">100</b></div></div>
+<div class="topbar">
+  <div class="brand"><h1>迦南戰記-約書亞記</h1><p>策略 RPG · 軍團行軍 × 即時小人物戰場</p></div>
+  <div class="stats"><div class="badge">軍勢 <b id="troop">600</b></div><div class="badge">士氣 <b id="morale">82</b></div><div class="badge">糧秣 <b id="food">100</b></div></div>
+</div>
+<div class="layout">
+<section class="mapwrap">
+  <div id="world" tabindex="0" aria-label="迦南戰略地圖，可拖曳瀏覽">
+    <div id="maplayer">
+      <div class="sea"></div><div class="river"></div><div class="deadsea"></div><div class="terrain"></div>
+      <div class="region" style="left:535px;top:175px">迦南北部</div><div class="region" style="left:525px;top:475px">迦南中部</div><div class="region" style="left:500px;top:720px">迦南南部</div><div class="region" style="left:760px;top:420px">約旦河東</div>
+      <div class="road" style="left:625px;top:620px;width:185px;transform:rotate(-10deg)"></div><div class="road" style="left:500px;top:560px;width:140px;transform:rotate(25deg)"></div>
+      <button class="city friendly" data-city="gilgal" style="left:430px;top:550px"><i class="flag"></i><div class="fort"></div><span>吉甲</span></button>
+      <button class="city enemy" data-city="jericho" style="left:515px;top:500px"><i class="flag"></i><div class="fort"></div><span>耶利哥</span></button>
+      <button class="city enemy locked" data-city="ai" style="left:625px;top:450px"><i class="flag"></i><div class="fort"></div><span>艾城</span></button>
+      <button class="city enemy locked" data-city="gibeon" style="left:590px;top:535px"><i class="flag"></i><div class="fort"></div><span>基遍</span></button>
+      <button class="city enemy locked" data-city="jerusalem" style="left:560px;top:610px"><i class="flag"></i><div class="fort"></div><span>耶路撒冷</span></button>
+      <button class="city enemy locked" data-city="hazor" style="left:590px;top:185px"><i class="flag"></i><div class="fort"></div><span>夏瑣</span></button>
+      <div id="army" class="army" style="left:420px;top:610px" aria-label="約書亞軍">🛡️</div>
+    </div>
+  </div>
+  <div id="storyModal" class="modal" role="dialog" aria-modal="true">
+    <div class="card"><h2 id="modalTitle">耶利哥之戰</h2><p id="modalText"></p><div id="battleBox" class="battlefield" hidden><div class="wall" id="wall"></div><div class="troops">🧍🧍🧍 📯 🧍🧍</div></div><div id="marchProgress" class="progress" hidden><div></div></div><div class="actions"><button id="modalAction" class="btn primary">開始</button><button id="modalClose" class="btn">稍後再說</button></div></div>
   </div>
 
-  <div class="layout">
-    <section class="mapwrap">
-      <div id="world" tabindex="0" aria-label="迦南戰略地圖，可拖曳瀏覽">
-        <div id="maplayer">
-          <div class="sea"></div><div class="river"></div><div class="deadsea"></div><div class="terrain"></div>
-          <div class="region" style="left:535px;top:175px">迦南北部</div>
-          <div class="region" style="left:525px;top:475px">迦南中部</div>
-          <div class="region" style="left:500px;top:720px">迦南南部</div>
-          <div class="region" style="left:760px;top:420px">約旦河東</div>
-          <div class="road" style="left:625px;top:620px;width:185px;transform:rotate(-10deg)"></div>
-          <div class="road" style="left:500px;top:560px;width:140px;transform:rotate(25deg)"></div>
-          <button class="city friendly" data-city="gilgal" style="left:430px;top:550px"><i class="flag"></i><div class="fort"></div><span>吉甲</span></button>
-          <button class="city enemy" data-city="jericho" style="left:515px;top:500px"><i class="flag"></i><div class="fort"></div><span>耶利哥</span></button>
-          <button class="city enemy locked" data-city="ai" style="left:625px;top:450px"><i class="flag"></i><div class="fort"></div><span>艾城</span></button>
-          <button class="city enemy locked" data-city="gibeon" style="left:590px;top:535px"><i class="flag"></i><div class="fort"></div><span>基遍</span></button>
-          <button class="city enemy locked" data-city="jerusalem" style="left:560px;top:610px"><i class="flag"></i><div class="fort"></div><span>耶路撒冷</span></button>
-          <button class="city enemy locked" data-city="hazor" style="left:590px;top:185px"><i class="flag"></i><div class="fort"></div><span>夏瑣</span></button>
-          <div id="army" class="army" style="left:420px;top:610px" aria-label="約書亞軍">🛡️</div>
-        </div>
+  <div id="battleScreen" aria-label="艾城即時戰場">
+    <div class="battleHud">
+      <div class="hpBlock"><div class="hpLabel"><span>約書亞 HP</span><b id="playerHpText">120 / 120</b></div><div class="hpbar"><i id="playerHpBar"></i></div></div>
+      <div class="battleTitle">艾城戰場<br><span id="enemyCount">敵軍 12</span></div>
+      <div class="hpBlock"><div class="hpLabel"><span>敵將 HP</span><b id="bossHpText">180 / 180</b></div><div class="hpbar enemy"><i id="bossHpBar"></i></div></div>
+    </div>
+    <div style="position:relative;flex:1;min-height:360px"><canvas id="battleCanvas" width="900" height="540"></canvas><div id="battleMessage"></div></div>
+    <div class="battleControls">
+      <div class="dpad">
+        <button class="up" data-move="up">▲</button><button class="left" data-move="left">◀</button><button class="down" data-move="down">▼</button><button class="right" data-move="right">▶</button>
       </div>
-      <div id="storyModal" class="modal" role="dialog" aria-modal="true">
-        <div class="card">
-          <h2 id="modalTitle">耶利哥之戰</h2>
-          <p id="modalText"></p>
-          <div id="battleBox" class="battlefield" hidden>
-            <div class="wall" id="wall"></div>
-            <div class="troops">🧍🧍🧍 📯 🧍🧍</div>
-          </div>
-          <div id="marchProgress" class="progress" hidden><div></div></div>
-          <div class="actions">
-            <button id="modalAction" class="btn primary">開始</button>
-            <button id="modalClose" class="btn">稍後再說</button>
-          </div>
-        </div>
+      <div class="battleBtns">
+        <button class="attack" id="attackBtn">⚔ 攻擊</button><button class="ambush" id="ambushBtn">伏兵出擊</button><button class="exit" id="exitBattle">退出戰場</button>
+        <div class="battleTip">鍵盤：WASD／方向鍵移動，Space 攻擊。靠近敵人後攻擊會扣血；友軍會自行迎戰。</div>
       </div>
-    </section>
-
-    <aside class="side">
-      <div class="panel">
-        <h2>戰略小地圖</h2>
-        <div class="minimap">
-          <div class="river"></div><div class="deadsea"></div>
-          <i class="mcity" style="left:108px;top:108px"></i>
-          <i class="mcity" style="left:126px;top:90px"></i>
-          <i class="mcity" style="left:118px;top:126px"></i>
-          <i class="mcity" style="left:122px;top:38px"></i>
-          <div id="marmy" class="marmy" style="left:105px;top:122px"></div>
-        </div>
-        <div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div>
-      </div>
-      <div class="panel">
-        <h2>主線任務</h2>
-        <div class="objective" id="objective">前往吉甲整軍，準備進入耶利哥戰役。</div>
-        <h3>軍令</h3>
-        <div class="actions">
-          <button class="btn primary" id="goGilgal">前往吉甲</button>
-          <button class="btn warn" id="goJericho" disabled>進軍耶利哥</button>
-        </div>
-      </div>
-      <div class="panel">
-        <h2>戰記</h2>
-        <div class="log" id="log">約書亞接續摩西的使命。以色列百姓已渡過約旦河，現在必須在吉甲整軍。</div>
-      </div>
-    </aside>
+    </div>
   </div>
+</section>
+
+<aside class="side">
+  <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><div class="river"></div><div class="deadsea"></div><i class="mcity" style="left:108px;top:108px"></i><i class="mcity" style="left:126px;top:90px"></i><i class="mcity" style="left:118px;top:126px"></i><i class="mcity" style="left:122px;top:38px"></i><div id="marmy" class="marmy" style="left:105px;top:122px"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
+  <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">前往吉甲整軍，準備進入耶利哥戰役。</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn blue" id="battleDemo">⚔ 艾城戰場演練</button></div></div>
+  <div class="panel"><h2>戰記</h2><div class="log" id="log">約書亞接續摩西的使命。以色列百姓已渡過約旦河，現在必須在吉甲整軍。也可直接進入「艾城戰場演練」測試即時戰鬥。</div></div>
+</aside>
+</div>
 </div>
 
 <script>
-(()=>{
-const $=s=>document.querySelector(s);
+(function(){
+const $=function(s){return document.querySelector(s)};
 const state={x:420,y:610,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false};
-const cities={
- gilgal:{x:430,y:550,name:"吉甲"},jericho:{x:515,y:500,name:"耶利哥"},
- ai:{x:625,y:450,name:"艾城"},gibeon:{x:590,y:535,name:"基遍"},
- jerusalem:{x:560,y:610,name:"耶路撒冷"},hazor:{x:590,y:185,name:"夏瑣"}
-};
+const cities={gilgal:{x:430,y:550,name:"吉甲"},jericho:{x:515,y:500,name:"耶利哥"},ai:{x:625,y:450,name:"艾城"},gibeon:{x:590,y:535,name:"基遍"},jerusalem:{x:560,y:610,name:"耶路撒冷"},hazor:{x:590,y:185,name:"夏瑣"}};
 const army=$("#army"),marmy=$("#marmy"),log=$("#log"),objective=$("#objective");
 function say(t){log.textContent=t}
 function sync(){army.style.left=state.x+"px";army.style.top=state.y+"px";marmy.style.left=(state.x/4)+"px";marmy.style.top=(state.y/5)+"px";$("#troop").textContent=state.troop;$("#morale").textContent=state.morale;$("#food").textContent=state.food}
-function moveTo(city,done){if(state.moving)return;state.moving=true;state.x=city.x;state.y=city.y;state.food=Math.max(0,state.food-3);sync();setTimeout(()=>{state.moving=false;done&&done()},850)}
-$("#goGilgal").addEventListener("click",()=>moveTo(cities.gilgal,()=>{state.at="gilgal";state.stage=Math.max(state.stage,1);say("軍隊抵達吉甲。百姓安營，約書亞準備依照吩咐面對耶利哥。");objective.textContent="前往耶利哥城外，開始七日繞城任務。";$("#goGilgal").disabled=true;$("#goJericho").disabled=false;}));
-$("#goJericho").addEventListener("click",()=>moveTo(cities.jericho,()=>openJericho()));
-document.querySelectorAll(".city").forEach(b=>b.addEventListener("click",()=>{
- const id=b.dataset.city,c=cities[id];
- if(b.classList.contains("locked")){say(c.name+"目前尚未開放。完成耶利哥戰役後，戰線才會向迦南中部展開。");return}
- if(id==="gilgal")$("#goGilgal").click();
- if(id==="jericho"&&state.stage>=1)$("#goJericho").click();
-}));
+function moveTo(city,done){if(state.moving)return;state.moving=true;state.x=city.x;state.y=city.y;state.food=Math.max(0,state.food-3);sync();setTimeout(function(){state.moving=false;if(done)done()},850)}
+$("#goGilgal").addEventListener("click",function(){moveTo(cities.gilgal,function(){state.at="gilgal";state.stage=Math.max(state.stage,1);say("軍隊抵達吉甲。百姓安營，約書亞準備依照吩咐面對耶利哥。");objective.textContent="前往耶利哥城外，開始七日繞城任務。";$("#goGilgal").disabled=true;$("#goJericho").disabled=false})});
+$("#goJericho").addEventListener("click",function(){moveTo(cities.jericho,openJericho)});
+document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click",function(){var id=b.dataset.city,c=cities[id];if(b.classList.contains("locked")){say(c.name+"目前尚未開放。完成耶利哥戰役後，戰線才會向迦南中部展開。");return}if(id==="gilgal")$("#goGilgal").click();if(id==="jericho"&&state.stage>=1)$("#goJericho").click();if(id==="ai"&&state.stage>=2)startBattle()})});
 const modal=$("#storyModal"),title=$("#modalTitle"),text=$("#modalText"),action=$("#modalAction"),close=$("#modalClose"),battle=$("#battleBox"),progress=$("#marchProgress"),bar=progress.firstElementChild;
-function openJericho(){
- modal.classList.add("show");title.textContent="耶利哥之戰";
- if(state.marches<6){text.textContent="第 "+(state.marches+1)+" 日：祭司抬著約櫃，七位祭司在前吹角。今天繞城一次，不可呼喊。";action.textContent="繞城一周";battle.hidden=true;progress.hidden=false;bar.style.width=(state.marches/7*100)+"%";}
- else if(state.marches===6){text.textContent="第七日到了。今天要繞城七次，最後祭司角聲長鳴，百姓一同呼喊。";action.textContent="完成第七日";battle.hidden=false;progress.hidden=false;bar.style.width="86%";}
- else {text.textContent="城牆已倒塌。耶利哥成為以色列在迦南取得的第一個重要據點。";action.textContent="返回戰略地圖";battle.hidden=false;progress.hidden=true;}
-}
-action.addEventListener("click",()=>{
- if(state.marches<6){state.marches++;state.food=Math.max(0,state.food-2);state.morale=Math.min(100,state.morale+1);sync();modal.classList.remove("show");say("完成第 "+state.marches+" 日繞城。軍隊保持安靜，返回營中。");objective.textContent="耶利哥繞城進度："+state.marches+" / 7 日。再次進軍耶利哥繼續任務。";}
- else if(state.marches===6){state.marches=7;bar.style.width="100%";text.textContent="角聲長鳴，百姓大聲呼喊！耶利哥城牆倒塌。";$("#wall").style.transform="translateY(90px) rotate(2deg)";$("#wall").style.transition="transform 1s ease";state.morale=95;sync();action.textContent="佔領耶利哥";say("耶利哥城牆倒塌！戰役勝利。");}
- else {modal.classList.remove("show");state.stage=2;document.querySelector('[data-city="jericho"]').classList.remove("enemy");document.querySelector('[data-city="jericho"]').classList.add("friendly");document.querySelector('[data-city="ai"]').classList.remove("locked");objective.textContent="第一章完成。下一戰：偵察艾城。";$("#goJericho").disabled=true;say("第一章完成：耶利哥已成為以色列據點。艾城路線開放。");}
-});
-close.addEventListener("click",()=>modal.classList.remove("show"));
+function openJericho(){modal.classList.add("show");title.textContent="耶利哥之戰";if(state.marches<6){text.textContent="第 "+(state.marches+1)+" 日：祭司抬著約櫃，七位祭司在前吹角。今天繞城一次，不可呼喊。";action.textContent="繞城一周";battle.hidden=true;progress.hidden=false;bar.style.width=(state.marches/7*100)+"%"}else if(state.marches===6){text.textContent="第七日到了。今天要繞城七次，最後祭司角聲長鳴，百姓一同呼喊。";action.textContent="完成第七日";battle.hidden=false;progress.hidden=false;bar.style.width="86%"}else{text.textContent="城牆已倒塌。耶利哥成為以色列在迦南取得的第一個重要據點。";action.textContent="返回戰略地圖";battle.hidden=false;progress.hidden=true}}
+action.addEventListener("click",function(){if(state.marches<6){state.marches++;state.food=Math.max(0,state.food-2);state.morale=Math.min(100,state.morale+1);sync();modal.classList.remove("show");say("完成第 "+state.marches+" 日繞城。軍隊保持安靜，返回營中。");objective.textContent="耶利哥繞城進度："+state.marches+" / 7 日。再次進軍耶利哥繼續任務。"}else if(state.marches===6){state.marches=7;bar.style.width="100%";text.textContent="角聲長鳴，百姓大聲呼喊！耶利哥城牆倒塌。";$("#wall").style.transform="translateY(90px) rotate(2deg)";$("#wall").style.transition="transform 1s ease";state.morale=95;sync();action.textContent="佔領耶利哥";say("耶利哥城牆倒塌！戰役勝利。")}else{modal.classList.remove("show");state.stage=2;document.querySelector('[data-city="jericho"]').classList.remove("enemy");document.querySelector('[data-city="jericho"]').classList.add("friendly");document.querySelector('[data-city="ai"]').classList.remove("locked");objective.textContent="下一戰：艾城。可點擊艾城進入即時戰場。";$("#goJericho").disabled=true;say("耶利哥已成為以色列據點。艾城路線開放。")}});close.addEventListener("click",function(){modal.classList.remove("show")});
 
-/* map pan + zoom */
+/* map pan */
 const world=$("#world"),layer=$("#maplayer");let scale=.9,px=-180,py=-155,drag=false,sx=0,sy=0,bx=0,by=0;
-function render(){layer.style.transform=`translate(${px}px,${py}px) scale(${scale})`}
-world.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;drag=true;world.classList.add("dragging");sx=e.clientX;sy=e.clientY;bx=px;by=py;world.setPointerCapture(e.pointerId)});
-world.addEventListener("pointermove",e=>{if(!drag)return;px=bx+(e.clientX-sx);py=by+(e.clientY-sy);render()});
-world.addEventListener("pointerup",()=>{drag=false;world.classList.remove("dragging")});
-world.addEventListener("wheel",e=>{e.preventDefault();const old=scale;scale=Math.max(.55,Math.min(1.45,scale*(e.deltaY<0?1.08:.92)));const r=world.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;px=mx-(mx-px)*(scale/old);py=my-(my-py)*(scale/old);render()},{passive:false});
+function render(){layer.style.transform="translate("+px+"px,"+py+"px) scale("+scale+")"}
+world.addEventListener("pointerdown",function(e){if(e.target.closest("button"))return;drag=true;world.classList.add("dragging");sx=e.clientX;sy=e.clientY;bx=px;by=py;world.setPointerCapture(e.pointerId)});
+world.addEventListener("pointermove",function(e){if(!drag)return;px=bx+(e.clientX-sx);py=by+(e.clientY-sy);render()});
+world.addEventListener("pointerup",function(){drag=false;world.classList.remove("dragging")});
+world.addEventListener("wheel",function(e){e.preventDefault();var old=scale;scale=Math.max(.55,Math.min(1.45,scale*(e.deltaY<0?1.08:.92)));var r=world.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;px=mx-(mx-px)*(scale/old);py=my-(my-py)*(scale/old);render()},{passive:false});
+
+/* battle engine */
+const battleScreen=$("#battleScreen"),canvas=$("#battleCanvas"),ctx=canvas.getContext("2d");
+let battleState=null,raf=0,last=0,keys={};
+function unit(team,x,y,hp,role){return {team:team,x:x,y:y,hp:hp,maxHp:hp,role:role||"soldier",speed:team==="player"?145:team==="ally"?76:64,attackCd:0,hitFlash:0,dead:false,dir:1}}
+function startBattle(){
+  modal.classList.remove("show");battleScreen.classList.add("show");
+  battleState={running:true,ambush:false,won:false,lost:false,player:unit("player",160,330,120,"joshua"),allies:[],enemies:[],boss:null,time:0};
+  for(var i=0;i<7;i++)battleState.allies.push(unit("ally",115+(i%3)*38,370+Math.floor(i/3)*34,55,"soldier"));
+  for(var j=0;j<11;j++)battleState.enemies.push(unit("enemy",610+(j%4)*42,270+Math.floor(j/4)*48,48,"soldier"));
+  battleState.boss=unit("enemy",765,200,180,"boss");battleState.enemies.push(battleState.boss);
+  $("#ambushBtn").disabled=false;showBattleMessage("操控約書亞接近敵軍，按「攻擊」造成傷害。");updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
+}
+$("#battleDemo").addEventListener("click",startBattle);
+$("#exitBattle").addEventListener("click",endBattle);
+function endBattle(){if(battleState)battleState.running=false;cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};say("已離開艾城戰場演練。戰略地圖與即時戰場會共同構成正式玩法。")}
+function resizeCanvas(){var box=canvas.getBoundingClientRect();var ratio=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.max(620,Math.floor(box.width*ratio));canvas.height=Math.max(360,Math.floor(box.height*ratio));ctx.setTransform(ratio,0,0,ratio,0,0);return {w:box.width,h:box.height}}
+function dist(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.hypot(dx,dy)}
+function nearest(from,list){var best=null,bd=1e9;for(var i=0;i<list.length;i++){var u=list[i];if(u.dead)continue;var d=dist(from,u);if(d<bd){bd=d;best=u}}return {u:best,d:bd}}
+function moveToward(a,b,speed,dt){if(!b)return;var dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;a.x+=dx/d*speed*dt;a.y+=dy/d*speed*dt;a.dir=dx>=0?1:-1}
+function doDamage(target,amount){if(!target||target.dead)return;target.hp=Math.max(0,target.hp-amount);target.hitFlash=.12;if(target.hp<=0){target.dead=true}updateHud()}
+function attack(attacker,target,amount,range){if(!target||target.dead||attacker.attackCd>0||dist(attacker,target)>range)return false;attacker.attackCd=.55;doDamage(target,amount);return true}
+function playerAttack(){if(!battleState||!battleState.running||battleState.player.dead)return;var n=nearest(battleState.player,battleState.enemies);if(n.u&&n.d<72){attack(battleState.player,n.u,battleState.player.role==="joshua"?28:18,72);showBattleMessage("約書亞揮劍！ -28")}else showBattleMessage("敵人太遠，靠近後再攻擊。")}
+$("#attackBtn").addEventListener("click",playerAttack);
+$("#ambushBtn").addEventListener("click",function(){if(!battleState||battleState.ambush)return;battleState.ambush=true;for(var i=0;i<6;i++)battleState.allies.push(unit("ally",820-(i%3)*36,410+Math.floor(i/3)*34,60,"ambush"));$("#ambushBtn").disabled=true;showBattleMessage("伏兵從艾城後方出擊！敵軍陷入夾擊。")});
+function updateHud(){if(!battleState)return;var p=battleState.player,b=battleState.boss;$("#playerHpText").textContent=Math.ceil(p.hp)+" / "+p.maxHp;$("#playerHpBar").style.width=(p.hp/p.maxHp*100)+"%";$("#bossHpText").textContent=Math.ceil(b.hp)+" / "+b.maxHp;$("#bossHpBar").style.width=(b.hp/b.maxHp*100)+"%";var alive=battleState.enemies.filter(function(u){return !u.dead}).length;$("#enemyCount").textContent="敵軍 "+alive}
+function showBattleMessage(t){var el=$("#battleMessage");el.textContent=t;el.style.opacity="1";clearTimeout(el._timer);el._timer=setTimeout(function(){el.style.opacity="0"},1500)}
+function update(dt){
+  var bs=battleState,p=bs.player;if(!bs.running)return;
+  p.attackCd=Math.max(0,p.attackCd-dt);p.hitFlash=Math.max(0,p.hitFlash-dt);
+  var mx=(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0),my=(keys.ArrowDown||keys.s?1:0)-(keys.ArrowUp||keys.w?1:0);
+  if(mx||my){var m=Math.hypot(mx,my)||1;p.x+=mx/m*p.speed*dt;p.y+=my/m*p.speed*dt;p.dir=mx>=0?1:-1}
+  p.x=Math.max(24,Math.min(876,p.x));p.y=Math.max(125,Math.min(510,p.y));
+  bs.allies.forEach(function(a){if(a.dead)return;a.attackCd=Math.max(0,a.attackCd-dt);a.hitFlash=Math.max(0,a.hitFlash-dt);var n=nearest(a,bs.enemies);if(n.u){if(n.d>45)moveToward(a,n.u,a.speed,dt);else attack(a,n.u,a.role==="ambush"?13:10,48)}});
+  bs.enemies.forEach(function(e){if(e.dead)return;e.attackCd=Math.max(0,e.attackCd-dt);e.hitFlash=Math.max(0,e.hitFlash-dt);var targets=[p].concat(bs.allies);var n=nearest(e,targets);if(n.u){if(n.d>46)moveToward(e,n.u,e.role==="boss"?54:e.speed,dt);else attack(e,n.u,e.role==="boss"?14:8,49)}});
+  if(p.dead&&!bs.lost){bs.lost=true;bs.running=false;showBattleMessage("約書亞倒下，演練失敗。");setTimeout(function(){if(confirm("戰敗，是否重新挑戰？"))startBattle();else endBattle()},700)}
+  var alive=bs.enemies.some(function(u){return !u.dead});if(!alive&&!bs.won){bs.won=true;bs.running=false;showBattleMessage("艾城戰場演練勝利！");state.morale=Math.min(100,state.morale+3);sync();setTimeout(function(){alert("戰場演練勝利！\n\n您剛才體驗的是正式核心：主將操作、HP、即時扣血、友軍 AI、敵軍 AI 與伏兵。");endBattle()},700)}
+}
+function drawUnit(u){
+  if(u.dead)return;ctx.save();ctx.translate(u.x,u.y);ctx.scale(u.dir,1);
+  if(u.hitFlash>0){ctx.globalAlpha=.45}
+  ctx.fillStyle="rgba(0,0,0,.25)";ctx.beginPath();ctx.ellipse(0,15,14,6,0,0,Math.PI*2);ctx.fill();
+  var body=u.team==="enemy"?"#8f423e":u.team==="player"?"#2f6f9a":u.role==="ambush"?"#507b93":"#4d7390";
+  var trim=u.role==="boss"?"#e0b45f":u.team==="player"?"#d8c274":"#d1d7cf";
+  ctx.fillStyle=body;ctx.fillRect(-10,-8,20,25);ctx.fillStyle="#d3ad86";ctx.beginPath();ctx.arc(0,-15,8,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=trim;ctx.fillRect(-11,-5,22,5);ctx.strokeStyle="#d9d0ad";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(9,0);ctx.lineTo(20,-10);ctx.stroke();
+  if(u.role==="boss"){ctx.fillStyle="#e0b45f";ctx.fillRect(-9,-27,18,4)}
+  if(u.team==="player"){ctx.fillStyle="#f4e39e";ctx.font="bold 10px sans-serif";ctx.textAlign="center";ctx.fillText("約",0,-30)}
+  ctx.restore();
+  var w=u.role==="boss"?38:28;ctx.fillStyle="#1a1a1a";ctx.fillRect(u.x-w/2,u.y-39,w,4);ctx.fillStyle=u.team==="enemy"?"#c45e54":"#78aa70";ctx.fillRect(u.x-w/2,u.y-39,w*(u.hp/u.maxHp),4)
+}
+function draw(){
+  var s=resizeCanvas(),w=s.w,h=s.h;ctx.clearRect(0,0,w,h);
+  var sx=w/900,sy=h/540;ctx.save();ctx.scale(sx,sy);
+  var g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,"#73835d");g.addColorStop(.28,"#8b825e");g.addColorStop(1,"#9b8a66");ctx.fillStyle=g;ctx.fillRect(0,0,900,540);
+  ctx.fillStyle="#8a704c";ctx.fillRect(650,80,250,82);ctx.fillStyle="#66543b";for(var i=0;i<7;i++)ctx.fillRect(654+i*38,70,26,24);
+  ctx.fillStyle="#5f6e4e";ctx.beginPath();ctx.moveTo(0,105);ctx.lineTo(220,70);ctx.lineTo(360,128);ctx.lineTo(500,95);ctx.lineTo(650,130);ctx.lineTo(650,170);ctx.lineTo(0,170);ctx.closePath();ctx.fill();
+  ctx.strokeStyle="rgba(74,55,35,.35)";ctx.lineWidth=18;ctx.beginPath();ctx.moveTo(60,430);ctx.quadraticCurveTo(420,300,720,245);ctx.stroke();
+  battleState.allies.forEach(drawUnit);battleState.enemies.forEach(drawUnit);drawUnit(battleState.player);
+  ctx.restore()
+}
+function loop(now){if(!battleState)return;var dt=Math.min(.032,(now-last)/1000);last=now;if(battleState.running)update(dt);draw();if(battleScreen.classList.contains("show"))raf=requestAnimationFrame(loop)}
+window.addEventListener("keydown",function(e){if(!battleScreen.classList.contains("show"))return;var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if(k===" "){e.preventDefault();playerAttack()}if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(k)>=0)e.preventDefault()});
+window.addEventListener("keyup",function(e){var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});
+document.querySelectorAll("[data-move]").forEach(function(b){var map={up:"ArrowUp",down:"ArrowDown",left:"ArrowLeft",right:"ArrowRight"},k=map[b.dataset.move];function on(){keys[k]=true}function off(){keys[k]=false}b.addEventListener("pointerdown",function(e){e.preventDefault();on()});b.addEventListener("pointerup",off);b.addEventListener("pointercancel",off);b.addEventListener("pointerleave",off)});
 render();sync();
 })();
 </script>
