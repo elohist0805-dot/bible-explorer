@@ -169,133 +169,27 @@ function update(dt){
   var alive=bs.enemies.some(function(u){return !u.dead});if(!alive&&!bs.won){bs.won=true;bs.running=false;p.anim="victory";p.animLock=999;showBattleMessage("艾城戰場演練勝利！");state.morale=Math.min(100,state.morale+3);sync();setTimeout(function(){alert("戰場演練勝利！\n\n約書亞現在已使用正式 Sprite 動畫。");endBattle()},1100)}
 }
 function drawJoshua(u){
-  var stateName=u.anim||"idle";
-  var t=u.animClock||0;
-  var walkBob=stateName==="walk"?Math.sin(t*18)*2:0;
-  var legSwing=stateName==="walk"?Math.sin(t*18)*5:0;
-  var hurt=stateName==="hurt";
-  var command=stateName==="command";
-  var victory=stateName==="victory";
-  var defeated=stateName==="defeated";
-  var attackState=stateName==="attack";
-  var s=1.05;
-
+  if(!joshuaSprite.complete||!joshuaSprite.naturalWidth)return false;
+  var frame;
+  if(u.anim==="defeated")frame=JFRAMES.defeated;
+  else if(u.anim==="victory")frame=JFRAMES.victory;
+  else if(u.anim==="command")frame=JFRAMES.command;
+  else if(u.anim==="hurt")frame=JFRAMES.hurt;
+  else if(u.anim==="attack")frame=u.dir>=0?JFRAMES.attackR:JFRAMES.attackL;
+  else if(u.anim==="walk"){
+    var alt=Math.floor(u.animClock/0.14)%2;
+    frame=u.dir>=0?(alt?JFRAMES.walkR2:JFRAMES.walkR1):(alt?JFRAMES.walkL2:JFRAMES.walkL1);
+  }else frame=u.dir>=0?JFRAMES.idleR:JFRAMES.idleL;
+  var col=frame%4,row=Math.floor(frame/4);
+  var dw=72,dh=97;
+  if(frame===JFRAMES.defeated){dw=92;dh=74}
   ctx.save();
-  ctx.translate(u.x,u.y+12);
-  ctx.scale(u.dir>=0?s:-s,s);
-
-  if(defeated){
-    ctx.rotate(-0.08);
-    ctx.fillStyle="rgba(0,0,0,.24)";
-    ctx.beginPath();ctx.ellipse(0,8,34,9,0,0,Math.PI*2);ctx.fill();
-    // cape
-    ctx.fillStyle="#245aa2";ctx.beginPath();ctx.ellipse(-5,-4,29,13,-0.15,0,Math.PI*2);ctx.fill();
-    ctx.strokeStyle="#e0b94f";ctx.lineWidth=3;ctx.stroke();
-    // body
-    ctx.fillStyle="#f2e2bd";ctx.fillRect(-8,-11,28,15);
-    ctx.fillStyle="#8a5a34";ctx.fillRect(15,-4,18,8);
-    // head
-    ctx.fillStyle="#d9a06f";ctx.beginPath();ctx.arc(-18,-7,9,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#5a351f";ctx.beginPath();ctx.arc(-20,-11,8,Math.PI,Math.PI*2);ctx.fill();
-    // shield
-    ctx.fillStyle="#1f61aa";ctx.strokeStyle="#d8ad3e";ctx.lineWidth=3;ctx.beginPath();ctx.arc(25,1,11,0,Math.PI*2);ctx.fill();ctx.stroke();
-    // fallen sword
-    ctx.strokeStyle="#e9edf2";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-5,9);ctx.lineTo(34,14);ctx.stroke();
-    ctx.restore();
-    return true;
-  }
-
-  ctx.translate(0,walkBob);
-  if(hurt){ctx.rotate(-0.12)}
-
-  // shadow
-  ctx.fillStyle="rgba(0,0,0,.24)";
-  ctx.beginPath();ctx.ellipse(0,17,18,6,0,0,Math.PI*2);ctx.fill();
-
-  // cape behind
-  ctx.fillStyle=hurt?"#234b83":"#245aa2";
-  ctx.strokeStyle="#d8ad3e";ctx.lineWidth=2.5;
-  ctx.beginPath();
-  ctx.moveTo(-10,-26);
-  ctx.quadraticCurveTo(-25,-10,-19,12);
-  ctx.quadraticCurveTo(-5,9,1,0);
-  ctx.closePath();ctx.fill();ctx.stroke();
-
-  // legs
-  ctx.strokeStyle="#6d4327";ctx.lineWidth=7;ctx.lineCap="round";
-  ctx.beginPath();ctx.moveTo(-6,5);ctx.lineTo(-8-legSwing*.35,17);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(7,5);ctx.lineTo(8+legSwing*.35,17);ctx.stroke();
-  ctx.strokeStyle="#3a271b";ctx.lineWidth=4;
-  ctx.beginPath();ctx.moveTo(-13-legSwing*.35,18);ctx.lineTo(-4-legSwing*.35,18);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(4+legSwing*.35,18);ctx.lineTo(13+legSwing*.35,18);ctx.stroke();
-
-  // tunic
-  ctx.fillStyle="#f3e4bf";ctx.strokeStyle="#704c2b";ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(-11,-17);ctx.lineTo(11,-17);ctx.lineTo(15,7);ctx.lineTo(-14,7);ctx.closePath();ctx.fill();ctx.stroke();
-  ctx.fillStyle="#c89b34";ctx.fillRect(-12,-5,24,4);
-
-  // head
-  ctx.fillStyle=hurt?"#c99068":"#d9a06f";ctx.beginPath();ctx.arc(0,-31,10,0,Math.PI*2);ctx.fill();
-  // hair
-  ctx.fillStyle="#5a351f";ctx.beginPath();ctx.arc(-1,-35,10,Math.PI,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.moveTo(-10,-34);ctx.lineTo(-6,-43);ctx.lineTo(0,-38);ctx.lineTo(5,-44);ctx.lineTo(10,-34);ctx.closePath();ctx.fill();
-  // headband
-  ctx.strokeStyle="#e0b94f";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-8,-35);ctx.lineTo(8,-35);ctx.stroke();
-  // face
-  ctx.fillStyle="#1d1b18";ctx.beginPath();ctx.arc(4,-31,1.5,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle="#5b2e1f";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-2,-24);ctx.lineTo(6,-23);ctx.stroke();
-
-  // shield arm
-  ctx.fillStyle="#d9a06f";ctx.beginPath();ctx.arc(-10,-11,4,0,Math.PI*2);ctx.fill();
-  ctx.save();
-  ctx.translate(-14,-8);
-  if(command)ctx.rotate(-0.15);
-  ctx.fillStyle="#1f61aa";ctx.strokeStyle="#d8ad3e";ctx.lineWidth=3;
-  ctx.beginPath();ctx.arc(0,0,11,0,Math.PI*2);ctx.fill();ctx.stroke();
-  ctx.fillStyle="#d8ad3e";ctx.beginPath();ctx.arc(0,0,3,0,Math.PI*2);ctx.fill();
+  if(u.hitFlash>0)ctx.globalAlpha=.58;
+  ctx.imageSmoothingEnabled=false;
+  ctx.fillStyle="rgba(0,0,0,.25)";ctx.beginPath();ctx.ellipse(u.x,u.y+18,19,7,0,0,Math.PI*2);ctx.fill();
+  ctx.drawImage(joshuaSprite,col*JFW,row*JFH,JFW,JFH,u.x-dw/2,u.y+22-dh,dw,dh);
   ctx.restore();
-
-  // sword / command arm
-  ctx.save();
-  ctx.translate(9,-12);
-  var ang=0.45;
-  if(attackState)ang=-1.05;
-  if(command)ang=-0.15;
-  if(victory)ang=-1.45;
-  if(hurt)ang=0.95;
-  ctx.rotate(ang);
-  ctx.strokeStyle="#d9a06f";ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(9,0);ctx.stroke();
-
-  if(command){
-    // pointing hand
-    ctx.strokeStyle="#d9a06f";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(8,0);ctx.lineTo(22,0);ctx.stroke();
-    ctx.fillStyle="#d9a06f";ctx.beginPath();ctx.arc(23,0,3,0,Math.PI*2);ctx.fill();
-  }else{
-    // sword
-    ctx.strokeStyle="#b37b28";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(8,-5);ctx.lineTo(8,5);ctx.stroke();
-    ctx.strokeStyle="#eef2f5";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(9,0);ctx.lineTo(31,0);ctx.stroke();
-    ctx.strokeStyle="#9aa6b2";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(10,-1);ctx.lineTo(31,-1);ctx.stroke();
-    if(attackState){
-      ctx.strokeStyle="rgba(177,224,255,.75)";ctx.lineWidth=5;
-      ctx.beginPath();ctx.arc(7,0,30,-1.2,0.5);ctx.stroke();
-    }
-  }
-  ctx.restore();
-
-  if(victory){
-    ctx.fillStyle="#f3d66c";ctx.font="bold 12px sans-serif";ctx.textAlign="center";ctx.fillText("✦",0,-54);
-  }
-
-  if(hurt){
-    ctx.strokeStyle="#f0765c";ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(-22,-30);ctx.lineTo(-29,-36);ctx.moveTo(-22,-35);ctx.lineTo(-29,-29);ctx.stroke();
-  }
-
-  ctx.restore();
-
-  // HP bar
-  ctx.fillStyle="#1a1a1a";ctx.fillRect(u.x-24,u.y-58,48,5);
-  ctx.fillStyle="#78aa70";ctx.fillRect(u.x-24,u.y-58,48*(u.hp/u.maxHp),5);
+  ctx.fillStyle="#1a1a1a";ctx.fillRect(u.x-23,u.y-55,46,5);ctx.fillStyle="#78aa70";ctx.fillRect(u.x-23,u.y-55,46*(u.hp/u.maxHp),5);
   return true;
 }
 function drawUnit(u){
