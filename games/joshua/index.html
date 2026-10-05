@@ -14,8 +14,8 @@ body{min-height:100vh} button{font:inherit}
 .brand h1{font-size:clamp(20px,3vw,34px);margin:0;color:#f2d98d;letter-spacing:.08em}.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .stats{display:flex;gap:8px;flex-wrap:wrap}.badge{background:#20261f;border:1px solid #3a4338;border-radius:10px;padding:7px 10px;font-size:13px}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:12px}
-.mapwrap{position:relative;min-height:690px;border:1px solid #3b4338;border-radius:16px;overflow:hidden;background:#7b6a44}
-#world{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab}#world.dragging{cursor:grabbing}
+.mapwrap{position:relative;min-height:690px;border:1px solid #3b4338;border-radius:16px;overflow:hidden;background:#527b85}
+#world{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab;background:#527b85}#world.dragging{cursor:grabbing}
 #maplayer{position:absolute;width:1200px;height:900px;transform-origin:0 0;overflow:hidden;background:
 radial-gradient(ellipse at 43% 18%,rgba(106,126,76,.42),transparent 22%),
 radial-gradient(ellipse at 43% 50%,rgba(174,158,103,.28),transparent 26%),
@@ -81,24 +81,24 @@ linear-gradient(90deg,#527a85 0 20%,#8e986d 20% 42%,#a58f61 42% 100%);position:r
         <path d="M0 0H252 C244 70 258 118 241 176 C224 235 247 284 235 350 C223 421 240 474 226 533 C213 590 235 648 219 711 C205 770 215 837 208 900 H0Z" fill="url(#seaG)"/>
         <path d="M252 0 C244 70 258 118 241 176 C224 235 247 284 235 350 C223 421 240 474 226 533 C213 590 235 648 219 711 C205 770 215 837 208 900 H1200V0Z" fill="url(#landG)"/>
         <path d="M252 0 C244 70 258 118 241 176 C224 235 247 284 235 350 C223 421 240 474 226 533 C213 590 235 648 219 711 C205 770 215 837 208 900" fill="none" stroke="#d8cf9f" stroke-width="3" opacity=".42"/>
-        <path d="M475 98 C486 148 474 207 486 258 C497 309 482 360 493 414 C501 455 500 481 495 516" fill="none" stroke="#6fa0ad" stroke-width="14" stroke-linecap="round"/>
-        <path d="M473 99 C486 148 474 207 486 258 C497 309 482 360 493 414 C501 455 500 481 495 516" fill="none" stroke="#a9ced2" stroke-width="3" stroke-linecap="round" opacity=".7"/>
-        <ellipse cx="477" cy="111" rx="36" ry="58" fill="#5e8b98" transform="rotate(-8 477 111)"/>
-        <ellipse cx="493" cy="628" rx="44" ry="118" fill="#527c87" transform="rotate(-7 493 628)"/>
-        <path d="M450 270 C430 330 434 392 448 454 C458 493 459 530 458 556" fill="none" stroke="#7f986d" stroke-width="52" opacity=".23" filter="url(#soft)"/>
+        <path d="M620 98 C630 148 619 207 631 258 C642 309 628 360 638 414 C646 455 645 481 640 516" fill="none" stroke="#6fa0ad" stroke-width="14" stroke-linecap="round"/>
+        <path d="M618 99 C630 148 619 207 631 258 C642 309 628 360 638 414 C646 455 645 481 640 516" fill="none" stroke="#a9ced2" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+        <ellipse cx="622" cy="111" rx="36" ry="58" fill="#5e8b98" transform="rotate(-8 622 111)"/>
+        <ellipse cx="638" cy="628" rx="44" ry="118" fill="#527c87" transform="rotate(-7 638 628)"/>
+        <path d="M595 270 C575 330 579 392 593 454 C603 493 604 530 603 556" fill="none" stroke="#7f986d" stroke-width="52" opacity=".23" filter="url(#soft)"/>
         <path class="ridge" d="M330 105 C356 163 344 221 365 281 C388 346 360 402 376 461 C395 526 375 600 397 674 C410 720 401 777 424 829"/>
         <path class="ridge2" d="M330 105 C356 163 344 221 365 281 C388 346 360 402 376 461 C395 526 375 600 397 674 C410 720 401 777 424 829"/>
-        <path class="ridge" d="M602 146 C635 206 621 269 650 324 C677 377 663 447 684 503 C704 557 693 631 721 690"/>
-        <path class="ridge2" d="M602 146 C635 206 621 269 650 324 C677 377 663 447 684 503 C704 557 693 631 721 690"/>
+        <path class="ridge" d="M760 146 C793 206 779 269 808 324 C835 377 821 447 842 503 C862 557 851 631 879 690"/>
+        <path class="ridge2" d="M760 146 C793 206 779 269 808 324 C835 377 821 447 842 503 C862 557 851 631 879 690"/>
         <path d="M710 610 C815 570 947 585 1125 640" fill="none" stroke="#c3a067" stroke-width="110" opacity=".13" filter="url(#soft)"/>
         <path class="roadline" d="M455 510 C454 485 462 468 470 450 C444 445 420 440 399 430 C384 462 376 487 371 515 C374 541 385 565 395 585"/>
         <path class="roadline minor" d="M395 585 C420 626 438 674 449 724"/>
         <path class="roadline minor" d="M371 515 C334 509 304 500 277 484"/>
         <path class="roadline minor" d="M399 430 C414 363 424 298 430 222 C433 198 435 174 437 150"/>
         <text class="waterlabel" x="74" y="400" transform="rotate(-90 74 400)">地 中 海</text>
-        <text class="waterlabel" x="520" y="330" transform="rotate(84 520 330)">約旦河</text>
-        <text class="maplabel" x="442" y="54">加利利湖</text>
-        <text class="maplabel" x="535" y="655">死海</text>
+        <text class="waterlabel" x="665" y="330" transform="rotate(84 665 330)">約旦河</text>
+        <text class="maplabel" x="587" y="54">加利利湖</text>
+        <text class="maplabel" x="680" y="655">死海</text>
         <text class="maplabel" x="327" y="310">中央山地</text>
         <text class="maplabel" x="662" y="290">基列高地</text>
         <text class="maplabel" x="870" y="728">摩押高原</text>
@@ -107,7 +107,7 @@ linear-gradient(90deg,#527a85 0 20%,#8e986d 20% 42%,#a58f61 42% 100%);position:r
       <div class="region" style="left:325px;top:145px">迦南北部</div>
       <div class="region" style="left:300px;top:375px">迦南中部</div>
       <div class="region" style="left:286px;top:715px">迦南南部</div>
-      <div class="region east" style="left:700px;top:405px">約旦河東</div>
+      <div class="region east" style="left:845px;top:405px">約旦河東</div>
       <button class="city friendly" data-city="gilgal" style="left:455px;top:510px"><i class="flag"></i><div class="fort"></div><span>吉甲</span></button>
       <button class="city enemy" data-city="jericho" style="left:470px;top:450px"><i class="flag"></i><div class="fort"></div><span>耶利哥</span></button>
       <button class="city enemy locked" data-city="ai" style="left:399px;top:430px"><i class="flag"></i><div class="fort"></div><span>艾城</span></button>
