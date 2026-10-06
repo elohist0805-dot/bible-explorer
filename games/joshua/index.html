@@ -35,11 +35,9 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .roadline{fill:none;stroke:#6d5030;stroke-width:6;stroke-linecap:round;stroke-dasharray:10 8;opacity:.52}
 .roadline.minor{stroke-width:4;opacity:.38}.ridge{fill:none;stroke:#5d5137;stroke-width:7;stroke-linecap:round;opacity:.45}.ridge2{fill:none;stroke:#d3c28b;stroke-width:2.2;stroke-linecap:round;opacity:.32}
 
-.minimap{height:180px;border:1px solid #424b3e;border-radius:12px;background:
-linear-gradient(90deg,#527a85 0 20%,#8e986d 20% 42%,#a58f61 42% 100%);position:relative;overflow:hidden;box-shadow:inset 0 0 28px #1f201566}
-.minimap::before{content:"";position:absolute;left:39%;top:10%;width:4px;height:72%;background:#6f9ead;border-radius:50%;transform:rotate(-3deg);opacity:.9}
-.minimap::after{content:"";position:absolute;left:37%;top:60%;width:17px;height:43px;background:#557f8a;border-radius:50% 46% 52% 48%;transform:rotate(-7deg)}
-.mcity{position:absolute;width:8px;height:8px;border-radius:50%;background:#8d3e38;border:1px solid #f0b6ad;z-index:2}.marmy{position:absolute;width:10px;height:10px;border-radius:50%;background:#62a6d3;border:2px solid #def0fb;transform:translate(-50%,-50%);z-index:3}
+.minimap{height:180px;border:1px solid #424b3e;border-radius:12px;background:#9b875d;position:relative;overflow:hidden;box-shadow:inset 0 0 28px #1f201566}
+.minimap .mapart{width:100%;height:100%;pointer-events:none}
+.mcity{transform:translate(-50%,-50%);position:absolute;width:8px;height:8px;border-radius:50%;background:#8d3e38;border:1px solid #f0b6ad;z-index:2}.marmy{position:absolute;width:10px;height:10px;border-radius:50%;background:#62a6d3;border:2px solid #def0fb;transform:translate(-50%,-50%);z-index:3}
 .panel{background:var(--panel);border:1px solid #3c463a;border-radius:16px;padding:14px}.panel h2{font-size:17px;margin:0 0 10px;color:#efd98c}.panel h3{font-size:14px;margin:14px 0 7px;color:#d9c897}.log{background:#0c100ddd;border-radius:10px;padding:10px;min-height:115px;font-size:13px;line-height:1.7;color:#ded6bf}.actions{display:grid;gap:8px}.btn{border:1px solid #65705c;background:#2d372d;color:#f4ecd6;padding:10px 12px;border-radius:10px;cursor:pointer}.btn:hover{background:#3a4737}.btn.primary{background:#5d6f3f;border-color:#879c5a}.btn.warn{background:#704440;border-color:#a96a63}.btn.blue{background:#294a63;border-color:#5d86a1}.btn:disabled{opacity:.45;cursor:not-allowed}.objective{border-left:4px solid var(--gold);padding-left:10px;color:#eee1bc;line-height:1.6;font-size:14px}.legend{font-size:12px;color:#c9bea3;display:flex;gap:10px;flex-wrap:wrap}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .modal{position:absolute;inset:0;background:#080b08db;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}.card{width:min(620px,100%);background:#1d241d;border:1px solid #56624e;border-radius:18px;padding:20px}.card h2{color:#f3dc91;margin-top:0}.battlefield{height:220px;border-radius:12px;background:linear-gradient(#7b8b66 0 42%,#9b8557 42%);position:relative;overflow:hidden;margin:12px 0}.wall{position:absolute;left:0;right:0;top:45px;height:70px;background:repeating-linear-gradient(90deg,#8d7652 0 35px,#9d845e 35px 70px);border-top:8px solid #5d4e37;border-bottom:7px solid #5d4e37}.troops{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font-size:38px;letter-spacing:8px}.progress{height:10px;background:#0d120e;border-radius:8px;overflow:hidden;margin:8px 0}.progress>div{height:100%;background:#c5a85e;width:0}
 
@@ -91,10 +89,11 @@ linear-gradient(90deg,#527a85 0 20%,#8e986d 20% 42%,#a58f61 42% 100%);position:r
         <path class="ridge" d="M760 146 C793 206 779 269 808 324 C835 377 821 447 842 503 C862 557 851 631 879 690"/>
         <path class="ridge2" d="M760 146 C793 206 779 269 808 324 C835 377 821 447 842 503 C862 557 851 631 879 690"/>
         <path d="M710 610 C815 570 947 585 1125 640" fill="none" stroke="#c3a067" stroke-width="110" opacity=".13" filter="url(#soft)"/>
-        <path class="roadline" d="M455 510 C454 485 462 468 470 450 C444 445 420 440 399 430 C384 462 376 487 371 515 C374 541 385 565 395 585"/>
-        <path class="roadline minor" d="M395 585 C420 626 438 674 449 724"/>
-        <path class="roadline minor" d="M371 515 C334 509 304 500 277 484"/>
-        <path class="roadline minor" d="M399 430 C414 363 424 298 430 222 C433 198 435 174 437 150"/>
+        <path class="roadline minor" d="M715 475 Q655 485 595 490"/>
+        <path class="roadline" d="M595 490 Q570 480 545 460 Q505 450 470 425 Q445 465 435 505 Q445 540 465 570"/>
+        <path class="roadline minor" d="M465 570 C475 626 488 674 499 724"/>
+        <path class="roadline minor" d="M435 505 C380 509 324 500 277 484"/>
+        <path class="roadline minor" d="M470 425 C484 350 500 275 515 200 C525 150 540 105 550 65"/>
         <text class="waterlabel" x="74" y="400" transform="rotate(-90 74 400)">地 中 海</text>
         <text class="waterlabel" x="665" y="330" transform="rotate(84 665 330)">約旦河</text>
         <text class="maplabel" x="587" y="54">加利利湖</text>
@@ -108,13 +107,13 @@ linear-gradient(90deg,#527a85 0 20%,#8e986d 20% 42%,#a58f61 42% 100%);position:r
       <div class="region" style="left:300px;top:375px">迦南中部</div>
       <div class="region" style="left:286px;top:715px">迦南南部</div>
       <div class="region east" style="left:845px;top:405px">約旦河東</div>
-      <button class="city friendly" data-city="gilgal" style="left:455px;top:510px"><i class="flag"></i><div class="fort"></div><span>吉甲</span></button>
-      <button class="city enemy" data-city="jericho" style="left:470px;top:450px"><i class="flag"></i><div class="fort"></div><span>耶利哥</span></button>
-      <button class="city enemy locked" data-city="ai" style="left:399px;top:430px"><i class="flag"></i><div class="fort"></div><span>艾城</span></button>
-      <button class="city enemy locked" data-city="gibeon" style="left:371px;top:515px"><i class="flag"></i><div class="fort"></div><span>基遍</span></button>
-      <button class="city enemy locked" data-city="jerusalem" style="left:395px;top:585px"><i class="flag"></i><div class="fort"></div><span>耶路撒冷</span></button>
-      <button class="city enemy locked" data-city="hazor" style="left:437px;top:150px"><i class="flag"></i><div class="fort"></div><span>夏瑣</span></button>
-      <div id="army" class="army" style="left:455px;top:555px" aria-label="約書亞軍">🛡️</div>
+      <button class="city friendly" data-city="gilgal" style="left:595px;top:490px"><i class="flag"></i><div class="fort"></div><span>吉甲</span></button>
+      <button class="city enemy" data-city="jericho" style="left:545px;top:460px"><i class="flag"></i><div class="fort"></div><span>耶利哥</span></button>
+      <button class="city enemy locked" data-city="ai" style="left:470px;top:425px"><i class="flag"></i><div class="fort"></div><span>艾城</span></button>
+      <button class="city enemy locked" data-city="gibeon" style="left:435px;top:505px"><i class="flag"></i><div class="fort"></div><span>基遍</span></button>
+      <button class="city enemy locked" data-city="jerusalem" style="left:465px;top:570px"><i class="flag"></i><div class="fort"></div><span>耶路撒冷</span></button>
+      <button class="city enemy locked" data-city="hazor" style="left:550px;top:65px"><i class="flag"></i><div class="fort"></div><span>夏瑣</span></button>
+      <div id="army" class="army" style="left:715px;top:475px" aria-label="約書亞軍">🛡️</div>
     </div>
   </div>
   <div id="storyModal" class="modal" role="dialog" aria-modal="true">
@@ -141,7 +140,7 @@ linear-gradient(90deg,#527a85 0 20%,#8e986d 20% 42%,#a58f61 42% 100%);position:r
 </section>
 
 <aside class="side">
-  <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><i class="mcity" style="left:114px;top:102px"></i><i class="mcity" style="left:100px;top:86px"></i><i class="mcity" style="left:94px;top:103px"></i><i class="mcity" style="left:99px;top:117px"></i><i class="mcity" style="left:109px;top:30px"></i><div id="marmy" class="marmy" style="left:114px;top:111px"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
+  <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><div id="marmy" class="marmy"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
   <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">前往吉甲整軍，準備進入耶利哥戰役。</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn blue" id="battleDemo">⚔ 艾城戰場演練</button></div></div>
   <div class="panel"><h2>戰記</h2><div class="log" id="log">約書亞接續摩西的使命。以色列百姓已渡過約旦河，現在必須在吉甲整軍。也可直接進入「艾城戰場演練」測試即時戰鬥。</div></div>
 </aside>
@@ -151,7 +150,7 @@ linear-gradient(90deg,#527a85 0 20%,#8e986d 20% 42%,#a58f61 42% 100%);position:r
 <script>
 (function(){
 const $=function(s){return document.querySelector(s)};
-const state={x:455,y:555,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null};
+const state={x:715,y:475,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null};
 const PROGRESS_KEY="canaan_joshua_progress_v1";
 function loadProgress(){
   try{return JSON.parse(localStorage.getItem(PROGRESS_KEY)||"null")||{joshua:{level:1,xp:0},soldiers:{}}}
@@ -162,10 +161,32 @@ function saveProgress(){
   try{localStorage.setItem(PROGRESS_KEY,JSON.stringify(state.progression))}catch(e){}
 }
 state.progression=loadProgress();
-const cities={gilgal:{x:455,y:510,name:"吉甲"},jericho:{x:470,y:450,name:"耶利哥"},ai:{x:399,y:430,name:"艾城"},gibeon:{x:371,y:515,name:"基遍"},jerusalem:{x:395,y:585,name:"耶路撒冷"},hazor:{x:437,y:150,name:"夏瑣"}};
+const cities={gilgal:{x:595,y:490,name:"吉甲"},jericho:{x:545,y:460,name:"耶利哥"},ai:{x:470,y:425,name:"艾城"},gibeon:{x:435,y:505,name:"基遍"},jerusalem:{x:465,y:570,name:"耶路撒冷"},hazor:{x:550,y:65,name:"夏瑣"}};
 const army=$("#army"),marmy=$("#marmy"),log=$("#log"),objective=$("#objective");
+// Share geography and city coordinates with the overview, including narrow layouts.
+const overview=$(".minimap"),overviewArt=$(".mapart").cloneNode(true);
+overviewArt.setAttribute("preserveAspectRatio","none");
+overviewArt.querySelectorAll("text").forEach(function(el){el.remove()});
+overviewArt.querySelectorAll("[id]").forEach(function(el){
+  var old=el.id,next="mini-"+old;
+  overviewArt.querySelectorAll("*").forEach(function(node){
+    ["fill","filter"].forEach(function(attr){
+      if(node.getAttribute(attr)==="url(#"+old+")")node.setAttribute(attr,"url(#"+next+")");
+    });
+  });
+  el.id=next;
+});
+overview.prepend(overviewArt);
+Object.keys(cities).forEach(function(id){
+  var c=cities[id],button=document.querySelector('[data-city="'+id+'"]');
+  button.style.left=c.x+"px";button.style.top=c.y+"px";
+  var dot=document.createElement("i");dot.className="mcity";dot.title=c.name;
+  dot.style.left=(c.x/1200*100)+"%";dot.style.top=(c.y/900*100)+"%";
+  if(id==="gilgal"){dot.style.background="#62a6d3";dot.style.borderColor="#def0fb"}
+  overview.appendChild(dot);
+});
 function say(t){log.textContent=t}
-function sync(){army.style.left=state.x+"px";army.style.top=state.y+"px";marmy.style.left=(state.x/4)+"px";marmy.style.top=(state.y/5)+"px";$("#troop").textContent=state.troop;$("#morale").textContent=state.morale;$("#food").textContent=state.food}
+function sync(){army.style.left=state.x+"px";army.style.top=state.y+"px";marmy.style.left=(state.x/1200*100)+"%";marmy.style.top=(state.y/900*100)+"%";$("#troop").textContent=state.troop;$("#morale").textContent=state.morale;$("#food").textContent=state.food}
 function moveTo(city,done){if(state.moving)return;state.moving=true;state.x=city.x;state.y=city.y;state.food=Math.max(0,state.food-3);sync();setTimeout(function(){state.moving=false;if(done)done()},850)}
 $("#goGilgal").addEventListener("click",function(){moveTo(cities.gilgal,function(){state.at="gilgal";state.stage=Math.max(state.stage,1);say("軍隊抵達吉甲。百姓安營，約書亞準備依照吩咐面對耶利哥。");objective.textContent="前往耶利哥城外，開始七日繞城任務。";$("#goGilgal").disabled=true;$("#goJericho").disabled=false})});
 $("#goJericho").addEventListener("click",function(){moveTo(cities.jericho,openJericho)});
@@ -175,7 +196,7 @@ function openJericho(){modal.classList.add("show");title.textContent="耶利哥�
 action.addEventListener("click",function(){if(state.marches<6){state.marches++;state.food=Math.max(0,state.food-2);state.morale=Math.min(100,state.morale+1);sync();modal.classList.remove("show");say("完成第 "+state.marches+" 日繞城。軍隊保持安靜，返回營中。");objective.textContent="耶利哥繞城進度："+state.marches+" / 7 日。再次進軍耶利哥繼續任務。"}else if(state.marches===6){state.marches=7;bar.style.width="100%";text.textContent="角聲長鳴，百姓大聲呼喊！耶利哥城牆倒塌。";$("#wall").style.transform="translateY(90px) rotate(2deg)";$("#wall").style.transition="transform 1s ease";state.morale=95;sync();action.textContent="佔領耶利哥";say("耶利哥城牆倒塌！戰役勝利。")}else{modal.classList.remove("show");state.stage=2;document.querySelector('[data-city="jericho"]').classList.remove("enemy");document.querySelector('[data-city="jericho"]').classList.add("friendly");document.querySelector('[data-city="ai"]').classList.remove("locked");objective.textContent="下一戰：艾城。可點擊艾城進入即時戰場。";$("#goJericho").disabled=true;say("耶利哥已成為以色列據點。艾城路線開放。")}});close.addEventListener("click",function(){modal.classList.remove("show")});
 
 /* map pan */
-const world=$("#world"),layer=$("#maplayer");let scale=.9,px=-180,py=-155,drag=false,sx=0,sy=0,bx=0,by=0;
+const world=$("#world"),layer=$("#maplayer");let scale=Math.max(.55,Math.min(.9,world.clientWidth/850)),px=world.clientWidth/2-520*scale,py=world.clientHeight/2-400*scale,drag=false,sx=0,sy=0,bx=0,by=0;
 function render(){layer.style.transform="translate("+px+"px,"+py+"px) scale("+scale+")"}
 world.addEventListener("pointerdown",function(e){if(e.target.closest("button"))return;drag=true;world.classList.add("dragging");sx=e.clientX;sy=e.clientY;bx=px;by=py;world.setPointerCapture(e.pointerId)});
 world.addEventListener("pointermove",function(e){if(!drag)return;px=bx+(e.clientX-sx);py=by+(e.clientY-sy);render()});
