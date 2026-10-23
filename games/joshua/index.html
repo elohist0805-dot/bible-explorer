@@ -28,6 +28,23 @@ radial-gradient(ellipse at 43% 18%,rgba(106,126,76,.42),transparent 22%),
 radial-gradient(ellipse at 43% 50%,rgba(174,158,103,.28),transparent 26%),
 radial-gradient(ellipse at 53% 76%,rgba(166,131,78,.30),transparent 22%),
 linear-gradient(90deg,#527b85 0 19%,#84936b 20%,#a89a6b 40%,#aa8d5e 70%,#927447 100%);box-shadow:inset 0 0 95px #17190f66}
+/* Northward geographic expansion: the established atlas and all game coordinates
+   remain intact inside a translated southern plate; the extension is real space. */
+#maplayer{height:1180px;overflow:hidden;background-color:#84916b}
+#southAtlas{position:absolute;left:0;top:280px;width:1200px;height:900px;overflow:visible;background-image:inherit;background-size:1200px 900px;background-repeat:no-repeat;background-position:0 0}
+#northAtlas{position:absolute;top:0;left:0;width:1200px;height:281px;pointer-events:none;z-index:1}
+#southAtlas>.mapart{z-index:2}
+#northAtlas .north-land{fill:#96a47b}
+#northAtlas .north-range{fill:none;stroke:#667958;stroke-width:36;opacity:.26;stroke-linecap:round;filter:url(#northBlur)}
+#northAtlas .north-ridge{fill:none;stroke:#6a7051;stroke-width:5;opacity:.42;stroke-linecap:round}
+#northAtlas .north-highlight{fill:none;stroke:#e2d8a5;stroke-width:2;opacity:.59;stroke-linecap:round}
+#northAtlas .north-water{fill:none;stroke:#79a4a7;stroke-width:12;opacity:.88;stroke-linecap:round}
+#northAtlas .north-label{font:bold 18px 'Noto Sans TC','Microsoft JhengHei',sans-serif;fill:#55462b;paint-order:stroke;stroke:#e2d4a2;stroke-width:3px;stroke-linejoin:round}
+#northAtlas .north-small{font:bold 13px 'Noto Sans TC','Microsoft JhengHei',sans-serif;fill:#665337;paint-order:stroke;stroke:#dfd1a0;stroke-width:2.5px}
+#northAtlas .north-territory{opacity:0;transition:opacity .7s}
+#northAtlas .north-territory.claimed{opacity:.51}
+#northAtlas .north-frontier{fill:none;stroke:#554633;stroke-width:2;stroke-opacity:0;transition:stroke-opacity .7s}
+#northAtlas .north-frontier.claimed{stroke-opacity:.64}
 .mapart{position:absolute;inset:0;width:1200px;height:900px;pointer-events:none}
 /* Hand-painted Canaan atlas: one shared image for world and tactical minimap.
    Roads, city pins and army markers remain independently interactive. */
@@ -247,6 +264,43 @@ html.battle-active,html.battle-active body{overscroll-behavior:none;touch-action
 <section class="mapwrap">
   <div id="world" tabindex="0" aria-label="迦南戰略地圖，可拖曳瀏覽">
     <div id="maplayer">
+      <svg id="northAtlas" viewBox="0 0 1200 281" aria-label="迦南北方延伸地形：黑門山、約旦河源頭與利善">
+        <defs>
+          <linearGradient id="northGround" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#9caa7d"/><stop offset=".5" stop-color="#94a37a"/><stop offset="1" stop-color="#b0a47d"/></linearGradient>
+          <linearGradient id="northOcean" x1="0" y1="0" x2="1" y2=".4"><stop stop-color="#477886"/><stop offset="1" stop-color="#729a9b"/></linearGradient>
+          <linearGradient id="northFade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b4aa83" stop-opacity=".05"/><stop offset="1" stop-color="#b8ad83" stop-opacity=".32"/></linearGradient>
+          <filter id="northBlur"><feGaussianBlur stdDeviation="8"/></filter>
+          <filter id="northGrain"><feTurbulence baseFrequency=".035" numOctaves="3" seed="12" result="noise"/><feColorMatrix in="noise" type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".13"/></feComponentTransfer></filter>
+        </defs>
+        <rect width="1200" height="281" fill="url(#northGround)"/>
+        <path d="M0 0H271C259 43 276 75 258 125C247 163 258 201 252 240L252 281H0Z" fill="url(#northOcean)"/>
+        <path d="M271 0C259 43 276 75 258 125C247 163 258 201 252 281" fill="none" stroke="#d8cc9d" stroke-width="4" opacity=".55"/>
+        <path d="M466 -20C448 47 477 103 469 167C451 215 470 262 462 305M738 -30C699 34 720 79 740 113C767 165 750 230 788 300" class="north-range"/>
+        <path d="M471 0C452 56 476 99 463 154C452 209 478 246 468 282M734 0C713 43 726 94 752 139C779 195 757 237 785 282" class="north-ridge"/>
+        <path d="M479 0C462 53 483 107 470 162C462 206 485 253 475 282M743 0C722 51 736 96 759 136C786 193 769 243 792 282" class="north-highlight"/>
+        <path d="M612 142C607 162 620 178 621 197C621 228 628 253 625 282" class="north-water"/>
+        <path d="M610 142C604 166 618 179 619 202C618 232 625 261 624 282" fill="none" stroke="#c5d9c7" stroke-width="3" opacity=".75"/>
+        <path d="M655 0C646 29 678 38 667 76L625 145L605 119L595 53Z" fill="#697f64" opacity=".34"/>
+        <path d="M661 0L684 40L665 60L653 36L636 57L629 34Z" fill="#e3dec4" opacity=".8"/>
+        <path d="M0 0H1200V281H0Z" filter="url(#northGrain)" opacity=".42"/>
+        <rect y="246" width="1200" height="35" fill="url(#northFade)"/>
+        <g id="northTribeOverlay">
+          <path class="north-territory" data-tribe="asher" fill="#e3a16c" d="M277 65L377 52L448 82L480 152L464 280L257 280L261 207L253 152Z"/>
+          <path class="north-frontier" data-tribe="asher" d="M277 65L377 52L448 82L480 152L464 280"/>
+          <path class="north-territory" data-tribe="naphtali" fill="#80bec4" d="M448 82L560 65L608 90L600 175L648 218L619 280L464 280L480 152Z"/>
+          <path class="north-frontier" data-tribe="naphtali" d="M448 82L560 65L608 90L600 175L648 218L619 280L464 280"/>
+          <path class="north-territory" data-tribe="dan" fill="#7ca9cc" d="M608 90L649 99L687 146L666 193L648 218L600 175Z"/>
+          <path class="north-frontier" data-tribe="dan" d="M608 90L649 99L687 146L666 193L648 218L600 175Z"/>
+        </g>
+        <text class="north-label" x="708" y="72">黑門山</text>
+        <text class="north-small" x="695" y="100">約旦河源頭</text>
+        <text class="north-label" x="474" y="47">北方山地</text>
+        <text class="north-small" x="361" y="153">推羅方向</text>
+        <text class="north-small" x="675" y="250">往加利利湖 ↓</text>
+        <text class="north-small" x="574" y="203">利善（但）</text>
+        <path id="northDanMarchPath" d="M479,281Q545,226 625,160" class="tribe-march-line" style="display:none"/>
+      </svg>
+      <div id="southAtlas">
       <svg class="mapart" viewBox="0 0 1200 900" aria-hidden="true">
         <defs>
           <linearGradient id="seaG" x1="0" x2="1"><stop offset="0" stop-color="#466f7c"/><stop offset="1" stop-color="#668d91"/></linearGradient>
@@ -310,6 +364,7 @@ html.battle-active,html.battle-active body{overscroll-behavior:none;touch-action
       <button class="city enemy locked" data-city="jerusalem" style="left:465px;top:570px"><i class="flag"></i><div class="fort"></div><span>耶路撒冷</span></button>
       <button class="city enemy locked" data-city="hazor" style="left:550px;top:65px"><i class="flag"></i><div class="fort"></div><span>夏瑣</span></button>
       <div id="army" class="army" style="left:715px;top:475px" aria-label="約書亞軍"><i class="war-standard" aria-hidden="true"></i></div>
+      </div>
     </div>
   </div>
   <div class="map-status">戰役路線 <span class="swatch"></span>已佔領 <span class="swatch ally"></span>盟友 <span class="swatch route"></span>下一站</div>
@@ -477,7 +532,10 @@ const TRIBAL_FLAGS=[
 // All twelve standards assemble symbolically at Shechem after Joshua 24.
 // Historical allotments were made in several earlier settings (Joshua 13–19).
 const SHECHEM={x:480,y:350};
-const DAN_LAISH={x:618,y:85,name:"利善・北方新居"};
+// Existing battles use the southern atlas coordinates. Negative y is genuinely
+// north of its old edge; the southern atlas begins 280 px below the new top.
+const NORTH_ATLAS_EXTENSION=280;
+const DAN_LAISH={x:625,y:-120,name:"利善（但）・北方新居"};
 function tribeMusterPosition(index){return {x:420+(index%4)*40,y:305+Math.floor(index/4)*37}}
 const TRIBE_SHAPES=[
   ["asher","335,66 453,65 454,122 424,205 411,262 320,274"],
@@ -488,7 +546,7 @@ const TRIBE_SHAPES=[
   ["ephraim","352,422 485,435 542,422 558,481 497,516 385,509 336,472"],
   ["benjamin","406,509 497,516 572,493 594,550 556,594 442,586"],
   ["danCoast","280,492 384,505 407,525 398,613 325,645 271,619"],
-  ["dan","568,52 652,53 672,130 615,159 563,114"],
+  ["northOpen","568,52 652,53 672,130 615,159 563,114"],
   ["judah","408,604 555,611 586,695 550,786 423,780 357,692"],
   ["simeon","414,785 547,796 567,858 397,860 369,815"],
   ["manasseh","680,81 914,104 921,366 715,376 678,291"],
@@ -571,6 +629,7 @@ for(var j=0;j<=terrainRows;j++){
 const terrainGeometry={};
 TRIBAL_FLAGS.forEach(function(tribe){terrainGeometry[tribe.id]={fill:[],edge:[]}});
 terrainGeometry.danCoast={fill:[],edge:[]}; // Original allotment not secured; no conquest tint.
+terrainGeometry.northOpen={fill:[],edge:[]}; // No fictitious Dan enclave beside the Galilee lake.
 function vertex(p){return p[0]+","+p[1]}
 for(var r=0;r<terrainRows;r++)for(var c=0;c<terrainCols;c++){
   var id=landCells[r][c];if(!id)continue;
@@ -596,6 +655,8 @@ for(var r=0;r<terrainRows;r++)for(var c=0;c<terrainCols;c++){
   var landmark=svg.querySelector(".roadline")||svg.querySelector("text");
   if(landmark)svg.insertBefore(layer,landmark);else svg.appendChild(layer);
 });
+// Northern sections share the same unlock/claim state as the old southern mesh.
+document.querySelectorAll("#northTribeOverlay [data-tribe]").forEach(function(node){tribeShapes.push(node)});
 const tribeFlagNodes=[];
 TRIBAL_FLAGS.forEach(function(tribe,index){
   var marker=document.createElement("button");marker.type="button";marker.className="tribe-flag";marker.dataset.tribe=tribe.id;
@@ -605,11 +666,11 @@ TRIBAL_FLAGS.forEach(function(tribe,index){
   marker.classList.toggle("in-camp",!atDestination);
   marker.innerHTML="<i></i><span>"+tribe.name+"</span>";marker.title=tribe.name+(atDestination?"支派目的地":"支派・示劍待命");
   marker.addEventListener("click",function(){openTribeTask(tribe.id)});
-  marker.hidden=true;$("#maplayer").appendChild(marker);tribeFlagNodes.push(marker);
+  marker.hidden=true;$("#southAtlas").appendChild(marker);tribeFlagNodes.push(marker);
 });
 const shechemMuster=document.createElement("div");shechemMuster.className="shechem-muster";
 shechemMuster.style.left=SHECHEM.x+"px";shechemMuster.style.top="265px";
-shechemMuster.textContent="⛺ 示劍・十二支派集結";shechemMuster.hidden=true;$("#maplayer").appendChild(shechemMuster);
+shechemMuster.textContent="⛺ 示劍・十二支派集結";shechemMuster.hidden=true;$("#southAtlas").appendChild(shechemMuster);
 // Give players an unmistakable handoff when the main campaign ends.
 const chapterGuide=document.createElement("div");chapterGuide.className="chapter-guide";chapterGuide.hidden=true;
 chapterGuide.innerHTML='<h2>🚩 新篇章開啟：十二支派的旅程！</h2><p>示劍立約已完成！十二面支派軍旗正在示劍集結。現在請到右側「十二支派・領地旗幟」選擇一支隊伍；軍旗出發並完成事件後，對應領地才會逐步染上專屬色彩。</p><div class="actions"><button type="button" class="btn primary" id="chapterGuideGo">前往十二支派任務 →</button><button type="button" class="btn" id="chapterGuideClose">先看看軍旗</button></div>';
@@ -783,7 +844,7 @@ function dispatchDanNorth(tribe){
   var from={x:tribe.x,y:tribe.y},to=DAN_LAISH,start=performance.now(),duration=2500;
   tribeMarching="dan";postCampaignFocus={x:from.x,y:from.y};mapPanOffset=0;
   tribeMarchPath.setAttribute("d","M"+from.x+","+from.y+" Q"+(from.x+105)+","+(from.y-300)+" "+to.x+","+to.y);
-  tribeMarchPath.style.display="";marker.classList.remove("in-camp");marker.classList.add("marching");
+  tribeMarchPath.style.display="";$("#northDanMarchPath").style.display="";marker.classList.remove("in-camp");marker.classList.add("marching");
   say("🚩 沿海的土地未能守住，但支派重新整隊，離開原分地一路北上，向利善進發！");renderTribalMap();
   function advance(now){
     var t=Math.min(1,(now-start)/duration),ease=t*t*(3-2*t);
@@ -791,7 +852,7 @@ function dispatchDanNorth(tribe){
     marker.style.left=point.x+"px";marker.style.top=point.y+"px";
     postCampaignFocus=point;sync();
     if(t<1){tribeFocusAnimation=requestAnimationFrame(advance);return}
-    tribeMarching=null;tribeMarchPath.style.display="none";
+    tribeMarching=null;tribeMarchPath.style.display="none";$("#northDanMarchPath").style.display="none";
     state.danNorthReached=true;saveCampaign();renderTribalMap();
     say("🏕️ 但支派抵達北方利善！新的戰鬥就在眼前，這次必須攻取城邑，才能建立北方的新產業。");
     beginTribeEvent(tribe);
@@ -815,7 +876,7 @@ $("#restartOpen").addEventListener("click",function(){
 $("#restartCancel").addEventListener("click",function(){restartModal.classList.remove("show")});
 $("#restartTribes").addEventListener("click",function(){
   if(state.stage<9||!window.confirm("確定讓十二支派全部返回示劍，清除十二支派的支線進度與領地色塊嗎？約書亞記主線及角色等級會保留。"))return;
-  cancelAnimationFrame(tribeFocusAnimation);tribeMarching=null;tribeMarchPath.style.display="none";
+  cancelAnimationFrame(tribeFocusAnimation);tribeMarching=null;tribeMarchPath.style.display="none";$("#northDanMarchPath").style.display="none";
   activeTribeId=null;state.tribeClaims=[];state.tribeDispatched=[];state.danPhase=0;state.danNorthReached=false;
   postCampaignFocus={x:SHECHEM.x,y:SHECHEM.y};mapPanOffset=0;
   $("#tribeEventModal").classList.remove("show");restartModal.classList.remove("show");
@@ -1099,14 +1160,14 @@ let mapPanOffset=0;
 function fitWorldMap(){
   const scale=Math.min(1.15,world.clientWidth/1200);
   const px=(world.clientWidth-1200*scale)/2;
-  const fullHeight=900*scale;
-  const armyY=(state.stage>=9&&postCampaignFocus?postCampaignFocus.y:state.y)*scale;
+  const fullHeight=(900+NORTH_ATLAS_EXTENSION)*scale;
+  const armyY=((state.stage>=9&&postCampaignFocus?postCampaignFocus.y:state.y)+NORTH_ATLAS_EXTENSION)*scale;
   const idealY=world.clientHeight/2-armyY+mapPanOffset;
   const py=fullHeight<=world.clientHeight?(world.clientHeight-fullHeight)/2:Math.max(world.clientHeight-fullHeight,Math.min(0,idealY));
   layer.style.transform="translate("+px+"px,"+py+"px) scale("+scale+")";
 }
 world.addEventListener("wheel",function(e){
-  if(900*Math.min(1.15,world.clientWidth/1200)<=world.clientHeight)return;
+  if((900+NORTH_ATLAS_EXTENSION)*Math.min(1.15,world.clientWidth/1200)<=world.clientHeight)return;
   e.preventDefault();mapPanOffset=Math.max(-700,Math.min(700,mapPanOffset-e.deltaY));fitWorldMap();
 },{passive:false});
 if(typeof ResizeObserver!=="undefined")new ResizeObserver(fitWorldMap).observe(world);
