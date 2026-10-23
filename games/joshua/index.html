@@ -125,6 +125,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 /* Campaign territories and directed route network share the fixed atlas coordinates. */
 .territory{fill:#d6c59c;fill-opacity:.035;stroke:#69573b;stroke-width:2.5;stroke-dasharray:7 7;stroke-opacity:.65;stroke-linejoin:round;transition:fill .35s,fill-opacity .35s,stroke .35s}
 .territory.claimed{fill:#9eddf4;fill-opacity:.49;stroke:#3c91ba;stroke-width:3.5;stroke-dasharray:none;stroke-opacity:.95}
+.territory.allied{fill:#9cddbb;fill-opacity:.42;stroke:#4d9d7b;stroke-width:3;stroke-dasharray:5 5;stroke-opacity:.95}
 .campaign-route{fill:none;stroke:#6d573c;stroke-width:5;stroke-dasharray:4 12;stroke-linecap:round;stroke-linejoin:round;opacity:.42;transition:stroke .3s,opacity .3s}
 .campaign-route.available{stroke:#dbb763;stroke-width:7;stroke-dasharray:10 7;opacity:.95}
 .campaign-route.completed{stroke:#4a9dc0;stroke-width:7;stroke-dasharray:none;opacity:.9}
@@ -133,6 +134,13 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .map-status{position:absolute;top:12px;left:12px;z-index:10;background:#271f17dd;color:#ffedc6;border:1px solid #bc9d65;border-radius:10px;padding:7px 10px;font-size:12px;pointer-events:none}
 .map-status .swatch{display:inline-block;width:12px;height:9px;margin:0 4px 0 8px;border-radius:2px;vertical-align:middle;background:#a5d8ed;border:1px solid #549abc}
 .map-status .swatch.route{background:#d8b85e;border-color:#ddc584}
+.map-status .swatch.ally{background:#9cddbb;border-color:#4d9d7b}
+.city.allied .flag{background:#3b946c}
+.city.allied .fort{box-shadow:inset 0 1px 0 #f6dcad,0 3px 0 #60472e,0 0 0 3px #6cc59b88,0 4px 6px #30231566}
+.gibeon-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.gibeon-choices[hidden],#gibeonContinue[hidden]{display:none!important}
+.gibeon-choices button{line-height:1.45}
+.scripture-note{border-left:3px solid #c6ad68;color:#d5d6c5;font-size:13px;padding:8px 10px;background:#172019;margin:12px 0}
 .city.trainable .fort{box-shadow:inset 0 1px 0 #f6dcad,0 3px 0 #60472e,0 0 0 3px #77cae966,0 4px 6px #30231566}
 .training-panel{margin-top:10px;padding:10px;background:#13241f;border:1px solid #477e88;border-radius:10px;font-size:13px;color:#e0e9df;line-height:1.5}
 .training-panel button{margin-top:8px;width:100%}
@@ -213,9 +221,18 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
       <div id="army" class="army" style="left:715px;top:475px" aria-label="約書亞軍"><i class="war-standard" aria-hidden="true"></i></div>
     </div>
   </div>
-  <div class="map-status">戰役路線 <span class="swatch"></span>已佔領 <span class="swatch route"></span>下一站 · 城鎮可點選</div>
+  <div class="map-status">戰役路線 <span class="swatch"></span>已佔領 <span class="swatch ally"></span>盟友 <span class="swatch route"></span>下一站</div>
   <div id="storyModal" class="modal" role="dialog" aria-modal="true">
     <div class="card"><h2 id="modalTitle">耶利哥之戰</h2><p id="modalText"></p><div id="battleBox" class="battlefield" hidden><div class="wall" id="wall"></div><div class="troops">🧍🧍🧍 📯 🧍🧍</div></div><div id="marchProgress" class="progress" hidden><div></div></div><div class="actions"><button id="modalAction" class="btn primary">開始</button><button id="modalClose" class="btn">稍後再說</button></div></div>
+  </div>
+  <div id="gibeonModal" class="modal" role="dialog" aria-modal="true" aria-label="基遍立約事件">
+    <div class="card">
+      <h2>基遍使者：舊餅與破鞋</h2>
+      <p id="gibeonStory">基遍人聽見耶利哥與艾城的事，穿著破舊的衣鞋、帶著發霉的餅，聲稱從遠方而來，請求與以色列立約。</p>
+      <div class="scripture-note">約書亞記 9:3–15｜歷史事件不因答題而改寫；請從經文學習分辨。</div>
+      <div class="gibeon-choices" id="gibeonChoices"><button class="btn primary" id="gibeonAsk">應先求問耶和華</button><button class="btn warn" id="gibeonInspect">只憑眼前證物判斷</button></div>
+      <div class="actions"><button class="btn primary" id="gibeonContinue" hidden>尊重所立的約，準備支援基遍</button><button class="btn" id="gibeonClose">返回大地圖</button></div>
+    </div>
   </div>
 
   <div id="battleScreen" aria-label="艾城即時戰場">
@@ -239,7 +256,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 
 <aside class="side">
   <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><div id="marmy" class="marmy"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
-  <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">前往吉甲整軍，準備進入耶利哥戰役。</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div><div id="trainingPanel" class="training-panel"><div id="trainingInfo">完成城鎮戰役後，可返回已佔領的據點練兵。</div><button class="btn blue" id="trainCity" disabled>選擇已佔領城鎮練兵</button></div></div>
+  <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">前往吉甲整軍，準備進入耶利哥戰役。</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn primary" id="goGibeon" disabled>前往基遍・盟約事件</button><button class="btn warn" id="defendGibeon" disabled>⚔ 援救基遍（南方聯軍）</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div><div id="trainingPanel" class="training-panel"><div id="trainingInfo">完成城鎮戰役後，可返回已佔領的據點練兵。</div><button class="btn blue" id="trainCity" disabled>選擇已佔領城鎮練兵</button></div></div>
   <div class="panel"><h2>戰記</h2><div class="log" id="log">約書亞接續摩西的使命。以色列百姓已渡過約旦河，現在必須在吉甲整軍。也可直接進入「艾城戰場演練」測試即時戰鬥。</div></div>
 </aside>
 </div>
@@ -253,7 +270,7 @@ const PROGRESS_KEY="canaan_joshua_progress_v1";
 const CAMPAIGN_KEY="canaan_joshua_campaign_v1";
 try{
   const saved=JSON.parse(localStorage.getItem(CAMPAIGN_KEY)||"null");
-  if(saved&&Number.isInteger(saved.stage)&&saved.stage>=0&&saved.stage<=3){
+  if(saved&&Number.isInteger(saved.stage)&&saved.stage>=0&&saved.stage<=5){
     state.stage=saved.stage;
     state.marches=Math.max(0,Math.min(7,Number(saved.marches)||0));
     state.x=Number.isFinite(saved.x)?saved.x:715;
@@ -290,6 +307,7 @@ if(!routePoints[state.at]){
 }
 let selectedTrainingCity=null,trainingLocation="gilgal";
 function isOccupied(id){return (id==="gilgal"&&state.stage>=1)||(id==="jericho"&&state.stage>=2)||(id==="ai"&&state.stage>=3)}
+function isAllied(id){return id==="gibeon"&&state.stage>=4}
 function findRoute(from,to){
   if(from===to)return [from];
   var q=[[from]],visited=new Set([from]);
@@ -331,10 +349,13 @@ function renderCampaign(){
   $("#goGilgal").disabled=state.stage>=1;
   $("#goJericho").disabled=state.stage<1||state.stage>=2;
   $("#goAi").disabled=state.stage!==2;
+  $("#goGibeon").disabled=state.stage!==3||state.moving;
+  $("#defendGibeon").disabled=state.stage!==4||state.moving;
   document.querySelectorAll("[data-territory]").forEach(function(area){
     area.classList.toggle("claimed",isOccupied(area.dataset.territory));
+    area.classList.toggle("allied",isAllied(area.dataset.territory));
   });
-  var progressRoutes={"camp-gilgal":1,"gilgal-jericho":2,"jericho-ai":3};
+  var progressRoutes={"camp-gilgal":1,"gilgal-jericho":2,"jericho-ai":3,"ai-gibeon":4};
   document.querySelectorAll("[data-route]").forEach(function(line){
     var threshold=progressRoutes[line.dataset.route];
     line.classList.toggle("completed",!!threshold&&state.stage>=threshold);
@@ -354,13 +375,25 @@ function renderCampaign(){
   if(state.stage>=3){
     const ai=document.querySelector('[data-city="ai"]');
     ai.classList.remove("enemy");ai.classList.add("friendly");
-    objective.textContent="艾城已攻克！約書亞與軍隊整軍待命，下一階段將前往基遍。";
     $("#goAi").textContent="✓ 艾城已攻克";
   }else if(state.stage===2){
     objective.textContent="主線：艾城之戰（約書亞記 7–8 章）。整軍後利用伏兵取得勝利。";
   }else if(state.stage===1){
     objective.textContent=state.marches===7?"耶利哥城牆已倒塌，請完成佔領。":"耶利哥繞城進度："+state.marches+" / 7 日。";
   }else objective.textContent="前往吉甲整軍，準備進入耶利哥戰役。";
+  if(state.stage>=4){
+    var gibeonCity=document.querySelector('[data-city="gibeon"]');
+    gibeonCity.classList.remove("enemy","locked");gibeonCity.classList.add("allied");
+    $("#goGibeon").textContent="✓ 基遍盟約已立";
+    objective.textContent=state.stage>=5?"基遍已獲援救！南方聯軍受挫。下一章將展開南方諸王的戰役。":"基遍向以色列求援！五王聯軍來攻，請履行盟約、率軍前往救援（約書亞記 10 章）。";
+    if(state.stage>=5)$("#defendGibeon").textContent="✓ 基遍援救成功";
+  }else if(state.stage===3){
+    document.querySelector('[data-city="gibeon"]').classList.remove("locked");
+    objective.textContent="下一章：基遍人以舊餅與破鞋求立盟約（約書亞記 9 章）。沿路線前往基遍。";
+  }
+  document.querySelectorAll(".city").forEach(function(city){
+    if(isAllied(city.dataset.city))city.title=city.textContent.trim()+"：已結盟，可支援；非以色列攻佔領土";
+  });
   if(selectedTrainingCity&&!isOccupied(selectedTrainingCity))selectedTrainingCity=null;
   if(!selectedTrainingCity){selectedTrainingCity=state.stage>=3?"ai":state.stage>=2?"jericho":state.stage>=1?"gilgal":null}
   $("#trainCity").disabled=!selectedTrainingCity||state.moving;
@@ -396,6 +429,35 @@ $("#goAi").addEventListener("click",function(){
   say("艾城戰役（約書亞記 7–8 章）：以色列人省察失敗原因後，照神的指示設下伏兵。進入戰場後可使用「伏兵出擊」。");
   moveTo("ai",function(){saveCampaign();startBattle("campaign")});
 });
+const gibeonModal=$("#gibeonModal"),gibeonStory=$("#gibeonStory");
+function openGibeonEvent(){
+  gibeonStory.textContent="基遍人帶著發霉的餅、破舊衣鞋，聲稱從遙遠地方來，要求與以色列立約。面對看似可信的證物，最重要的是什麼？";
+  $("#gibeonChoices").hidden=false;$("#gibeonContinue").hidden=true;
+  gibeonModal.classList.add("show");
+}
+function answerGibeon(asked){
+  $("#gibeonChoices").hidden=true;$("#gibeonContinue").hidden=false;
+  gibeonStory.textContent=(asked?"您注意到了重要原則：重大決定應尋求神的指引。":"這正是經文提醒我們的疏忽：眼見的證據未必說明真相。")+" 約書亞記 9:14 記載，以色列人沒有求問耶和華，便與基遍人立約。三天後才得知他們是附近居民，但仍須信守誓約。";
+}
+$("#gibeonAsk").addEventListener("click",function(){answerGibeon(true)});
+$("#gibeonInspect").addEventListener("click",function(){answerGibeon(false)});
+$("#gibeonClose").addEventListener("click",function(){gibeonModal.classList.remove("show")});
+$("#gibeonContinue").addEventListener("click",function(){
+  if(state.stage!==3)return;
+  gibeonModal.classList.remove("show");state.stage=4;state.morale=Math.min(100,state.morale+2);
+  say("基遍盟約已立。雖然以色列人受了計謀，仍守住誓言；如今南方五王聯軍將來襲，必須前往援救盟友。");
+  sync();renderCampaign();saveCampaign();
+});
+$("#goGibeon").addEventListener("click",function(){
+  if(state.stage!==3||state.moving)return;
+  say("沿艾城南面的道路前往基遍。請閱讀《約書亞記》第九章的盟約事件。");
+  moveTo("gibeon",openGibeonEvent);
+});
+$("#defendGibeon").addEventListener("click",function(){
+  if(state.stage!==4||state.moving)return;
+  say("基遍受南方諸王攻擊，以色列人履行誓約、急行軍前往支援（約書亞記 10:1–15）。");
+  moveTo("gibeon",function(){saveCampaign();startBattle("gibeon")});
+});
 document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click",function(){
   var id=b.dataset.city,c=cities[id];
   if(state.moving){say("軍隊正沿行軍路線前進，請稍候。");return}
@@ -407,6 +469,9 @@ document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click
   if(id==="gilgal"&&state.stage===0)$("#goGilgal").click();
   else if(id==="jericho"&&state.stage===1)$("#goJericho").click();
   else if(id==="ai"&&state.stage===2)$("#goAi").click();
+  else if(id==="gibeon"&&state.stage===3)$("#goGibeon").click();
+  else if(id==="gibeon"&&state.stage===4)$("#defendGibeon").click();
+  else if(id==="gibeon"&&state.stage>=5)say("基遍已與以色列立約並獲援救；這是盟邦，而不是被攻取的城鎮。");
 })});
 $("#trainCity").addEventListener("click",function(){
   var id=selectedTrainingCity;
@@ -499,18 +564,19 @@ function grantXp(u,amount){
 }
 let battleMode="demo";
 function startBattle(mode){
-  battleMode=mode==="campaign"?"campaign":mode==="training"?"training":"demo";
+  battleMode=mode==="campaign"?"campaign":mode==="gibeon"?"gibeon":mode==="training"?"training":"demo";
   modal.classList.remove("show");battleScreen.classList.add("show");
-  $("#battleModeTitle").textContent=battleMode==="training"?cities[trainingLocation].name+" · 練兵":battleMode==="campaign"?"艾城主線戰場":"自由戰場練習";
-  battleState={running:true,ambush:false,won:false,lost:false,player:unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
+  $("#battleModeTitle").textContent=battleMode==="training"?cities[trainingLocation].name+" · 練兵":battleMode==="campaign"?"艾城主線戰場":battleMode==="gibeon"?"援救基遍 · 南方聯軍":"自由戰場練習";
+  battleState={running:true,ambush:false,hail:false,won:false,lost:false,player:unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
   for(var i=0;i<7;i++){var sid="soldier"+(i+1);battleState.allies.push(unit("ally",115+(i%3)*38,370+Math.floor(i/3)*34,55,"soldier",sid,profileFor(sid,"soldier")))}
-  for(var j=0;j<11;j++)battleState.enemies.push(unit("enemy",610+(j%4)*42,270+Math.floor(j/4)*48,48,"soldier","enemy"+(j+1),{level:1,xp:0}));
-  battleState.boss=unit("enemy",765,200,180,"boss","boss",{level:3,xp:0});battleState.enemies.push(battleState.boss);
-  $("#ambushBtn").disabled=false;showBattleMessage(battleMode==="campaign"?"艾城主線：操控約書亞移動，接敵自動攻擊。適時發動伏兵！":battleMode==="training"?"據點練兵：沒有主線劇情，戰鬥經驗與升級會保留。":(joshuaSpriteReady?"自由練習開始。":"約書亞角色素材載入中…"));updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
+  for(var j=0;j<(battleMode==="gibeon"?14:11);j++)battleState.enemies.push(unit("enemy",610+(j%4)*42,270+Math.floor(j/4)*48,48,"soldier","enemy"+(j+1),{level:1,xp:0}));
+  battleState.boss=unit("enemy",765,200,battleMode==="gibeon"?235:180,"boss","boss",{level:battleMode==="gibeon"?4:3,xp:0});battleState.enemies.push(battleState.boss);
+  $("#ambushBtn").textContent=battleMode==="gibeon"?"夜行急援":"伏兵出擊";
+  $("#ambushBtn").disabled=false;showBattleMessage(battleMode==="campaign"?"艾城主線：操控約書亞移動，接敵自動攻擊。適時發動伏兵！":battleMode==="gibeon"?"援救基遍：迎戰五王聯軍；可發動夜行急援。戰鬥稍後將出現冰雹事件。":battleMode==="training"?"據點練兵：沒有主線劇情，戰鬥經驗與升級會保留。":(joshuaSpriteReady?"自由練習開始。":"約書亞角色素材載入中…"));updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
 }
 $("#battleDemo").addEventListener("click",function(){startBattle("demo")});
 $("#exitBattle").addEventListener("click",endBattle);
-function endBattle(){if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};if(battleMode==="campaign"){say(state.stage>=3?"艾城戰役完成！以色列軍隊整軍待命，下一站將前往基遍。":"已離開艾城戰役。仍可再次進軍挑戰，角色等級與經驗值已保留。")}else if(battleMode==="training")say("已結束"+cities[trainingLocation].name+"的練兵。經驗與等級已保留，主線進度不變。");else say("已離開自由戰場練習。角色等級與經驗值已保留。");renderCampaign();saveCampaign()}
+function endBattle(){if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};if(battleMode==="campaign"){say(state.stage>=3?"艾城戰役完成！以色列軍隊整軍待命，下一站將前往基遍。":"已離開艾城戰役。仍可再次進軍挑戰，角色等級與經驗值已保留。")}else if(battleMode==="gibeon")say(state.stage>=5?"基遍援救完成，盟約得到履行。南方戰役後續章節即將展開。":"已離開基遍援救戰場，可再度挑戰。主線進度和角色等級已保存。");else if(battleMode==="training")say("已結束"+cities[trainingLocation].name+"的練兵。經驗與等級已保留，主線進度不變。");else say("已離開自由戰場練習。角色等級與經驗值已保留。");renderCampaign();saveCampaign()}
 function resizeCanvas(){var box=canvas.getBoundingClientRect();var ratio=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.max(620,Math.floor(box.width*ratio));canvas.height=Math.max(360,Math.floor(box.height*ratio));ctx.setTransform(ratio,0,0,ratio,0,0);return {w:box.width,h:box.height}}
 function dist(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.hypot(dx,dy)}
 function nearest(from,list){var best=null,bd=1e9;for(var i=0;i<list.length;i++){var u=list[i];if(u.dead)continue;var d=dist(from,u);if(d<bd){bd=d;best=u}}return {u:best,d:bd}}
@@ -536,11 +602,17 @@ function attack(attacker,target,amount,range){
   doDamage(target,amount,attacker);
   return true
 }
-$("#ambushBtn").addEventListener("click",function(){if(!battleState||battleState.ambush)return;battleState.ambush=true;setPlayerAnim("command",.5);for(var i=0;i<6;i++){var aid="ambush"+(i+1);battleState.allies.push(unit("ally",820-(i%3)*36,410+Math.floor(i/3)*34,60,"ambush",aid,profileFor(aid,"soldier")))}$("#ambushBtn").disabled=true;showBattleMessage("伏兵從艾城後方出擊！敵軍陷入夾擊。")});
+$("#ambushBtn").addEventListener("click",function(){if(!battleState||battleState.ambush)return;battleState.ambush=true;setPlayerAnim("command",.5);for(var i=0;i<6;i++){var aid="ambush"+(i+1);battleState.allies.push(unit("ally",820-(i%3)*36,410+Math.floor(i/3)*34,60,"ambush",aid,profileFor(aid,"soldier")))}$("#ambushBtn").disabled=true;showBattleMessage(battleMode==="gibeon"?"夜間急行軍的援軍抵達！共同迎戰南方聯軍。":"伏兵從艾城後方出擊！敵軍陷入夾擊。")});
 function updateHud(){if(!battleState)return;var p=battleState.player,b=battleState.boss;$("#playerHpText").textContent=Math.ceil(p.hp)+" / "+p.maxHp;$("#playerHpBar").style.width=(p.hp/p.maxHp*100)+"%";$("#playerLevelText").textContent="Lv."+p.level+"  ATK "+p.atk;$("#playerXpText").textContent="EXP "+p.xp+" / "+xpNeed(p.level);$("#bossHpText").textContent=Math.ceil(b.hp)+" / "+b.maxHp;$("#bossHpBar").style.width=(b.hp/b.maxHp*100)+"%";var alive=battleState.enemies.filter(function(u){return !u.dead}).length;$("#enemyCount").textContent="敵軍 "+alive}
 function showBattleMessage(t){var el=$("#battleMessage");el.textContent=t;el.style.opacity="1";clearTimeout(el._timer);el._timer=setTimeout(function(){el.style.opacity="0"},1500)}
 function update(dt){
   var bs=battleState,p=bs.player;if(!bs.running)return;
+  bs.time+=dt;
+  if(battleMode==="gibeon"&&!bs.hail&&bs.time>=18){
+    bs.hail=true;
+    bs.enemies.forEach(function(e){if(!e.dead)doDamage(e,e.role==="boss"?35:22,null)});
+    showBattleMessage("約書亞記 10:11：冰雹降下，南方聯軍受到重創！");
+  }
   p.attackCd=Math.max(0,p.attackCd-dt);p.hitFlash=Math.max(0,p.hitFlash-dt);p.animLock=Math.max(0,p.animLock-dt);p.animClock+=dt;
   var kx=(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0),ky=(keys.ArrowDown||keys.s?1:0)-(keys.ArrowUp||keys.w?1:0);
   var mx=kx||ky?kx:joyMove.x,my=kx||ky?ky:joyMove.y;
@@ -552,13 +624,14 @@ function update(dt){
   if(pn.u&&pn.d<72&&p.attackCd<=0){p.dir=pn.u.x>=p.x?1:-1;attack(p,pn.u,p.atk,72)}
   bs.allies.forEach(function(a){if(a.dead)return;a.attackCd=Math.max(0,a.attackCd-dt);a.hitFlash=Math.max(0,a.hitFlash-dt);var n=nearest(a,bs.enemies);if(n.u){if(n.d>45)moveToward(a,n.u,a.speed,dt);else attack(a,n.u,a.atk,48)}});
   bs.enemies.forEach(function(e){if(e.dead)return;e.attackCd=Math.max(0,e.attackCd-dt);e.hitFlash=Math.max(0,e.hitFlash-dt);var targets=[p].concat(bs.allies);var n=nearest(e,targets);if(n.u){if(n.d>46)moveToward(e,n.u,e.role==="boss"?54:e.speed,dt);else attack(e,n.u,e.atk,49)}});
-  if(p.dead&&!bs.lost){bs.lost=true;bs.running=false;p.anim="defeated";p.animLock=999;showBattleMessage(battleMode==="campaign"?"艾城進攻失利，請重整軍隊。":"練習失敗。");setTimeout(function(){if(confirm("戰敗，是否重新挑戰？"))startBattle(battleMode);else endBattle()},900)}
+  if(p.dead&&!bs.lost){bs.lost=true;bs.running=false;p.anim="defeated";p.animLock=999;showBattleMessage(battleMode==="campaign"?"艾城進攻失利，請重整軍隊。":battleMode==="gibeon"?"援救基遍失利，重新整軍後仍可再挑戰。":"練習失敗。");setTimeout(function(){if(confirm("戰敗，是否重新挑戰？"))startBattle(battleMode);else endBattle()},900)}
   var alive=bs.enemies.some(function(u){return !u.dead});if(!alive&&!bs.won){
     bs.won=true;bs.running=false;p.anim="victory";p.animLock=999;
     state.morale=Math.min(100,state.morale+3);sync();
-    if(battleMode==="campaign"){state.stage=3;showBattleMessage("艾城攻克！主線任務完成。");saveCampaign()}
+    if(battleMode==="campaign"){state.stage=3;showBattleMessage("艾城攻克！下一站基遍盟約事件。");saveCampaign()}
+    else if(battleMode==="gibeon"){state.stage=5;showBattleMessage("基遍援救成功！南方聯軍敗退。");saveCampaign()}
     else showBattleMessage(battleMode==="training"?"據點練兵完成！":"自由戰場練習勝利！");
-    setTimeout(function(){alert(battleMode==="campaign"?"艾城戰役勝利！\n\n主線進度已保存，下一階段將前往基遍。":battleMode==="training"?"練兵完成！\n\n約書亞與士兵的經驗、等級已保存，主線進度不變。":"自由練習勝利！\n\n角色經驗與等級已保存。");endBattle()},1100)
+    setTimeout(function(){alert(battleMode==="campaign"?"艾城戰役勝利！\n\n主線進度已保存，下一站：基遍盟約。":battleMode==="gibeon"?"基遍援救成功！\n\n以色列履行了與基遍人的盟約。約書亞記 10:11–14 也記載冰雹與日月停住的奇事。\n\n下一章將延伸至南方諸王。":battleMode==="training"?"練兵完成！\n\n約書亞與士兵的經驗、等級已保存，主線進度不變。":"自由練習勝利！\n\n角色經驗與等級已保存。");endBattle()},1100)
   }
 }
 function drawJoshua(u){
