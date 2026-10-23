@@ -58,6 +58,9 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 /* real-time battle */
 #battleScreen{position:absolute;inset:0;z-index:40;background:#0b100c;display:none;flex-direction:column}
 #battleScreen.show{display:flex}
+/* The tablet browser must never interpret battle gestures as page scrolling. */
+html.battle-active,html.battle-active body{overscroll-behavior:none;touch-action:none}
+#battleScreen,#battleScreen .battleControls,#battleScreen .joyWrap,#battleScreen .joy,#battleScreen .stick{touch-action:none;overscroll-behavior:contain;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .battleHud{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;padding:8px;background:#151c16;border-bottom:1px solid #394437}
 .hpBlock{min-width:0}.hpLabel{font-size:12px;color:#d8cfb5;margin-bottom:3px;display:flex;justify-content:space-between;gap:8px}.hpbar{height:10px;background:#0b0d0b;border:1px solid #424b3e;border-radius:6px;overflow:hidden}.hpbar i{display:block;height:100%;width:100%;background:#6e9c66;transition:width .15s}.hpbar.enemy i{background:#ad5f56}.battleTitle{text-align:center;font-size:13px;color:#e7d291;white-space:nowrap}
 #battleCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;background:#8b815d;touch-action:none}
@@ -1166,7 +1169,7 @@ function startBattle(mode){
   var postTribe=postCovenant?TRIBAL_FLAGS.find(function(t){return t.mode===battleMode}):null;
   $("#battleLeaderLabel").textContent=battleMode==="afterSimeon"?"西緬聯軍指揮官 HP":postCovenant?"支派指揮官 HP":"約書亞 HP";
   $("#battleLeaderTip").textContent=battleMode==="afterSimeon"?"西緬與猶大的勇士並肩迎戰！金色標記代表西緬、紅色標記代表猶大；拖動方向盤接敵後自動攻擊，還可召喚兩支派的聯軍增援。":postCovenant?"士師記支派戰役由支派勇士領軍。拖動方向盤接近敵人即可自動迎戰，並可召喚援軍；將領與士兵可累積經驗。":"握緊方向盤，帶領約書亞穿越戰場！靠近敵軍時會自動迎戰；每一次交鋒，都能讓將領與弟兄們累積歷練、逐步成長。";
-  modal.classList.remove("show");battleScreen.classList.add("show");
+  modal.classList.remove("show");lockBattleScroll();battleScreen.classList.add("show");
   $("#battleModeTitle").textContent=postTribe?postTribe.name+"・士師記支派戰役":tribal?tribal.title:battleMode==="training"?cities[trainingLocation].name+" · 練兵":battleMode==="campaign"?"艾城主線戰場":battleMode==="gibeon"?"援救基遍 · 南方聯軍":battleMode==="south"?"南方五王 · 山地追擊戰":battleMode==="hazor"?"夏瑣之戰 · 北方聯軍":"自由戰場練習";
   if(battleMode==="afterSimeon")$("#battleModeTitle").textContent="西緬 × 猶大聯軍・洗法之戰";
   battleState={running:true,ambush:false,hail:false,wave:false,won:false,lost:false,player:postCovenant?unit("player",160,330,120,"leader","tribalLeader",profileFor("tribalLeader","leader")):unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
@@ -1182,7 +1185,7 @@ $("#battleDemo").addEventListener("click",function(){startBattle("demo")});
 $("#exitBattle").addEventListener("click",endBattle);
 function endBattle(){
   if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}
-  cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};
+  cancelAnimationFrame(raf);battleScreen.classList.remove("show");endJoy();unlockBattleScroll();keys={};
   if(TRIBE_BATTLES.some(function(b){return b.mode===battleMode})||battleMode==="afterJudah"||battleMode==="afterSimeon"||battleMode==="afterJoseph")say("支派勇士返回營地！這趟征途中獲得的經驗與等級已保存，若尚未獲勝，隨時可以重新挑戰。");
   else if(battleMode==="campaign")say(state.stage>=3?"艾城的軍旗已升起，新故事正從基遍方向傳來！":"今日暫時鳴金收兵，整頓後仍可再挑戰艾城！");
   else if(battleMode==="gibeon")say(state.stage>=5?"基遍終於平安，盟約也得到了守護！":"基遍仍在等待援救，整軍後再次出發吧！");
@@ -1381,14 +1384,37 @@ function loop(now){if(!battleState)return;var dt=Math.min(.032,(now-last)/1000);
 window.addEventListener("keydown",function(e){if(!battleScreen.classList.contains("show"))return;var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=true;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(k)>=0)e.preventDefault()});
 window.addEventListener("keyup",function(e){var k=e.key.length===1?e.key.toLowerCase():e.key;keys[k]=false});
 const battleJoy=$("#battleJoy"),battleStick=$("#battleStick");let joyActive=false;
+let battleScrollState=null;
+function lockBattleScroll(){
+  if(battleScrollState)return;
+  battleScrollState={x:window.scrollX,y:window.scrollY,bodyStyle:document.body.style.cssText};
+  document.documentElement.classList.add("battle-active");
+  document.body.style.position="fixed";
+  document.body.style.left=-battleScrollState.x+"px";
+  document.body.style.top=-battleScrollState.y+"px";
+  document.body.style.width="100%";
+  document.body.style.overflow="hidden";
+}
+function unlockBattleScroll(){
+  if(!battleScrollState)return;
+  var old=battleScrollState;battleScrollState=null;
+  document.documentElement.classList.remove("battle-active");
+  document.body.style.cssText=old.bodyStyle;
+  window.scrollTo(old.x,old.y);
+}
+// iPad Safari may still generate touchmove while a captured pointer is dragged
+// downward. Cancel only gestures inside the open battlefield, never on the map.
+battleScreen.addEventListener("touchmove",function(e){
+  if(battleScreen.classList.contains("show")&&e.cancelable)e.preventDefault();
+},{passive:false});
 function setJoy(clientX,clientY){
   var r=battleJoy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=clientX-cx,dy=clientY-cy,max=r.width*.31,d=Math.hypot(dx,dy)||1,k=Math.min(1,max/d),sx=dx*k,sy=dy*k;
   battleStick.style.transform="translate("+sx+"px,"+sy+"px)";
   joyMove={x:sx/max,y:sy/max};
 }
 function endJoy(){joyActive=false;joyMove={x:0,y:0};battleStick.style.transform="translate(0,0)"}
-battleJoy.addEventListener("pointerdown",function(e){e.preventDefault();joyActive=true;battleJoy.setPointerCapture(e.pointerId);setJoy(e.clientX,e.clientY)});
-battleJoy.addEventListener("pointermove",function(e){if(!joyActive)return;e.preventDefault();setJoy(e.clientX,e.clientY)});
+battleJoy.addEventListener("pointerdown",function(e){e.preventDefault();e.stopPropagation();joyActive=true;battleJoy.setPointerCapture(e.pointerId);setJoy(e.clientX,e.clientY)});
+battleJoy.addEventListener("pointermove",function(e){if(!joyActive)return;e.preventDefault();e.stopPropagation();setJoy(e.clientX,e.clientY)});
 battleJoy.addEventListener("pointerup",endJoy);battleJoy.addEventListener("pointercancel",endJoy);
 fitWorldMap();sync();renderCampaign();
 })();
