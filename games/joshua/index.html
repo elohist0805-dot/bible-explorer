@@ -155,8 +155,10 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .tribe-grid .btn.done{border-color:#c9d2b9;background:#294137}
 .tribe-legend{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;line-height:1.5}
 .tribe-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-right:4px}
-.tribe-territory{stroke:#584d3d;stroke-width:2.6;stroke-dasharray:7 7;fill:#e1cc90;fill-opacity:0;stroke-opacity:0;transition:fill-opacity .7s,stroke .7s;pointer-events:none}
-.tribe-territory.claimed{stroke-dasharray:none;stroke-width:3.5;fill-opacity:.57;stroke-opacity:.92}
+.tribe-territory{stroke:none;fill-opacity:0;transition:fill-opacity .7s;pointer-events:none}
+.tribe-territory.claimed{fill-opacity:.51}
+.tribe-frontier{fill:none;stroke:#554633;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0;transition:stroke-opacity .7s;pointer-events:none}
+.tribe-frontier.claimed{stroke-opacity:.62}
 .campaign-after-covenant .territory.claimed{fill-opacity:.04;stroke-opacity:.17}
 .tribe-flag{position:absolute;z-index:7;display:flex;flex-direction:column;align-items:center;gap:1px;transform:translate(-50%,-50%);width:66px;border:0;background:transparent;color:#fef4d9;cursor:pointer;filter:drop-shadow(0 2px 2px #261c12);opacity:.58}
 .tribe-flag i{position:relative;width:4px;height:29px;background:#5f4931;border:1px solid #eadca0}
@@ -462,7 +464,7 @@ const TRIBAL_FLAGS=[
 const SHECHEM={x:480,y:350};
 function tribeMusterPosition(index){return {x:420+(index%4)*40,y:305+Math.floor(index/4)*37}}
 const TRIBE_SHAPES=[
-  ["asher","280,66 375,65 385,120 366,205 354,262 279,272"],
+  ["asher","335,66 453,65 454,122 424,205 411,262 320,274"],
   ["naphtali","407,52 590,56 593,165 572,232 462,215 394,156"],
   ["zebulun","355,218 442,206 471,246 456,306 382,314 335,277"],
   ["issachar","471,229 581,231 596,301 559,366 479,345 457,306"],
@@ -477,14 +479,104 @@ const TRIBE_SHAPES=[
   ["reuben","704,610 931,612 928,825 704,826 684,724"]
 ];
 const tribeSvgNS="http://www.w3.org/2000/svg",tribeShapes=[];
+// Shared terrain mesh: every cell belongs to exactly one tribe, and adjacent
+// lands reuse the very same vertices. Borders can wind without crossing,
+// leaving gaps, or piling translucent colors on top of one another.
+const landAnchors=TRIBE_SHAPES.map(function(shape,index){
+  var points=shape[1].split(" ").map(function(pair){return pair.split(",").map(Number)});
+  return {id:shape[0],points:points,index:index,cx:points.reduce(function(n,p){return n+p[0]},0)/points.length,cy:points.reduce(function(n,p){return n+p[1]},0)/points.length};
+});
+function insideLand(points,x,y){
+  var inside=false;
+  for(var i=0,j=points.length-1;i<points.length;j=i++){
+    var a=points[i],b=points[j];
+    if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])inside=!inside;
+  }
+  return inside;
+}
+function distanceToBorder(points,x,y){
+  var closest=Infinity;
+  for(var i=0;i<points.length;i++){
+    var a=points[i],b=points[(i+1)%points.length],dx=b[0]-a[0],dy=b[1]-a[1];
+    var t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy||1)));
+    closest=Math.min(closest,Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy));
+  }
+  return insideLand(points,x,y)?-closest:closest;
+}
+const terrainStep=8,terrainX=264,terrainY=48,terrainCols=87,terrainRows=104;
+function limitAtY(anchors,y){
+  for(var i=1;i<anchors.length;i++)if(y<=anchors[i][0]){
+    var a=anchors[i-1],b=anchors[i],t=(y-a[0])/(b[0]-a[0]);
+    return a[1]+(b[1]-a[1])*t;
+  }
+  return anchors[anchors.length-1][1];
+}
+// Follow the painted shoreline and the river/lake banks. The colors belong on
+// land, never across the Mediterranean, Galilee or Dead Sea water surfaces.
+const coastBank=[[0,400],[120,372],[240,350],[360,321],[480,295],[600,275],[720,251],[900,210]];
+const westWaterBank=[[0,670],[90,637],[175,638],[225,660],[420,645],[500,628],[600,618],[800,615],[900,621]];
+const eastWaterBank=[[0,724],[120,735],[220,726],[350,705],[475,686],[525,704],[625,742],[760,741],[850,715],[900,680]];
+const landCells=[];
+for(var row=0;row<terrainRows;row++){
+  var line=[];
+  for(var col=0;col<terrainCols;col++){
+    var px=terrainX+(col+.5)*terrainStep,py=terrainY+(row+.5)*terrainStep;
+    var east=px>639,best=null,bestScore=Infinity,nearest=Infinity;
+    landAnchors.forEach(function(anchor){
+      if((anchor.index>=10)!==east)return;
+      var signed=distanceToBorder(anchor.points,px,py);
+      nearest=Math.min(nearest,signed);
+      var terrainBend=11*Math.sin(px/68+anchor.index*1.31)*Math.cos(py/74-anchor.index*.73)
+        +5.5*Math.sin((px+py)/105+anchor.index*1.7);
+      var score=signed+terrainBend+.015*Math.hypot(px-anchor.cx,py-anchor.cy);
+      if(score<bestScore){bestScore=score;best=anchor.id}
+    });
+    var onLand=east?px>=limitAtY(eastWaterBank,py)+5
+      :px>=limitAtY(coastBank,py)+5&&px<=limitAtY(westWaterBank,py)-5;
+    line.push(onLand&&nearest<=39?best:null);
+  }
+  landCells.push(line);
+}
+// A single perturbed lattice generates all boundaries, so two adjacent tribal
+// regions share identical geometry even at bends and three-way junctions.
+const meshPoints=[];
+for(var j=0;j<=terrainRows;j++){
+  var line=[];
+  for(var i=0;i<=terrainCols;i++){
+    var x=terrainX+i*terrainStep,y=terrainY+j*terrainStep;
+    var interior=i>0&&j>0&&i<terrainCols&&j<terrainRows;
+    var waveX=interior?11*Math.sin(y/81+x/179)+5.5*Math.cos(y/48-x/109)+1.3*Math.sin(i*.83+j*.37):0;
+    var waveY=interior?10*Math.sin(x/92+y/163)+6*Math.cos(x/52-y/111)+1.2*Math.sin(j*.75-i*.31):0;
+    line.push([Math.round((x+waveX)*10)/10,Math.round((y+waveY)*10)/10]);
+  }
+  meshPoints.push(line);
+}
+const terrainGeometry={};
+TRIBAL_FLAGS.forEach(function(tribe){terrainGeometry[tribe.id]={fill:[],edge:[]}});
+function vertex(p){return p[0]+","+p[1]}
+for(var r=0;r<terrainRows;r++)for(var c=0;c<terrainCols;c++){
+  var id=landCells[r][c];if(!id)continue;
+  var a=meshPoints[r][c],b=meshPoints[r][c+1],d=meshPoints[r+1][c],e=meshPoints[r+1][c+1];
+  var geometry=terrainGeometry[id];
+  geometry.fill.push("M"+vertex(a)+"L"+vertex(b)+"L"+vertex(e)+"L"+vertex(d)+"Z");
+  if(r===0||landCells[r-1][c]!==id)geometry.edge.push("M"+vertex(a)+"L"+vertex(b));
+  if(c===terrainCols-1||landCells[r][c+1]!==id)geometry.edge.push("M"+vertex(b)+"L"+vertex(e));
+  if(r===terrainRows-1||landCells[r+1][c]!==id)geometry.edge.push("M"+vertex(e)+"L"+vertex(d));
+  if(c===0||landCells[r][c-1]!==id)geometry.edge.push("M"+vertex(d)+"L"+vertex(a));
+}
 [$(".mapart"),overviewArt].forEach(function(svg){
   var layer=document.createElementNS(tribeSvgNS,"g");layer.setAttribute("class","tribeLayer");
-  TRIBE_SHAPES.forEach(function(shape){
-    var polygon=document.createElementNS(tribeSvgNS,"polygon"),tribe=TRIBAL_FLAGS.find(function(t){return t.id===shape[0]});
-    polygon.setAttribute("points",shape[1]);polygon.setAttribute("class","tribe-territory");polygon.dataset.tribe=shape[0];polygon.style.fill=tribe.color;
-    layer.appendChild(polygon);tribeShapes.push(polygon);
+  TRIBAL_FLAGS.forEach(function(tribe){
+    var geometry=terrainGeometry[tribe.id],fill=document.createElementNS(tribeSvgNS,"path"),frontier=document.createElementNS(tribeSvgNS,"path");
+    fill.setAttribute("d",geometry.fill.join(""));fill.setAttribute("class","tribe-territory");
+    fill.dataset.tribe=tribe.id;fill.style.fill=tribe.color;
+    frontier.setAttribute("d",geometry.edge.join(""));frontier.setAttribute("class","tribe-frontier");
+    frontier.dataset.tribe=tribe.id;
+    layer.appendChild(fill);layer.appendChild(frontier);tribeShapes.push(fill,frontier);
   });
-  svg.appendChild(layer);
+  // Keep the routes and place names readable above the translucent land tint.
+  var landmark=svg.querySelector(".roadline")||svg.querySelector("text");
+  if(landmark)svg.insertBefore(layer,landmark);else svg.appendChild(layer);
 });
 const tribeFlagNodes=[];
 TRIBAL_FLAGS.forEach(function(tribe,index){
