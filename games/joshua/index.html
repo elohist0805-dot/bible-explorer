@@ -64,6 +64,57 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 #battleMessage{position:absolute;left:50%;top:75px;transform:translateX(-50%);z-index:4;background:#0a0d0acc;border:1px solid #5c6856;border-radius:10px;padding:7px 11px;font-size:13px;pointer-events:none;opacity:0;transition:opacity .2s}.damageFloat{position:absolute;font-weight:800;pointer-events:none;animation:floatUp .7s ease-out forwards}@keyframes floatUp{to{transform:translateY(-35px);opacity:0}}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.mapwrap{min-height:590px}.side{display:grid;grid-template-columns:1fr 1fr;gap:10px}.panel{min-width:0}}
 @media(max-width:620px){#game{padding:7px}.mapwrap{min-height:520px}.side{grid-template-columns:1fr}.brand h1{font-size:22px}.stats{width:100%}.badge{flex:1;text-align:center}.city span{font-size:11px}.battleControls{grid-template-columns:130px 1fr;padding:7px;gap:7px}.joy{width:108px;height:108px}.stick{width:46px;height:46px;left:28px;top:28px}.battleBtns button{min-height:44px;font-size:13px}.battleBtns{grid-template-columns:1fr 1fr}.battleBtns .exit{grid-column:1/-1}.battleTip{font-size:11px}}
+/* Fixed parchment-map presentation. The background and all markers are
+   transformed by the same fitting layer, so they cannot drift apart. */
+#world{cursor:default;touch-action:auto;background:#b89f70}
+#world.dragging{cursor:default}
+.mapwrap{background:#b89f70}
+.city{min-width:58px;filter:drop-shadow(0 3px 3px #39261780)}
+.city .fort{
+  position:relative;width:48px;height:30px;margin:5px auto 0;
+  border:2px solid #62482d;border-radius:2px 2px 4px 4px;
+  background:repeating-linear-gradient(0deg,transparent 0 8px,#654b3135 9px 10px),
+             linear-gradient(120deg,#e5c68c,#b28a51 65%,#87633d);
+  box-shadow:inset 0 2px 0 #f6dcad,0 4px 0 #60472e,0 6px 8px #30231588;
+}
+.city .fort::before{
+  content:"";position:absolute;left:-8px;top:-11px;width:15px;height:39px;
+  border:2px solid #62482d;border-radius:2px 2px 0 0;
+  background:linear-gradient(#e1bf7d 0 22%,#997045 23% 32%,#bd965c 33%);
+  box-shadow:43px 0 0 -2px #b88d54,45px 0 0 0 #62482d;
+}
+.city .fort::after{
+  content:"";position:absolute;left:17px;bottom:-1px;width:12px;height:16px;
+  border:2px solid #6c5033;border-bottom:0;border-radius:9px 9px 0 0;
+  background:linear-gradient(90deg,#513923,#805935 50%,#513923);
+}
+.city.enemy .fort,.city.friendly .fort{border-color:#62482d;background:repeating-linear-gradient(0deg,transparent 0 8px,#654b3135 9px 10px),linear-gradient(120deg,#e5c68c,#b28a51 65%,#87633d)}
+.city .flag{z-index:1;left:45px;top:-20px;width:19px;height:14px;background:#a9473f;border-left:2px solid #5b422a;clip-path:polygon(0 0,100% 10%,80% 53%,100% 95%,0 85%)}
+.city.friendly .flag{background:#39799b}
+.city.locked{filter:grayscale(.45) drop-shadow(0 3px 3px #39261780);opacity:.8}
+.city span{margin-top:9px;color:#fff2cf;font-size:14px;text-shadow:0 2px 3px #2d201c,0 0 4px #2d201c}
+.army{
+  width:58px;height:67px;background:transparent;border:0;border-radius:0;
+  box-shadow:none;pointer-events:none;filter:drop-shadow(1px 4px 3px #291e1699);
+}
+.war-standard{
+  position:absolute;display:block;left:22px;top:4px;width:4px;height:56px;
+  background:linear-gradient(90deg,#6b472a,#e5c482,#6b472a);
+  border:1px solid #5b3b22;border-radius:2px;
+}
+.war-standard::before{
+  content:"";position:absolute;top:5px;left:3px;width:34px;height:25px;
+  background:linear-gradient(90deg,transparent 0 42%,#e2bb69 43% 51%,transparent 52%),
+             linear-gradient(#a64c3f,#772e29);
+  border:1px solid #f0c978;clip-path:polygon(0 0,100% 7%,82% 51%,100% 92%,0 85%);
+}
+.war-standard::after{
+  content:"";position:absolute;left:-4px;top:-7px;width:9px;height:9px;
+  background:#f1cb6d;transform:rotate(45deg);border:1px solid #7c5529;
+}
+.army::after{top:67px;background:#483322d9;color:#fff1ce;border:1px solid #c4a36e;font-weight:700}
+.marmy{width:3px;height:17px;background:#e5c482;border:0;border-radius:0;box-shadow:0 1px 2px #23180e;z-index:3}
+.marmy::after{content:"";position:absolute;top:0;left:3px;width:13px;height:9px;background:#9a3d36;clip-path:polygon(0 0,100% 12%,75% 52%,100% 90%,0 80%)}
 </style>
 </head>
 <body>
@@ -120,7 +171,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
       <button class="city enemy locked" data-city="gibeon" style="left:435px;top:505px"><i class="flag"></i><div class="fort"></div><span>基遍</span></button>
       <button class="city enemy locked" data-city="jerusalem" style="left:465px;top:570px"><i class="flag"></i><div class="fort"></div><span>耶路撒冷</span></button>
       <button class="city enemy locked" data-city="hazor" style="left:550px;top:65px"><i class="flag"></i><div class="fort"></div><span>夏瑣</span></button>
-      <div id="army" class="army" style="left:715px;top:475px" aria-label="約書亞軍">🛡️</div>
+      <div id="army" class="army" style="left:715px;top:475px" aria-label="約書亞軍"><i class="war-standard" aria-hidden="true"></i></div>
     </div>
   </div>
   <div id="storyModal" class="modal" role="dialog" aria-modal="true">
@@ -202,13 +253,18 @@ const modal=$("#storyModal"),title=$("#modalTitle"),text=$("#modalText"),action=
 function openJericho(){modal.classList.add("show");title.textContent="耶利哥之戰";if(state.marches<6){text.textContent="第 "+(state.marches+1)+" 日：祭司抬著約櫃，七位祭司在前吹角。今天繞城一次，不可呼喊。";action.textContent="繞城一周";battle.hidden=true;progress.hidden=false;bar.style.width=(state.marches/7*100)+"%"}else if(state.marches===6){text.textContent="第七日到了。今天要繞城七次，最後祭司角聲長鳴，百姓一同呼喊。";action.textContent="完成第七日";battle.hidden=false;progress.hidden=false;bar.style.width="86%"}else{text.textContent="城牆已倒塌。耶利哥成為以色列在迦南取得的第一個重要據點。";action.textContent="返回戰略地圖";battle.hidden=false;progress.hidden=true}}
 action.addEventListener("click",function(){if(state.marches<6){state.marches++;state.food=Math.max(0,state.food-2);state.morale=Math.min(100,state.morale+1);sync();modal.classList.remove("show");say("完成第 "+state.marches+" 日繞城。軍隊保持安靜，返回營中。");objective.textContent="耶利哥繞城進度："+state.marches+" / 7 日。再次進軍耶利哥繼續任務。"}else if(state.marches===6){state.marches=7;bar.style.width="100%";text.textContent="角聲長鳴，百姓大聲呼喊！耶利哥城牆倒塌。";$("#wall").style.transform="translateY(90px) rotate(2deg)";$("#wall").style.transition="transform 1s ease";state.morale=95;sync();action.textContent="佔領耶利哥";say("耶利哥城牆倒塌！戰役勝利。")}else{modal.classList.remove("show");state.stage=2;document.querySelector('[data-city="jericho"]').classList.remove("enemy");document.querySelector('[data-city="jericho"]').classList.add("friendly");document.querySelector('[data-city="ai"]').classList.remove("locked");objective.textContent="下一戰：艾城。可點擊艾城進入即時戰場。";$("#goJericho").disabled=true;say("耶利哥已成為以色列據點。艾城路線開放。")}});close.addEventListener("click",function(){modal.classList.remove("show")});
 
-/* map pan */
-const world=$("#world"),layer=$("#maplayer");let scale=Math.max(.55,Math.min(.9,world.clientWidth/850)),px=world.clientWidth/2-520*scale,py=world.clientHeight/2-400*scale,drag=false,sx=0,sy=0,bx=0,by=0;
-function render(){layer.style.transform="translate("+px+"px,"+py+"px) scale("+scale+")"}
-world.addEventListener("pointerdown",function(e){if(e.target.closest("button"))return;drag=true;world.classList.add("dragging");sx=e.clientX;sy=e.clientY;bx=px;by=py;world.setPointerCapture(e.pointerId)});
-world.addEventListener("pointermove",function(e){if(!drag)return;px=bx+(e.clientX-sx);py=by+(e.clientY-sy);render()});
-world.addEventListener("pointerup",function(){drag=false;world.classList.remove("dragging")});
-world.addEventListener("wheel",function(e){e.preventDefault();var old=scale;scale=Math.max(.55,Math.min(1.45,scale*(e.deltaY<0?1.08:.92)));var r=world.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;px=mx-(mx-px)*(scale/old);py=my-(my-py)*(scale/old);render()},{passive:false});
+/* Fixed atlas: fit the entire 1200×900 map into its viewport.
+   No drag or wheel zoom, while city buttons remain clickable. */
+const world=$("#world"),layer=$("#maplayer");
+function fitWorldMap(){
+  const scale=Math.min(world.clientWidth/1200,world.clientHeight/900);
+  const px=(world.clientWidth-1200*scale)/2;
+  const py=(world.clientHeight-900*scale)/2;
+  layer.style.transform="translate("+px+"px,"+py+"px) scale("+scale+")";
+}
+if(typeof ResizeObserver!=="undefined")new ResizeObserver(fitWorldMap).observe(world);
+else window.addEventListener("resize",fitWorldMap);
+fitWorldMap();
 
 /* battle engine */
 const battleScreen=$("#battleScreen"),canvas=$("#battleCanvas"),ctx=canvas.getContext("2d");
