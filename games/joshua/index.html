@@ -171,6 +171,16 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .tribe-flag.in-camp i::after{height:14px;width:19px}
 .tribe-flag.in-camp span{font-size:11px;padding:1px 2px}
 .tribe-flag.marching{z-index:12;opacity:1;filter:drop-shadow(0 0 7px #ffdd80)}
+.chapter-arrived .tribe-flag.in-camp{animation:tribeGather .8s ease-out both;animation-delay:calc(var(--flag-order,0) * 95ms)}
+@keyframes tribeGather{from{opacity:0;scale:.55;translate:0 20px}to{opacity:.9;scale:1;translate:0 0}}
+.chapter-guide{position:absolute;bottom:17px;left:50%;transform:translateX(-50%);z-index:18;width:min(620px,calc(100% - 24px));background:#1b2a24f5;border:2px solid #e4c478;border-radius:14px;padding:14px 17px;box-shadow:0 8px 28px #080b08ad;color:#f6ebcf;text-align:center}
+.chapter-guide[hidden]{display:none!important}
+.chapter-guide h2{font-size:19px;color:#f8df91;margin:0 0 6px}
+.chapter-guide p{font-size:14px;line-height:1.6;margin:0 0 11px}
+.chapter-guide .actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+.chapter-guide .btn{font-size:14px;min-height:38px}
+#tribesAfterCovenant.chapter-highlight{border-color:#e4c478;box-shadow:0 0 0 2px #e4c47885,0 0 24px #e4c47830}
+@media(prefers-reduced-motion:reduce){.chapter-arrived .tribe-flag.in-camp{animation:none}}
 .shechem-muster{position:absolute;z-index:8;transform:translate(-50%,-50%);border:1px solid #d8b774;border-radius:6px;background:#31271de0;padding:3px 8px;color:#ffedc3;font-weight:800;font-size:13px;pointer-events:none;text-align:center;white-space:nowrap}
 .shechem-muster[hidden]{display:none!important}
 .tribe-march-line{fill:none;stroke:#e7bc69;stroke-width:4;stroke-linecap:round;stroke-dasharray:12 10;opacity:.8;pointer-events:none}
@@ -581,6 +591,7 @@ for(var r=0;r<terrainRows;r++)for(var c=0;c<terrainCols;c++){
 const tribeFlagNodes=[];
 TRIBAL_FLAGS.forEach(function(tribe,index){
   var marker=document.createElement("button");marker.type="button";marker.className="tribe-flag";marker.dataset.tribe=tribe.id;
+  marker.style.setProperty("--flag-order",index);
   var atDestination=state.tribeDispatched.includes(tribe.id),initial=atDestination?tribe:tribeMusterPosition(index);
   marker.style.left=initial.x+"px";marker.style.top=initial.y+"px";marker.style.setProperty("--tribe-color",tribe.color);
   marker.classList.toggle("in-camp",!atDestination);
@@ -591,6 +602,26 @@ TRIBAL_FLAGS.forEach(function(tribe,index){
 const shechemMuster=document.createElement("div");shechemMuster.className="shechem-muster";
 shechemMuster.style.left=SHECHEM.x+"px";shechemMuster.style.top="265px";
 shechemMuster.textContent="⛺ 示劍・十二支派集結";shechemMuster.hidden=true;$("#maplayer").appendChild(shechemMuster);
+// Give players an unmistakable handoff when the main campaign ends.
+const chapterGuide=document.createElement("div");chapterGuide.className="chapter-guide";chapterGuide.hidden=true;
+chapterGuide.innerHTML='<h2>🚩 新篇章開啟：十二支派的旅程！</h2><p>示劍立約已完成！十二面支派軍旗正在示劍集結。現在請到右側「十二支派・領地旗幟」選擇一支隊伍；軍旗出發並完成事件後，對應領地才會逐步染上專屬色彩。</p><div class="actions"><button type="button" class="btn primary" id="chapterGuideGo">前往十二支派任務 →</button><button type="button" class="btn" id="chapterGuideClose">先看看軍旗</button></div>';
+$(".mapwrap").appendChild(chapterGuide);
+let chapterGuideDismissed=false;
+function dismissChapterGuide(){chapterGuideDismissed=true;chapterGuide.hidden=true;$("#tribesAfterCovenant").classList.remove("chapter-highlight")}
+$("#chapterGuideClose").addEventListener("click",dismissChapterGuide);
+$("#chapterGuideGo").addEventListener("click",function(){
+  dismissChapterGuide();setSectionCollapsed(sectionPanels.main,true);setSectionCollapsed(sectionPanels.training,true);
+  setSectionCollapsed(sectionPanels.tribes,false);
+  document.querySelector("#tribesAfterCovenant .section-toggle").focus({preventScroll:true});
+  if(window.innerWidth<=900)$("#tribesAfterCovenant").scrollIntoView({behavior:"smooth",block:"start"});
+});
+function introduceTribeChapter(){
+  if(state.stage<9||chapterGuideDismissed)return;
+  $("#maplayer").classList.remove("chapter-arrived");
+  void $("#maplayer").offsetWidth;
+  $("#maplayer").classList.add("chapter-arrived");
+  chapterGuide.hidden=false;$("#tribesAfterCovenant").classList.add("chapter-highlight");
+}
 const tribeMarchPath=document.createElementNS(tribeSvgNS,"path");tribeMarchPath.setAttribute("class","tribe-march-line");tribeMarchPath.style.display="none";$(".mapart").appendChild(tribeMarchPath);
 Object.keys(cities).forEach(function(id){
   var c=cities[id],button=document.querySelector('[data-city="'+id+'"]');
@@ -671,6 +702,7 @@ function renderTribalMap(){
 }
 function openTribeTask(id){
   if(state.stage<9)return;
+  dismissChapterGuide();
   var tribe=TRIBAL_FLAGS.find(function(t){return t.id===id});if(!tribe)return;
   if(tribeMarching){say("軍旗正在前往目的地，請等這支隊伍抵達後再下達命令。");return}
   if(state.tribeClaims.includes(id)){say(tribe.name+"支派已完成領地事件，旗幟正高高飄揚。（"+tribe.verse+"）");return}
@@ -992,6 +1024,7 @@ $("#covenantFinish").addEventListener("click",function(){
   state.stage=9;state.morale=Math.min(100,state.morale+5);
   postCampaignFocus={x:SHECHEM.x,y:SHECHEM.y};mapPanOffset=0;
   covenantModal.classList.remove("show");say("示劍立約完成！十二面支派軍旗已在示劍集結。選擇支線，帶領該支派前往目的地；完成故事或戰役後，河東與河西的領土才會逐步著色。");sync();renderCampaign();saveCampaign();
+  introduceTribeChapter();
 });
 document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click",function(){
   var id=b.dataset.city,c=cities[id];
