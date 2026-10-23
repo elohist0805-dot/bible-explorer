@@ -144,6 +144,15 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .city.trainable .fort{box-shadow:inset 0 1px 0 #f6dcad,0 3px 0 #60472e,0 0 0 3px #77cae966,0 4px 6px #30231566}
 .training-panel{margin-top:10px;padding:10px;background:#13241f;border:1px solid #477e88;border-radius:10px;font-size:13px;color:#e0e9df;line-height:1.5}
 .training-panel button{margin-top:8px;width:100%}
+.heritage-progress{display:flex;gap:8px;margin:10px 0 16px}
+.heritage-progress i{height:7px;flex:1;border-radius:9px;background:#5b6349}
+.heritage-progress i.done{background:#72afca}
+.heritage-choices{display:grid;gap:9px;margin:14px 0}
+.heritage-choices .btn{text-align:left;width:100%;white-space:normal;line-height:1.45}
+.heritage-feedback{background:#132e2b;border-left:4px solid #8cc6cd;padding:12px;color:#e7efe3;line-height:1.65;border-radius:8px;margin:12px 0}
+.heritage-feedback[hidden],.heritage-choices[hidden],#heritageNext[hidden],#covenantFinish[hidden]{display:none!important}
+.journey-summary{background:#18342b;border:1px solid #5b9c96;border-radius:12px;padding:12px;line-height:1.8;color:#f1eedf}
+#covenantStory{white-space:pre-line;line-height:1.75}
 </style>
 </head>
 <body>
@@ -235,6 +244,28 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
     </div>
   </div>
 
+  <div id="heritageModal" class="modal" role="dialog" aria-modal="true" aria-label="分地與產業事件">
+    <div class="card">
+      <h2 id="heritageTitle">分地與產業</h2>
+      <div class="heritage-progress" id="heritageProgress" aria-label="分地進度"><i></i><i></i><i></i></div>
+      <p id="heritageQuestion"></p>
+      <div class="scripture-note" id="heritageScripture">經文線索｜約書亞記 13–21 章</div>
+      <div class="heritage-choices" id="heritageChoices"></div>
+      <div id="heritageFeedback" class="heritage-feedback" hidden></div>
+      <div class="actions"><button id="heritageNext" class="btn primary" hidden>繼續旅程</button><button id="heritageClose" class="btn">返回大地圖</button></div>
+    </div>
+  </div>
+  <div id="covenantModal" class="modal" role="dialog" aria-modal="true" aria-label="示劍立約事件">
+    <div class="card">
+      <h2>示劍立約｜你要選擇事奉誰？</h2>
+      <p id="covenantStory">約書亞召集以色列眾支派來到示劍，回顧神一路的帶領。當百姓站在抉擇面前，約書亞堅定地宣告他和一家要走的道路。（書 24:1–15）</p>
+      <div class="scripture-note">經文線索｜約書亞記 24:14–15、24–27</div>
+      <div class="heritage-choices" id="covenantChoices"><button class="btn primary" id="covenantFaith">至於我和我家，我們必定事奉耶和華</button><button class="btn warn" id="covenantOther">我們隨從其他神，各走各的道路</button></div>
+      <div id="covenantFeedback" class="heritage-feedback" hidden></div>
+      <div class="actions"><button class="btn primary" id="covenantFinish" hidden>立約並完成旅程</button><button class="btn" id="covenantClose">返回大地圖</button></div>
+    </div>
+  </div>
+
   <div id="battleScreen" aria-label="艾城即時戰場">
     <div class="battleHud">
       <div class="hpBlock"><div class="hpLabel"><span>約書亞 HP</span><b id="playerHpText">120 / 120</b></div><div class="hpbar"><i id="playerHpBar"></i></div><div class="hpLabel" style="margin-top:4px"><span id="playerLevelText">Lv.1</span><span id="playerXpText">EXP 0 / 40</span></div></div>
@@ -256,7 +287,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 
 <aside class="side">
   <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><div id="marmy" class="marmy"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
-  <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">約旦河已在身後，迦南的城邑就在前方。先往吉甲安營，整頓隊伍，準備迎接第一場挑戰！</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn primary" id="goGibeon" disabled>前往基遍・盟約事件</button><button class="btn warn" id="defendGibeon" disabled>⚔ 援救基遍（南方聯軍）</button><button class="btn warn" id="goSouth" disabled>⚔ 追擊南方五王</button><button class="btn warn" id="goHazor" disabled>⚔ 北上攻取夏瑣</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div><div id="trainingPanel" class="training-panel"><div id="trainingInfo">每攻下一座城，就多一處可以休整、練兵的據點。讓將士們磨練身手，再迎接下一場戰役吧！</div><button class="btn blue" id="trainCity" disabled>選擇已佔領城鎮練兵</button></div></div>
+  <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">約旦河已在身後，迦南的城邑就在前方。先往吉甲安營，整頓隊伍，準備迎接第一場挑戰！</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn primary" id="goGibeon" disabled>前往基遍・盟約事件</button><button class="btn warn" id="defendGibeon" disabled>⚔ 援救基遍（南方聯軍）</button><button class="btn warn" id="goSouth" disabled>⚔ 追擊南方五王</button><button class="btn warn" id="goHazor" disabled>⚔ 北上攻取夏瑣</button><button class="btn blue" id="goInheritance" disabled>🏞 分地與迦勒的信心</button><button class="btn primary" id="goCovenant" disabled>📜 示劍立約</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div><div id="trainingPanel" class="training-panel"><div id="trainingInfo">每攻下一座城，就多一處可以休整、練兵的據點。讓將士們磨練身手，再迎接下一場戰役吧！</div><button class="btn blue" id="trainCity" disabled>選擇已佔領城鎮練兵</button></div></div>
   <div class="panel"><h2>戰記</h2><div class="log" id="log">河水已退，腳下是應許之地。摩西交付的使命，如今由約書亞接續。號角尚未響起，先帶領百姓前往吉甲安營吧！想先熟悉戰鬥，也可以進入自由戰場試試身手。</div></div>
 </aside>
 </div>
@@ -265,12 +296,12 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 <script>
 (function(){
 const $=function(s){return document.querySelector(s)};
-const state={x:715,y:475,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null};
+const state={x:715,y:475,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null,heritageScore:0};
 const PROGRESS_KEY="canaan_joshua_progress_v1";
 const CAMPAIGN_KEY="canaan_joshua_campaign_v1";
 try{
   const saved=JSON.parse(localStorage.getItem(CAMPAIGN_KEY)||"null");
-  if(saved&&Number.isInteger(saved.stage)&&saved.stage>=0&&saved.stage<=7){
+  if(saved&&Number.isInteger(saved.stage)&&saved.stage>=0&&saved.stage<=9){
     state.stage=saved.stage;
     state.marches=Math.max(0,Math.min(7,Number(saved.marches)||0));
     state.x=Number.isFinite(saved.x)?saved.x:715;
@@ -279,12 +310,13 @@ try{
     state.troop=Math.max(0,Number(saved.troop)||600);
     state.morale=Math.max(0,Math.min(100,Number(saved.morale)||82));
     state.food=Math.max(0,Math.min(100,Number(saved.food)||100));
+    state.heritageScore=Math.max(0,Math.min(3,Number(saved.heritageScore)||0));
   }
 }catch(_){}
 function saveCampaign(){
   try{localStorage.setItem(CAMPAIGN_KEY,JSON.stringify({
     stage:state.stage,marches:state.marches,x:state.x,y:state.y,at:state.at,
-    troop:state.troop,morale:state.morale,food:state.food
+    troop:state.troop,morale:state.morale,food:state.food,heritageScore:state.heritageScore
   }))}catch(_){}
 }
 function loadProgress(){
@@ -353,6 +385,8 @@ function renderCampaign(){
   $("#defendGibeon").disabled=state.stage!==4||state.moving;
   $("#goSouth").disabled=state.stage!==5||state.moving;
   $("#goHazor").disabled=state.stage!==6||state.moving;
+  $("#goInheritance").disabled=state.stage!==7||state.moving;
+  $("#goCovenant").disabled=state.stage!==8||state.moving;
   document.querySelectorAll("[data-territory]").forEach(function(area){
     area.classList.toggle("claimed",isOccupied(area.dataset.territory));
     area.classList.toggle("allied",isAllied(area.dataset.territory));
@@ -408,7 +442,11 @@ function renderCampaign(){
     $("#goHazor").textContent="✓ 夏瑣已攻取";
     var hazorCity=document.querySelector('[data-city="hazor"]');
     hazorCity.classList.remove("locked","enemy");hazorCity.classList.add("friendly");
+    objective.textContent=state.stage===7?"北方戰鼓終於停歇，現在要讓眾支派得到安居之地。迦勒雖年事已高，仍帶著信心來求山地！進入『分地與迦勒的信心』，認識神所賜的產業。（書 13–21 章）":state.stage===8?"眾支派正在各自的產業安居。約書亞召集百姓來到示劍，提醒大家思想神一路的恩典，並作出信仰的選擇。（書 24 章）":"從約旦河到迦南各地，您完成了征戰、分地與立約的旅程！主線已完成，仍可返回已佔領的城鎮練兵，或重看旅程總結。";
   }
+  if(state.stage>=8)$("#goInheritance").textContent="✓ 各支派產業已介紹";
+  if(state.stage>=9)$("#goCovenant").textContent="📜 重看旅程總結";
+  if(state.stage>=9)$("#goCovenant").disabled=false;
   document.querySelectorAll(".city").forEach(function(city){
     if(isAllied(city.dataset.city))city.title=city.textContent.trim()+"：已結盟，可支援；非以色列攻佔領土";
   });
@@ -485,6 +523,75 @@ $("#goHazor").addEventListener("click",function(){
   if(state.stage!==6||state.moving)return;
   say("北方的戰鼓從米倫水邊傳來！夏瑣王耶賓聚集諸王與戰車，約書亞帶領將士沿山路向北迎戰。（書 11 章）");
   moveTo("hazor",function(){saveCampaign();startBattle("hazor")});
+});
+const heritageQuestions=[
+  {title:"迦勒的信心",question:"征戰多年後，八十五歲的迦勒仍記得神藉摩西給他的應許。他向約書亞提出什麼請求？",scripture:"經文線索｜約書亞記 14:6–14",choices:["求將應許的山地賜給他，仍願勇敢面對挑戰","求立刻返回埃及，不再前進","求讓所有支派都住在同一座城"],correct:0,feedback:"迦勒並未因年老而失去信心。他求得希伯崙一帶的山地，因他專心跟從耶和華。（書 14:12–14）"},
+  {title:"利未人的產業",question:"各支派得到土地時，利未支派沒有像其他支派一樣分得一大塊連續的領土。神為他們預備了什麼？",scripture:"經文線索｜約書亞記 13:33；21:1–3",choices:["完全沒有住所，也不能在城中生活","分散在各支派中的城邑和郊野，耶和華是他們的產業","只得到一座海港城市"],correct:1,feedback:"利未人的城邑散在各支派產業之中，並有供牲畜使用的郊野。經文也強調耶和華是利未支派的產業。（書 21:1–3）"},
+  {title:"約瑟的後裔",question:"分地時，約瑟的後裔以哪兩個支派的名字承受產業？",scripture:"經文線索｜約書亞記 14:4；16–17 章",choices:["猶大與便雅憫","利未與西緬","以法蓮與瑪拿西"],correct:2,feedback:"約瑟的兩個兒子以法蓮、瑪拿西各成為支派，承受土地產業；利未支派則另有城邑的安排。（書 14:4）"}
+];
+let heritageStep=0,heritageCorrect=0;
+const heritageModal=$("#heritageModal"),heritageChoices=$("#heritageChoices"),heritageFeedback=$("#heritageFeedback");
+function showHeritageQuestion(){
+  var q=heritageQuestions[heritageStep];
+  $("#heritageTitle").textContent="分地與產業｜"+q.title;
+  $("#heritageQuestion").textContent=q.question;
+  $("#heritageScripture").textContent=q.scripture;
+  $("#heritageProgress").querySelectorAll("i").forEach(function(dot,i){dot.classList.toggle("done",i<=heritageStep)});
+  heritageFeedback.hidden=true;heritageChoices.hidden=false;$("#heritageNext").hidden=true;
+  heritageChoices.replaceChildren();
+  q.choices.forEach(function(label,i){
+    var b=document.createElement("button");b.className="btn blue";
+    b.textContent=label;
+    b.addEventListener("click",function(){
+      if(heritageChoices.hidden)return;
+      var correct=i===q.correct;
+      if(correct)heritageCorrect++;
+      heritageChoices.hidden=true;heritageFeedback.hidden=false;
+      heritageFeedback.textContent=(correct?"答對了！":"這個想法值得再從經文查考。")+" "+q.feedback;
+      $("#heritageNext").textContent=heritageStep===heritageQuestions.length-1?"完成分地，前往示劍":"繼續下一段故事";
+      $("#heritageNext").hidden=false;
+    });
+    heritageChoices.appendChild(b);
+  });
+}
+$("#goInheritance").addEventListener("click",function(){
+  if(state.stage!==7||state.moving)return;
+  heritageStep=0;heritageCorrect=0;showHeritageQuestion();heritageModal.classList.add("show");
+});
+$("#heritageClose").addEventListener("click",function(){heritageModal.classList.remove("show")});
+$("#heritageNext").addEventListener("click",function(){
+  if(heritageStep<heritageQuestions.length-1){heritageStep++;showHeritageQuestion();return}
+  if(state.stage!==7)return;
+  heritageModal.classList.remove("show");
+  state.stage=8;state.heritageScore=heritageCorrect;state.morale=Math.min(100,state.morale+3);
+  say("分地的故事漸漸完整了！迦勒得到山地，利未人得到城邑，約瑟的後裔也承受產業。現在，約書亞召集百姓前往示劍，迎接最後的重要選擇！（書 24 章）");
+  sync();renderCampaign();saveCampaign();
+});
+const covenantModal=$("#covenantModal"),covenantFeedback=$("#covenantFeedback");
+function journeySummary(){
+  var level=(state.progression&&state.progression.joshua&&state.progression.joshua.level)||1;
+  return "🏅 約書亞記旅程完成！\n\n已完成主線：耶利哥、艾城、基遍盟約與援救、南方聯軍、夏瑣，以及分地與示劍立約。\n分地情境：答對 "+state.heritageScore+" / 3 題。\n約書亞目前等級：Lv."+level+"。\n\n耶路撒冷未標示為已佔領，基遍則保留盟友身分。您仍可以繼續回城練兵！";
+}
+$("#goCovenant").addEventListener("click",function(){
+  if(state.moving||state.stage<8)return;
+  $("#covenantStory").textContent=state.stage>=9?journeySummary():"約書亞召集眾支派來到示劍，回顧神如何帶領祖先、拯救百姓並賜下產業。現在，他請百姓明確選擇所要事奉的對象。（書 24:1–15）";
+  $("#covenantChoices").hidden=state.stage>=9;
+  covenantFeedback.hidden=true;$("#covenantFinish").hidden=true;
+  covenantModal.classList.add("show");
+});
+function answerCovenant(faithful){
+  if(state.stage!==8)return;
+  $("#covenantChoices").hidden=true;covenantFeedback.hidden=false;
+  covenantFeedback.textContent=(faithful?"這是約書亞堅定的宣告！":"約書亞提醒百姓，不可輕忽所立的約。")+" 他說：『至於我和我家，我們必定事奉耶和華。』百姓也回答願意事奉耶和華。約書亞便在示劍立約，並立石頭作為見證。（書 24:15–27）";
+  $("#covenantFinish").hidden=false;
+}
+$("#covenantFaith").addEventListener("click",function(){answerCovenant(true)});
+$("#covenantOther").addEventListener("click",function(){answerCovenant(false)});
+$("#covenantClose").addEventListener("click",function(){covenantModal.classList.remove("show")});
+$("#covenantFinish").addEventListener("click",function(){
+  if(state.stage!==8)return;
+  state.stage=9;state.morale=Math.min(100,state.morale+5);
+  covenantModal.classList.remove("show");say(journeySummary());sync();renderCampaign();saveCampaign();
 });
 document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click",function(){
   var id=b.dataset.city,c=cities[id];
