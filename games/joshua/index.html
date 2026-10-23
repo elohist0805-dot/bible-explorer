@@ -521,11 +521,11 @@ for(var row=0;row<terrainRows;row++){
   var line=[];
   for(var col=0;col<terrainCols;col++){
     var px=terrainX+(col+.5)*terrainStep,py=terrainY+(row+.5)*terrainStep;
-    var east=px>639,best=null,bestScore=Infinity,nearest=Infinity;
+    var east=px>639,best=null,bestScore=Infinity,nearestBoundary=Infinity;
     landAnchors.forEach(function(anchor){
       if((anchor.index>=10)!==east)return;
       var signed=distanceToBorder(anchor.points,px,py);
-      nearest=Math.min(nearest,signed);
+      nearestBoundary=Math.min(nearestBoundary,signed);
       var terrainBend=11*Math.sin(px/68+anchor.index*1.31)*Math.cos(py/74-anchor.index*.73)
         +5.5*Math.sin((px+py)/105+anchor.index*1.7);
       var score=signed+terrainBend+.015*Math.hypot(px-anchor.cx,py-anchor.cy);
@@ -533,7 +533,7 @@ for(var row=0;row<terrainRows;row++){
     });
     var onLand=east?px>=limitAtY(eastWaterBank,py)+5
       :px>=limitAtY(coastBank,py)+5&&px<=limitAtY(westWaterBank,py)-5;
-    line.push(onLand&&nearest<=39?best:null);
+    line.push(onLand&&nearestBoundary<=39?best:null);
   }
   landCells.push(line);
 }
