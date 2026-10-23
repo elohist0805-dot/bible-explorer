@@ -169,6 +169,29 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .heritage-feedback[hidden],.heritage-choices[hidden],#heritageNext[hidden],#covenantFinish[hidden]{display:none!important}
 .journey-summary{background:#18342b;border:1px solid #5b9c96;border-radius:12px;padding:12px;line-height:1.8;color:#f1eedf}
 #covenantStory{white-space:pre-line;line-height:1.75}
+/* Desktop command deck stays within one viewport; the map pans vertically instead. */
+@media(min-width:901px){
+  html,body{height:100%;overflow:hidden}
+  #game{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+  .topbar{flex:none}
+  .layout{flex:1;min-height:0;overflow:hidden}
+  .mapwrap{height:100%;min-height:0}
+  .side{min-height:0;max-height:100%;overflow-y:auto;overscroll-behavior:contain;padding-right:4px;align-content:start;scrollbar-width:thin}
+  .side .panel{flex:none}
+}
+.side .panel.sectioned{padding:0;overflow:hidden}
+.section-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:11px 13px;background:transparent;color:#efd98c;border:0;cursor:pointer;font-weight:800;font-size:15px;text-align:left}
+.section-toggle:hover{background:#273127}
+.section-toggle .section-arrow{font-size:12px;color:#dac797;transition:transform .2s}
+.section-toggle[aria-expanded="true"] .section-arrow{transform:rotate(180deg)}
+.sectioned .panel-content{padding:0 13px 13px;min-width:0}
+.sectioned.is-collapsed .panel-content{display:none!important}
+.sectioned.is-collapsed .section-toggle{padding:10px 13px;min-height:40px}
+.sectioned .panel-content h2:first-child{display:none}
+.sectioned.is-collapsed{min-height:0}
+.side .panel.sectioned[hidden]{display:none!important}
+@media(min-width:901px){.side .panel.sectioned[data-section="tribes"]:not(.is-collapsed) .panel-content{max-height:calc(100dvh - 305px);overflow-y:auto;scrollbar-width:thin}}
+@media(max-width:900px){.side{display:flex;flex-direction:column;gap:10px}.mapwrap{height:min(70dvh,720px);min-height:420px}.sectioned .panel-content{max-height:none}}
 </style>
 </head>
 <body>
@@ -447,6 +470,36 @@ Object.keys(cities).forEach(function(id){
   overview.appendChild(dot);
 });
 function say(t){log.textContent=t}
+// Compact accordion: a finished main quest takes one line, side chapters open on demand.
+const sectionPanels={};
+function setSectionCollapsed(panel,collapsed){
+  if(!panel)return;
+  panel.classList.toggle("is-collapsed",collapsed);
+  var toggle=panel.querySelector(".section-toggle");
+  if(toggle)toggle.setAttribute("aria-expanded",String(!collapsed));
+}
+[
+  ["main",".side .panel:nth-child(2)"],
+  ["training","#tribePanel"],
+  ["tribes","#tribesAfterCovenant"],
+  ["journal",".side .panel:last-child"]
+].forEach(function(item){
+  var panel=$(item[1]);if(!panel)return;
+  var title=panel.querySelector("h2"),label=title?title.textContent:item[0];
+  var content=document.createElement("div");content.className="panel-content";
+  while(panel.firstChild)content.appendChild(panel.firstChild);
+  var toggle=document.createElement("button");toggle.type="button";toggle.className="section-toggle";
+  toggle.innerHTML="<span>"+label+"</span><span class=\"section-arrow\">▼</span>";
+  panel.appendChild(toggle);panel.appendChild(content);panel.classList.add("sectioned");panel.dataset.section=item[0];
+  sectionPanels[item[0]]=panel;
+  var startCollapsed=item[0]==="main"?state.stage>=9:item[0]==="training"?state.stage!==8:item[0]==="tribes"?state.stage<9:true;
+  setSectionCollapsed(panel,startCollapsed);
+  toggle.addEventListener("click",function(){
+    var opening=panel.classList.contains("is-collapsed");
+    Object.keys(sectionPanels).forEach(function(id){if(sectionPanels[id]!==panel)setSectionCollapsed(sectionPanels[id],true)});
+    setSectionCollapsed(panel,!opening);
+  });
+});
 let activeTribeId=null;
 const tribeGrid=$("#tribeTaskGrid");
 TRIBAL_FLAGS.forEach(function(tribe){
@@ -477,6 +530,7 @@ function renderTribalMap(){
 function openTribeTask(id){
   if(state.stage<9)return;
   var tribe=TRIBAL_FLAGS.find(function(t){return t.id===id});if(!tribe)return;
+  focusTribeMap(tribe);
   if(state.tribeClaims.includes(id)){say(tribe.name+"支派已完成領地事件，旗幟正高高飄揚。（"+tribe.verse+"）");return}
   activeTribeId=id;
   if(tribe.kind==="battle"){
@@ -492,8 +546,35 @@ $("#tribeEventFinish").addEventListener("click",function(){
   if(state.stage<9||!activeTribeId)return;
   $("#tribeEventModal").classList.remove("show");claimTribe(activeTribeId);activeTribeId=null;
 });
-function sync(){army.style.left=state.x+"px";army.style.top=state.y+"px";marmy.style.left=(state.x/1200*100)+"%";marmy.style.top=(state.y/900*100)+"%";$("#troop").textContent=state.troop;$("#morale").textContent=state.morale;$("#food").textContent=state.food}
+let postCampaignFocus=null;
+let tribeFocusAnimation=0;
+function focusTribeMap(tribe){
+  if(state.stage<9)return;
+  cancelAnimationFrame(tribeFocusAnimation);
+  mapPanOffset=0;
+  var from=postCampaignFocus||{x:state.x,y:state.y},begin=performance.now(),duration=520;
+  army.setAttribute("aria-label",tribe.name+"支派軍旗");
+  function advance(now){
+    var t=Math.min(1,(now-begin)/duration),ease=t*t*(3-2*t);
+    postCampaignFocus={x:from.x+(tribe.x-from.x)*ease,y:from.y+(tribe.y-from.y)*ease};
+    sync();if(t<1)tribeFocusAnimation=requestAnimationFrame(advance);
+  }
+  tribeFocusAnimation=requestAnimationFrame(advance);
+}
+function sync(){
+  var position=state.stage>=9&&postCampaignFocus?postCampaignFocus:state;
+  army.style.left=position.x+"px";army.style.top=position.y+"px";
+  marmy.style.left=(position.x/1200*100)+"%";marmy.style.top=(position.y/900*100)+"%";
+  $("#troop").textContent=state.troop;$("#morale").textContent=state.morale;$("#food").textContent=state.food;
+  if(typeof fitWorldMap==="function"&&typeof world!=="undefined")fitWorldMap();
+}
 function renderCampaign(){
+  if(state.stage>=9&&!sectionPanels.main.dataset.afterMainComplete){
+    setSectionCollapsed(sectionPanels.main,true);
+    setSectionCollapsed(sectionPanels.training,true);
+    setSectionCollapsed(sectionPanels.tribes,false);
+    sectionPanels.main.dataset.afterMainComplete="1";
+  }
   renderTribalMap();
   $("#goGilgal").disabled=state.stage>=1;
   $("#goJericho").disabled=state.stage<1||state.stage>=2;
@@ -750,15 +831,23 @@ function openJericho(){modal.classList.add("show");title.textContent="耶利哥�
 action.addEventListener("click",function(){if(state.marches<6){state.marches++;state.food=Math.max(0,state.food-2);state.morale=Math.min(100,state.morale+1);sync();modal.classList.remove("show");say("第 "+state.marches+" 日的腳步聲漸漸遠去。將士們遵守吩咐，靜靜回到營地。明天，號角還會再響起！");objective.textContent="祭司的號角依舊迴盪，已完成第 "+state.marches+" / 7 日。稍作休息，再前往城下吧！"}else if(state.marches===6){state.marches=7;bar.style.width="100%";text.textContent="號角長鳴，百姓齊聲呼喊！只聽得轟然巨響，耶利哥的城牆竟然倒下了！";$("#wall").style.transform="translateY(90px) rotate(2deg)";$("#wall").style.transition="transform 1s ease";state.morale=95;sync();action.textContent="進入耶利哥";say("城牆轟然倒下！百姓歡呼，耶利哥之戰迎來勝利的一刻！")}else{modal.classList.remove("show");state.stage=2;document.querySelector('[data-city="jericho"]').classList.remove("enemy");document.querySelector('[data-city="jericho"]').classList.add("friendly");document.querySelector('[data-city="ai"]').classList.remove("locked");objective.textContent="耶利哥已成為我軍據點。向山間的艾城望去，新一段戰役正等待約書亞率軍迎接！";$("#goJericho").disabled=true;say("藍色軍旗在耶利哥城頭飄揚！將士們歡呼雀躍，而通往艾城的山路也已經展開。")}});close.addEventListener("click",function(){modal.classList.remove("show")});
 action.addEventListener("click",function(){renderCampaign();saveCampaign()});
 
-/* Fixed atlas: fit the entire 1200×900 map into its viewport.
-   No drag or wheel zoom, while city buttons remain clickable. */
+/* Vertical follow-camera: preserve the atlas aspect ratio and map coordinates;
+   only the visible north/south slice changes as an army flag advances. */
 const world=$("#world"),layer=$("#maplayer");
+let mapPanOffset=0;
 function fitWorldMap(){
-  const scale=Math.min(world.clientWidth/1200,world.clientHeight/900);
+  const scale=Math.min(1.15,world.clientWidth/1200);
   const px=(world.clientWidth-1200*scale)/2;
-  const py=(world.clientHeight-900*scale)/2;
+  const fullHeight=900*scale;
+  const armyY=(state.stage>=9&&postCampaignFocus?postCampaignFocus.y:state.y)*scale;
+  const idealY=world.clientHeight/2-armyY+mapPanOffset;
+  const py=fullHeight<=world.clientHeight?(world.clientHeight-fullHeight)/2:Math.max(world.clientHeight-fullHeight,Math.min(0,idealY));
   layer.style.transform="translate("+px+"px,"+py+"px) scale("+scale+")";
 }
+world.addEventListener("wheel",function(e){
+  if(900*Math.min(1.15,world.clientWidth/1200)<=world.clientHeight)return;
+  e.preventDefault();mapPanOffset=Math.max(-700,Math.min(700,mapPanOffset-e.deltaY));fitWorldMap();
+},{passive:false});
 if(typeof ResizeObserver!=="undefined")new ResizeObserver(fitWorldMap).observe(world);
 else window.addEventListener("resize",fitWorldMap);
 fitWorldMap();
