@@ -148,14 +148,24 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .tribe-grid .btn.done{border-color:#c9d2b9;background:#294137}
 .tribe-legend{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;line-height:1.5}
 .tribe-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-right:4px}
-.tribe-territory{stroke:#584d3d;stroke-width:2.6;stroke-dasharray:7 7;fill:#e1cc90;fill-opacity:.03;stroke-opacity:.7;transition:fill-opacity .5s,stroke .5s;pointer-events:none}
-.tribe-territory.claimed{stroke-dasharray:none;stroke-width:3.5;fill-opacity:.50;stroke-opacity:1}
+.tribe-territory{stroke:#584d3d;stroke-width:2.6;stroke-dasharray:7 7;fill:#e1cc90;fill-opacity:0;stroke-opacity:0;transition:fill-opacity .7s,stroke .7s;pointer-events:none}
+.tribe-territory.claimed{stroke-dasharray:none;stroke-width:3.5;fill-opacity:.57;stroke-opacity:.92}
+.campaign-after-covenant .territory.claimed{fill-opacity:.04;stroke-opacity:.17}
 .tribe-flag{position:absolute;z-index:7;display:flex;flex-direction:column;align-items:center;gap:1px;transform:translate(-50%,-50%);width:66px;border:0;background:transparent;color:#fef4d9;cursor:pointer;filter:drop-shadow(0 2px 2px #261c12);opacity:.58}
 .tribe-flag i{position:relative;width:4px;height:29px;background:#5f4931;border:1px solid #eadca0}
 .tribe-flag i::after{content:"";position:absolute;top:2px;left:4px;width:23px;height:17px;background:var(--tribe-color);clip-path:polygon(0 0,100% 12%,83% 51%,100% 89%,0 100%);border-top:1px solid #f6dda5}
 .tribe-flag span{font-size:12px;line-height:1.2;background:#2d271ecb;padding:1px 4px;border-radius:4px;white-space:nowrap}
 .tribe-flag.claimed{opacity:1}.tribe-flag:hover{opacity:1;filter:drop-shadow(0 0 5px #ffe7a9)}
 .tribe-flag[hidden]{display:none!important}
+.tribe-flag.in-camp{width:42px;opacity:.90;z-index:8}
+.tribe-flag.in-camp i{height:22px}
+.tribe-flag.in-camp i::after{height:14px;width:19px}
+.tribe-flag.in-camp span{font-size:11px;padding:1px 2px}
+.tribe-flag.marching{z-index:12;opacity:1;filter:drop-shadow(0 0 7px #ffdd80)}
+.shechem-muster{position:absolute;z-index:8;transform:translate(-50%,-50%);border:1px solid #d8b774;border-radius:6px;background:#31271de0;padding:3px 8px;color:#ffedc3;font-weight:800;font-size:13px;pointer-events:none;text-align:center;white-space:nowrap}
+.shechem-muster[hidden]{display:none!important}
+.tribe-march-line{fill:none;stroke:#e7bc69;stroke-width:4;stroke-linecap:round;stroke-dasharray:12 10;opacity:.8;pointer-events:none}
+.tribe-march-line[hidden]{display:none!important}
 #tribeEventModal .card{max-width:560px}
 .city.trainable .fort{box-shadow:inset 0 1px 0 #f6dcad,0 3px 0 #60472e,0 0 0 3px #77cae966,0 4px 6px #30231566}
 .training-panel{margin-top:10px;padding:10px;background:#13241f;border:1px solid #477e88;border-radius:10px;font-size:13px;color:#e0e9df;line-height:1.5}
@@ -329,7 +339,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
   <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><div id="marmy" class="marmy"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
   <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">約旦河已在身後，迦南的城邑就在前方。先往吉甲安營，整頓隊伍，準備迎接第一場挑戰！</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn primary" id="goGibeon" disabled>前往基遍・盟約事件</button><button class="btn warn" id="defendGibeon" disabled>⚔ 援救基遍（南方聯軍）</button><button class="btn warn" id="goSouth" disabled>⚔ 追擊南方五王</button><button class="btn warn" id="goHazor" disabled>⚔ 北上攻取夏瑣</button><button class="btn blue" id="goInheritance" disabled>🏞 分地與迦勒的信心</button><button class="btn primary" id="goCovenant" disabled>📜 示劍立約</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div><div id="trainingPanel" class="training-panel"><div id="trainingInfo">每攻下一座城，就多一處可以休整、練兵的據點。讓將士們磨練身手，再迎接下一場戰役吧！</div><button class="btn blue" id="trainCity" disabled>選擇已佔領城鎮練兵</button></div></div>
   <div class="panel" id="tribePanel" hidden><h2>🛡 支派拓土戰役</h2><div class="objective" id="tribeStory">分得產業之後，支派仍要面對山地與邊境的挑戰。</div><div class="actions"><button class="btn warn" id="tribeHebron">① 猶大支派・希伯崙</button><button class="btn warn" id="tribeDebir" disabled>② 俄陀聶・底璧</button><button class="btn warn" id="tribeLeshem" disabled>③ 但支派・利善</button></div><p class="scripture-note" id="tribeProgress">完成 0 / 3 場戰役；戰鬥經驗與等級繼續累積。</p></div>
-  <div class="panel" id="tribesAfterCovenant" hidden><h2>🚩 十二支派・領地旗幟</h2><div class="objective" id="tribesObjective">示劍立約後，各支派將自己的領地逐一標記在大地圖上。</div><div class="tribe-grid" id="tribeTaskGrid"></div><p class="scripture-note" id="tribesProgress">已立旗 0 / 12</p><p class="scripture-note">地圖採遊戲示意疆界；瑪拿西的東西兩部共用一面旗。利未人在各支派中獲分城邑，沒有獨立的整塊領土。（書 21 章）</p></div>
+  <div class="panel" id="tribesAfterCovenant" hidden><h2>🚩 十二支派・領地旗幟</h2><div class="objective" id="tribesObjective">示劍立約後，十二面旗幟在示劍集結，等候您的指令。</div><div class="tribe-grid" id="tribeTaskGrid"></div><p class="scripture-note" id="tribesProgress">已完成 0 / 12</p><p class="scripture-note">十二支派從示劍集結出發是本遊戲的敘事安排；經文中的分地過程發生在更早的時期（書 13–19 章）。疆界為遊戲示意、非精確古地圖；瑪拿西河東與河西共用一面旗，利未人受分的是各支派中的城邑，沒有單獨成片的領地。（書 21 章）</p></div>
   <div class="panel"><h2>戰記</h2><div class="log" id="log">河水已退，腳下是應許之地。摩西交付的使命，如今由約書亞接續。號角尚未響起，先帶領百姓前往吉甲安營吧！想先熟悉戰鬥，也可以進入自由戰場試試身手。</div></div>
 </aside>
 </div>
@@ -338,7 +348,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 <script>
 (function(){
 const $=function(s){return document.querySelector(s)};
-const state={x:715,y:475,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null,heritageScore:0,tribeVictories:0,tribeClaims:[]};
+const state={x:715,y:475,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null,heritageScore:0,tribeVictories:0,tribeClaims:[],tribeDispatched:[]};
 const PROGRESS_KEY="canaan_joshua_progress_v1";
 const CAMPAIGN_KEY="canaan_joshua_campaign_v1";
 try{
@@ -355,13 +365,14 @@ try{
     state.heritageScore=Math.max(0,Math.min(3,Number(saved.heritageScore)||0));
     state.tribeVictories=Math.max(0,Math.min(3,Number(saved.tribeVictories)||0));
     state.tribeClaims=Array.isArray(saved.tribeClaims)?saved.tribeClaims.filter(function(x){return typeof x==="string"}).slice(0,12):[];
+    state.tribeDispatched=Array.isArray(saved.tribeDispatched)?saved.tribeDispatched.filter(function(x){return typeof x==="string"}).slice(0,12):state.tribeClaims.slice();
     // 舊版已完成示劍立約的玩家保留結局，新支派戰役可作為通關後追加篇章。
   }
 }catch(_){}
 function saveCampaign(){
   try{localStorage.setItem(CAMPAIGN_KEY,JSON.stringify({
     stage:state.stage,marches:state.marches,x:state.x,y:state.y,at:state.at,
-    troop:state.troop,morale:state.morale,food:state.food,heritageScore:state.heritageScore,tribeVictories:state.tribeVictories,tribeClaims:state.tribeClaims
+    troop:state.troop,morale:state.morale,food:state.food,heritageScore:state.heritageScore,tribeVictories:state.tribeVictories,tribeClaims:state.tribeClaims,tribeDispatched:state.tribeDispatched
   }))}catch(_){}
 }
 function loadProgress(){
@@ -428,6 +439,10 @@ const TRIBAL_FLAGS=[
   {id:"reuben",name:"流便",color:"#bb9a79",x:786,y:741,kind:"story",verse:"約書亞記 13:15–23",story:"流便的產業在約旦河東、死海東方一帶。河東支派先得到產業，仍曾與其他支派一同承擔征戰責任。"},
   {id:"gad",name:"迦得",color:"#9ab66c",x:783,y:510,kind:"story",verse:"約書亞記 13:24–28；22:1–9",story:"迦得支派在約旦河東的基列地區領受產業。完成與其他支派共同承擔的使命後，河東支派才返回家園。"}
 ];
+// All twelve standards assemble symbolically at Shechem after Joshua 24.
+// Historical allotments were made in several earlier settings (Joshua 13–19).
+const SHECHEM={x:480,y:350};
+function tribeMusterPosition(index){return {x:420+(index%4)*40,y:305+Math.floor(index/4)*37}}
 const TRIBE_SHAPES=[
   ["asher","280,66 375,65 385,120 366,205 354,262 279,272"],
   ["naphtali","407,52 590,56 593,165 572,232 462,215 394,156"],
@@ -454,13 +469,19 @@ const tribeSvgNS="http://www.w3.org/2000/svg",tribeShapes=[];
   svg.appendChild(layer);
 });
 const tribeFlagNodes=[];
-TRIBAL_FLAGS.forEach(function(tribe){
+TRIBAL_FLAGS.forEach(function(tribe,index){
   var marker=document.createElement("button");marker.type="button";marker.className="tribe-flag";marker.dataset.tribe=tribe.id;
-  marker.style.left=tribe.x+"px";marker.style.top=tribe.y+"px";marker.style.setProperty("--tribe-color",tribe.color);
-  marker.innerHTML="<i></i><span>"+tribe.name+"</span>";marker.title=tribe.name+"支派領地";
+  var atDestination=state.tribeDispatched.includes(tribe.id),initial=atDestination?tribe:tribeMusterPosition(index);
+  marker.style.left=initial.x+"px";marker.style.top=initial.y+"px";marker.style.setProperty("--tribe-color",tribe.color);
+  marker.classList.toggle("in-camp",!atDestination);
+  marker.innerHTML="<i></i><span>"+tribe.name+"</span>";marker.title=tribe.name+(atDestination?"支派目的地":"支派・示劍待命");
   marker.addEventListener("click",function(){openTribeTask(tribe.id)});
   marker.hidden=true;$("#maplayer").appendChild(marker);tribeFlagNodes.push(marker);
 });
+const shechemMuster=document.createElement("div");shechemMuster.className="shechem-muster";
+shechemMuster.style.left=SHECHEM.x+"px";shechemMuster.style.top="265px";
+shechemMuster.textContent="⛺ 示劍・十二支派集結";shechemMuster.hidden=true;$("#maplayer").appendChild(shechemMuster);
+const tribeMarchPath=document.createElementNS(tribeSvgNS,"path");tribeMarchPath.setAttribute("class","tribe-march-line");tribeMarchPath.style.display="none";$(".mapart").appendChild(tribeMarchPath);
 Object.keys(cities).forEach(function(id){
   var c=cities[id],button=document.querySelector('[data-city="'+id+'"]');
   button.style.left=c.x+"px";button.style.top=c.y+"px";
@@ -508,6 +529,7 @@ TRIBAL_FLAGS.forEach(function(tribe){
 });
 function claimTribe(id){
   if(state.stage<9||state.tribeClaims.includes(id))return;
+  if(!state.tribeDispatched.includes(id))state.tribeDispatched.push(id);
   state.tribeClaims.push(id);state.morale=Math.min(100,state.morale+1);
   saveCampaign();sync();renderCampaign();
   var tribe=TRIBAL_FLAGS.find(function(t){return t.id===id});
@@ -516,23 +538,38 @@ function claimTribe(id){
 function renderTribalMap(){
   var available=state.stage>=9;
   $("#tribesAfterCovenant").hidden=!available;
+  $("#maplayer").classList.toggle("campaign-after-covenant",available);
+  shechemMuster.hidden=!available;
+  army.style.display=available?"none":"";marmy.style.display=available?"none":"";
   tribeShapes.forEach(function(p){p.style.display=available?"":"none";p.classList.toggle("claimed",state.tribeClaims.includes(p.dataset.tribe))});
-  tribeFlagNodes.forEach(function(node){node.hidden=!available;node.classList.toggle("claimed",state.tribeClaims.includes(node.dataset.tribe))});
+  tribeFlagNodes.forEach(function(node,index){
+    var tribe=TRIBAL_FLAGS[index],dispatched=state.tribeDispatched.includes(tribe.id),marching=tribeMarching===tribe.id;
+    node.hidden=!available;node.classList.toggle("claimed",state.tribeClaims.includes(tribe.id));
+    node.classList.toggle("in-camp",!dispatched&&!marching);node.classList.toggle("marching",marching);
+    if(!marching){var point=dispatched?tribe:tribeMusterPosition(index);node.style.left=point.x+"px";node.style.top=point.y+"px"}
+    node.title=tribe.name+(dispatched?"・已抵達領地":"・示劍待命，點選出發");
+  });
   if(!available)return;
   TRIBAL_FLAGS.forEach(function(tribe){
-    var done=state.tribeClaims.includes(tribe.id),button=tribeGrid.querySelector('[data-tribe-task="'+tribe.id+'"]');
+    var done=state.tribeClaims.includes(tribe.id),dispatched=state.tribeDispatched.includes(tribe.id),button=tribeGrid.querySelector('[data-tribe-task="'+tribe.id+'"]');
     button.classList.toggle("done",done);button.style.borderLeft="5px solid "+tribe.color;
-    button.textContent=(done?"✓ ":tribe.kind==="battle"?"⚔ ":"📜 ")+tribe.name+(done?"・已立旗":tribe.kind==="battle"?"・支派戰役":"・領地事件");
+    button.disabled=Boolean(tribeMarching);
+    button.textContent=(done?"✓ ":tribe.kind==="battle"?"⚔ ":"📜 ")+tribe.name+(done?"・領地已完成":tribeMarching===tribe.id?"・行軍中":dispatched?"・抵達待完成":"・從示劍出發");
   });
-  $("#tribesProgress").textContent="已立旗 "+state.tribeClaims.length+" / 12｜"+(state.tribeClaims.length===12?"各支派的地圖都已完成，恭喜您！":"點選支派名稱或地圖旗幟，完成該支派的故事。");
-  $("#tribesObjective").textContent="示劍立約以後，讓我們回顧各支派的產業與未竟之事。戰鬥篇章標明屬於士師記的年代；每完成一個事件，旗幟與地圖色塊就會增亮。";
+  $("#tribesProgress").textContent="已完成 "+state.tribeClaims.length+" / 12 支派｜"+(state.tribeClaims.length===12?"約旦河東西的支派領地示意圖已完整顯現！":"選擇支線，該支派才會離開示劍；完成事件後，領地才會著色。");
+  $("#tribesObjective").textContent="十二面支派軍旗集結在示劍。選擇支派後，只有該支派前往地圖上的產業；完成戰役或故事，才會在河東、河西逐步呈現對應色塊。";
 }
 function openTribeTask(id){
   if(state.stage<9)return;
   var tribe=TRIBAL_FLAGS.find(function(t){return t.id===id});if(!tribe)return;
-  focusTribeMap(tribe);
+  if(tribeMarching){say("軍旗正在前往目的地，請等這支隊伍抵達後再下達命令。");return}
   if(state.tribeClaims.includes(id)){say(tribe.name+"支派已完成領地事件，旗幟正高高飄揚。（"+tribe.verse+"）");return}
   activeTribeId=id;
+  if(!state.tribeDispatched.includes(id)){dispatchTribe(tribe);return}
+  focusTribeMap(tribe,beginTribeEvent);
+}
+function beginTribeEvent(tribe){
+  if(state.stage<9||activeTribeId!==tribe.id)return;
   if(tribe.kind==="battle"){
     say(tribe.story);startBattle(tribe.mode);return;
   }
@@ -546,20 +583,42 @@ $("#tribeEventFinish").addEventListener("click",function(){
   if(state.stage<9||!activeTribeId)return;
   $("#tribeEventModal").classList.remove("show");claimTribe(activeTribeId);activeTribeId=null;
 });
-let postCampaignFocus=null;
+let postCampaignFocus=state.stage>=9?{x:SHECHEM.x,y:SHECHEM.y}:null;
 let tribeFocusAnimation=0;
-function focusTribeMap(tribe){
+let tribeMarching=null;
+function focusTribeMap(tribe,onArrival){
   if(state.stage<9)return;
   cancelAnimationFrame(tribeFocusAnimation);
   mapPanOffset=0;
-  var from=postCampaignFocus||{x:state.x,y:state.y},begin=performance.now(),duration=520;
-  army.setAttribute("aria-label",tribe.name+"支派軍旗");
+  var from=postCampaignFocus||SHECHEM,begin=performance.now(),duration=650;
   function advance(now){
     var t=Math.min(1,(now-begin)/duration),ease=t*t*(3-2*t);
     postCampaignFocus={x:from.x+(tribe.x-from.x)*ease,y:from.y+(tribe.y-from.y)*ease};
-    sync();if(t<1)tribeFocusAnimation=requestAnimationFrame(advance);
+    sync();if(t<1)tribeFocusAnimation=requestAnimationFrame(advance);else if(onArrival)onArrival(tribe);
   }
   tribeFocusAnimation=requestAnimationFrame(advance);
+}
+function dispatchTribe(tribe){
+  var index=TRIBAL_FLAGS.findIndex(function(t){return t.id===tribe.id});
+  if(index<0||tribeMarching)return;
+  var marker=tribeFlagNodes[index],from=tribeMusterPosition(index),start=performance.now();
+  var length=Math.hypot(tribe.x-from.x,tribe.y-from.y),duration=Math.max(1100,Math.min(1900,length*3.1));
+  tribeMarching=tribe.id;postCampaignFocus={x:from.x,y:from.y};mapPanOffset=0;
+  tribeMarchPath.setAttribute("d","M"+from.x+","+from.y+" Q"+((from.x+tribe.x)/2+30)+","+((from.y+tribe.y)/2-36)+" "+tribe.x+","+tribe.y);
+  tribeMarchPath.style.display="";marker.classList.remove("in-camp");marker.classList.add("marching");
+  say("🚩 "+tribe.name+"支派的軍旗從示劍啟程！跟隨這支隊伍前往下一段故事。");renderTribalMap();
+  function advance(now){
+    var t=Math.min(1,(now-start)/duration),ease=t*t*(3-2*t);
+    var point={x:from.x+(tribe.x-from.x)*ease,y:from.y+(tribe.y-from.y)*ease};
+    marker.style.left=point.x+"px";marker.style.top=point.y+"px";
+    postCampaignFocus=point;sync();
+    if(t<1){tribeFocusAnimation=requestAnimationFrame(advance);return}
+    tribeMarching=null;tribeMarchPath.style.display="none";
+    if(!state.tribeDispatched.includes(tribe.id))state.tribeDispatched.push(tribe.id);
+    saveCampaign();renderTribalMap();say("🏕️ "+tribe.name+"支派抵達！完成這裡的戰役或事件，就能將這片領地標記在地圖上。");
+    beginTribeEvent(tribe);
+  }
+  cancelAnimationFrame(tribeFocusAnimation);tribeFocusAnimation=requestAnimationFrame(advance);
 }
 function sync(){
   var position=state.stage>=9&&postCampaignFocus?postCampaignFocus:state;
@@ -799,7 +858,8 @@ $("#covenantClose").addEventListener("click",function(){covenantModal.classList.
 $("#covenantFinish").addEventListener("click",function(){
   if(state.stage!==8||state.tribeVictories<3)return;
   state.stage=9;state.morale=Math.min(100,state.morale+5);
-  covenantModal.classList.remove("show");say("示劍立約完成！十二支派領地篇章已開啟：地圖上出現十二面旗幟，等您帶領各支派完成戰役或情節，領地便會逐步染上新的顏色。");sync();renderCampaign();saveCampaign();
+  postCampaignFocus={x:SHECHEM.x,y:SHECHEM.y};mapPanOffset=0;
+  covenantModal.classList.remove("show");say("示劍立約完成！十二面支派軍旗已在示劍集結。選擇支線，帶領該支派前往目的地；完成故事或戰役後，河東與河西的領土才會逐步著色。");sync();renderCampaign();saveCampaign();
 });
 document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click",function(){
   var id=b.dataset.city,c=cities[id];
