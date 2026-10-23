@@ -604,9 +604,9 @@ function startBattle(mode){
   modal.classList.remove("show");battleScreen.classList.add("show");
   $("#battleModeTitle").textContent=battleMode==="training"?cities[trainingLocation].name+" · 練兵":battleMode==="campaign"?"艾城主線戰場":battleMode==="gibeon"?"援救基遍 · 南方聯軍":battleMode==="south"?"南方五王 · 山地追擊戰":battleMode==="hazor"?"夏瑣之戰 · 北方聯軍":"自由戰場練習";
   battleState={running:true,ambush:false,hail:false,wave:false,won:false,lost:false,player:unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
-  for(var i=0;i<7;i++){var sid="soldier"+(i+1);battleState.allies.push(unit("ally",115+(i%3)*38,370+Math.floor(i/3)*34,55,"soldier",sid,profileFor(sid,"soldier")))}
+  for(var i=0;i<7;i++){var sid="soldier"+(i+1);battleState.allies.push(unit("ally",90+(i%3)*62,385+Math.floor(i/3)*53,55,"soldier",sid,profileFor(sid,"soldier")))}
   var enemyTotal=battleMode==="hazor"?18:battleMode==="south"?16:battleMode==="gibeon"?14:11;
-  for(var j=0;j<enemyTotal;j++)battleState.enemies.push(unit("enemy",590+(j%5)*43,260+Math.floor(j/5)*46,48,"soldier","enemy"+(j+1),{level:1,xp:0}));
+  for(var j=0;j<enemyTotal;j++)battleState.enemies.push(unit("enemy",560+(j%5)*54,278+Math.floor(j/5)*64,48,"soldier","enemy"+(j+1),{level:1,xp:0}));
   var bossLevel=battleMode==="hazor"?6:battleMode==="south"?5:battleMode==="gibeon"?4:3;
   battleState.boss=unit("enemy",765,200,battleMode==="hazor"?290:battleMode==="south"?260:battleMode==="gibeon"?235:180,"boss","boss",{level:bossLevel,xp:0});battleState.enemies.push(battleState.boss);
   $("#ambushBtn").textContent=battleMode==="gibeon"?"夜行急援":battleMode==="south"?"山路包抄":battleMode==="hazor"?"側翼突擊":"伏兵出擊";
@@ -650,7 +650,7 @@ function attack(attacker,target,amount,range){
   doDamage(target,amount,attacker);
   return true
 }
-$("#ambushBtn").addEventListener("click",function(){if(!battleState||battleState.ambush)return;battleState.ambush=true;setPlayerAnim("command",.5);for(var i=0;i<6;i++){var aid="ambush"+(i+1);battleState.allies.push(unit("ally",820-(i%3)*36,410+Math.floor(i/3)*34,60,"ambush",aid,profileFor(aid,"soldier")))}$("#ambushBtn").disabled=true;showBattleMessage(battleMode==="gibeon"?"快看！夜行的援軍趕到了，弟兄們並肩迎敵！":battleMode==="south"?"山路兩旁響起號角！包抄的小隊截斷了聯軍退路！":battleMode==="hazor"?"側翼小隊衝向敵軍，北方戰車的攻勢被打亂了！":"就是現在！伏兵從艾城後方衝出，敵軍措手不及！")});
+$("#ambushBtn").addEventListener("click",function(){if(!battleState||battleState.ambush)return;battleState.ambush=true;setPlayerAnim("command",.5);for(var i=0;i<6;i++){var aid="ambush"+(i+1);battleState.allies.push(unit("ally",820-(i%3)*58,388+Math.floor(i/3)*67,60,"ambush",aid,profileFor(aid,"soldier")))}$("#ambushBtn").disabled=true;showBattleMessage(battleMode==="gibeon"?"快看！夜行的援軍趕到了，弟兄們並肩迎敵！":battleMode==="south"?"山路兩旁響起號角！包抄的小隊截斷了聯軍退路！":battleMode==="hazor"?"側翼小隊衝向敵軍，北方戰車的攻勢被打亂了！":"就是現在！伏兵從艾城後方衝出，敵軍措手不及！")});
 function updateHud(){if(!battleState)return;var p=battleState.player,b=battleState.boss;$("#playerHpText").textContent=Math.ceil(p.hp)+" / "+p.maxHp;$("#playerHpBar").style.width=(p.hp/p.maxHp*100)+"%";$("#playerLevelText").textContent="Lv."+p.level+"  ATK "+p.atk;$("#playerXpText").textContent="EXP "+p.xp+" / "+xpNeed(p.level);$("#bossHpText").textContent=Math.ceil(b.hp)+" / "+b.maxHp;$("#bossHpBar").style.width=(b.hp/b.maxHp*100)+"%";var alive=battleState.enemies.filter(function(u){return !u.dead}).length;$("#enemyCount").textContent="敵軍 "+alive}
 function showBattleMessage(t){var el=$("#battleMessage");el.textContent=t;el.style.opacity="1";clearTimeout(el._timer);el._timer=setTimeout(function(){el.style.opacity="0"},1500)}
 function update(dt){
@@ -773,18 +773,20 @@ function drawUnit(u){
 }
 function draw(){
   var s=resizeCanvas(),w=s.w,h=s.h;ctx.clearRect(0,0,w,h);
-  // Keep the entire virtual battlefield at its original 900:540 aspect ratio.
-  // Independent X/Y scaling stretched Joshua on wide desktop windows.
+  // Paint the scenery edge-to-edge independently of the playable coordinates.
+  // Characters still use one uniform scale, so neither Joshua nor troops stretch.
+  if(canaanBattleArt.complete&&canaanBattleArt.naturalWidth){
+    var cover=Math.max(w/canaanBattleArt.naturalWidth,h/canaanBattleArt.naturalHeight);
+    var bgW=canaanBattleArt.naturalWidth*cover,bgH=canaanBattleArt.naturalHeight*cover;
+    ctx.drawImage(canaanBattleArt,(w-bgW)/2,(h-bgH)/2,bgW,bgH);
+  }else{
+    var fallback=ctx.createLinearGradient(0,0,0,h);
+    fallback.addColorStop(0,"#8b986e");fallback.addColorStop(1,"#bba075");
+    ctx.fillStyle=fallback;ctx.fillRect(0,0,w,h);
+  }
   var scale=Math.min(w/900,h/540);
   var offsetX=(w-900*scale)/2,offsetY=(h-540*scale)/2;
-  ctx.fillStyle="#8b815d";ctx.fillRect(0,0,w,h);
   ctx.save();ctx.translate(offsetX,offsetY);ctx.scale(scale,scale);
-  if(canaanBattleArt.complete&&canaanBattleArt.naturalWidth){
-    ctx.drawImage(canaanBattleArt,0,0,900,540);
-  }else{
-    var g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,"#73835d");g.addColorStop(.28,"#8b825e");g.addColorStop(1,"#9b8a66");ctx.fillStyle=g;ctx.fillRect(0,0,900,540);
-    ctx.strokeStyle="rgba(74,55,35,.35)";ctx.lineWidth=18;ctx.beginPath();ctx.moveTo(60,430);ctx.quadraticCurveTo(420,300,720,245);ctx.stroke();
-  }
   battleState.allies.forEach(drawUnit);battleState.enemies.forEach(drawUnit);drawUnit(battleState.player);
   ctx.restore()
 }
