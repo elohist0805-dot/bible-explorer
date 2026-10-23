@@ -197,6 +197,13 @@ html.battle-active,html.battle-active body{overscroll-behavior:none;touch-action
 .tribe-flag.in-camp i::after{height:14px;width:19px}
 .tribe-flag.in-camp span{font-size:11px;padding:1px 2px}
 .tribe-flag.marching{z-index:12;opacity:1;filter:drop-shadow(0 0 7px #ffdd80)}
+.tribe-capital{position:absolute;z-index:6;transform:translate(-50%,-8%);display:flex;flex-direction:column;align-items:center;gap:2px;border:0;padding:2px;background:transparent;color:#f8eed7;cursor:pointer;filter:drop-shadow(0 2px 2px #302014)}
+.tribe-capital[hidden]{display:none!important}
+.tribe-capital .tribe-castle{position:relative;display:block;width:24px;height:16px;background:linear-gradient(#e8d4ae,#a98960);border:2px solid #634c37;border-radius:2px 2px 3px 3px}
+.tribe-capital .tribe-castle:before{content:"";position:absolute;left:-3px;top:-8px;width:26px;height:8px;background:repeating-linear-gradient(90deg,#bca481 0 5px,transparent 5px 8px);border-bottom:3px solid #77583c}
+.tribe-capital .tribe-castle:after{content:"";position:absolute;bottom:0;left:8px;width:5px;height:9px;background:#554133;border-radius:5px 5px 0 0}
+.tribe-capital .tribe-city-name{font-weight:800;font-size:12px;line-height:1.25;padding:2px 5px;white-space:nowrap;background:#30271fdf;border:1px solid #c2a270;border-radius:5px}
+.tribe-capital:hover .tribe-city-name{background:#503e28}
 .chapter-arrived .tribe-flag.in-camp{animation:tribeGather .8s ease-out both;animation-delay:calc(var(--flag-order,0) * 95ms)}
 @keyframes tribeGather{from{opacity:0;scale:.55;translate:0 20px}to{opacity:.9;scale:1;translate:0 0}}
 .chapter-guide{position:absolute;bottom:17px;left:50%;transform:translateX(-50%);z-index:18;width:min(620px,calc(100% - 24px));background:#1b2a24f5;border:2px solid #e4c478;border-radius:14px;padding:14px 17px;box-shadow:0 8px 28px #080b08ad;color:#f6ebcf;text-align:center}
@@ -291,19 +298,20 @@ html.battle-active,html.battle-active body{overscroll-behavior:none;touch-action
         <path d="M0 0H1200V281H0Z" filter="url(#northGrain)" opacity=".42"/>
         <rect y="246" width="1200" height="35" fill="url(#northFade)"/>
         <g id="northTribeOverlay">
-          <path class="north-territory" data-tribe="asher" fill="#e3a16c" d="M277 65L377 52L448 82L480 152L464 280L257 280L261 207L253 152Z"/>
-          <path class="north-frontier" data-tribe="asher" d="M277 65L377 52L448 82L480 152L464 280"/>
-          <path class="north-territory" data-tribe="naphtali" fill="#80bec4" d="M448 82L560 65L608 90L600 175L648 218L619 280L464 280L480 152Z"/>
-          <path class="north-frontier" data-tribe="naphtali" d="M448 82L560 65L608 90L600 175L648 218L619 280L464 280"/>
+          <path class="north-territory" data-tribe="asher" fill="#e3a16c" d="M403 70L445 62L481 90L484 155L464 280L372 280L390 197L387 132Z"/>
+          <path class="north-frontier" data-tribe="asher" d="M403 70L445 62L481 90L484 155L464 280"/>
+          <path class="north-territory" data-tribe="naphtali" fill="#80bec4" d="M481 90L552 71L608 90L600 175L648 218L619 280L464 280L484 155Z"/>
+          <path class="north-frontier" data-tribe="naphtali" d="M481 90L552 71L608 90L600 175L648 218L619 280L464 280"/>
           <path class="north-territory" data-tribe="dan" fill="#7ca9cc" d="M608 90L649 99L687 146L666 193L648 218L600 175Z"/>
           <path class="north-frontier" data-tribe="dan" d="M608 90L649 99L687 146L666 193L648 218L600 175Z"/>
+          <path class="north-territory" data-tribe="manasseh" fill="#75b7a4" d="M703 181L760 153L906 168L925 280L710 280L685 229Z"/>
+          <path class="north-frontier" data-tribe="manasseh" d="M703 181L760 153L906 168L925 280L710 280L685 229Z"/>
         </g>
         <text class="north-label" x="708" y="72">黑門山</text>
         <text class="north-small" x="695" y="100">約旦河源頭</text>
         <text class="north-label" x="474" y="47">北方山地</text>
         <text class="north-small" x="361" y="153">推羅方向</text>
         <text class="north-small" x="675" y="250">往加利利湖 ↓</text>
-        <text class="north-small" x="574" y="203">利善（但）</text>
         <path id="northDanMarchPath" d="M479,281Q545,226 625,160" class="tribe-march-line" style="display:none"/>
       </svg>
       <div id="southAtlas">
@@ -530,9 +538,9 @@ const TRIBAL_FLAGS=[
   {id:"manasseh",name:"瑪拿西",color:"#75b7a4",x:441,y:352,kind:"story",verse:"約書亞記 17:1–18；士師記 1:27–28",story:"瑪拿西有約旦河東與河西兩部分產業。部分迦南居民並未完全被趕出，請記得：分地與實際掌握領土不是同一回事。"},
   {id:"issachar",name:"以薩迦",color:"#e0bd75",x:529,y:296,kind:"story",verse:"約書亞記 19:17–23",story:"以薩迦在耶斯列平原附近得到城邑與鄉村。農田、道路和族人的日常生活，都是這份產業的一部分。"},
   {id:"zebulun",name:"西布倫",color:"#c18cbd",x:406,y:255,kind:"story",verse:"約書亞記 19:10–16",story:"西布倫得到了加利利南部一帶的產業。族人沿著分地所得的城邑前進，將自己的旗幟立在新的家園。"},
-  {id:"asher",name:"亞設",color:"#e3a16c",x:318,y:160,kind:"story",verse:"約書亞記 19:24–31",story:"亞設分得北方沿海的多座城邑。港灣、農地與北方道路，讓這片產業有了不同的生活樣貌。"},
-  {id:"naphtali",name:"拿弗他利",color:"#80bec4",x:534,y:157,kind:"story",verse:"約書亞記 19:32–39",story:"拿弗他利在北方山地與加利利湖一帶領受產業。請帶領族人沿湖與山地建立新的家園。"},
-  {id:"reuben",name:"流便",color:"#bb9a79",x:786,y:741,kind:"story",verse:"約書亞記 13:15–23",story:"流便的產業在約旦河東、死海東方一帶。河東支派先得到產業，仍曾與其他支派一同承擔征戰責任。"},
+  {id:"asher",name:"亞設",color:"#e3a16c",x:407,y:140,kind:"story",verse:"約書亞記 19:24–31",story:"亞設分得北方沿海的多座城邑。港灣、農地與北方道路，讓這片產業有了不同的生活樣貌。"},
+  {id:"naphtali",name:"拿弗他利",color:"#80bec4",x:535,y:-20,kind:"story",verse:"約書亞記 19:32–39",story:"拿弗他利在北方山地與加利利湖一帶領受產業。請帶領族人沿湖與山地建立新的家園。"},
+  {id:"reuben",name:"流便",color:"#bb9a79",x:786,y:670,kind:"story",verse:"約書亞記 13:15–23",story:"流便的產業在約旦河東、死海東方一帶。河東支派先得到產業，仍曾與其他支派一同承擔征戰責任。"},
   {id:"gad",name:"迦得",color:"#9ab66c",x:783,y:510,kind:"story",verse:"約書亞記 13:24–28；22:1–9",story:"迦得支派在約旦河東的基列地區領受產業。完成與其他支派共同承擔的使命後，河東支派才返回家園。"}
 ];
 // All twelve standards assemble symbolically at Shechem after Joshua 24.
@@ -542,6 +550,22 @@ const SHECHEM={x:480,y:350};
 // north of its old edge; the southern atlas begins 280 px below the new top.
 const NORTH_ATLAS_EXTENSION=280;
 const DAN_LAISH={x:625,y:-120,name:"利善（但）・北方新居"};
+// Representative cities, not anachronistic tribal capitals. Some allotment
+// cities were shared or not completely subdued (Judges 1).
+const TRIBE_CITIES={
+  judah:{name:"希伯崙",verse:"書 15:13"},
+  simeon:{name:"別是巴",verse:"書 19:2；西緬產業位於猶大境內"},
+  benjamin:{name:"基比亞",verse:"書 18:28"},
+  dan:{name:"鎖拉・原分地",verse:"書 19:41；北上後為利善（但）"},
+  ephraim:{name:"示羅",verse:"書 18:1"},
+  manasseh:{name:"他納",verse:"書 17:11；河東另有哥蘭"},
+  issachar:{name:"耶斯列",verse:"書 19:18"},
+  zebulun:{name:"撒立",verse:"書 19:10"},
+  asher:{name:"亞柯",verse:"書 19:30；士 1:31 記載未完全攻取"},
+  naphtali:{name:"基低斯",verse:"書 19:37；20:7"},
+  reuben:{name:"希實本",verse:"書 13:17"},
+  gad:{name:"基列的拉末",verse:"書 20:8"}
+};
 function tribeMusterPosition(index){return {x:420+(index%4)*40,y:305+Math.floor(index/4)*37}}
 const TRIBE_SHAPES=[
   ["asher","335,66 453,65 454,122 424,205 411,262 320,274"],
@@ -674,6 +698,22 @@ TRIBAL_FLAGS.forEach(function(tribe,index){
   marker.addEventListener("click",function(){openTribeTask(tribe.id)});
   marker.hidden=true;$("#southAtlas").appendChild(marker);tribeFlagNodes.push(marker);
 });
+const tribeCityNodes=[];
+TRIBAL_FLAGS.forEach(function(tribe){
+  var city=TRIBE_CITIES[tribe.id],node=document.createElement("button");
+  node.type="button";node.className="tribe-capital";node.dataset.tribeCity=tribe.id;
+  node.innerHTML='<span class="tribe-castle" aria-hidden="true"></span><span class="tribe-city-name"></span>';
+  node.title=tribe.name+"支派代表城邑："+city.name+"（"+city.verse+"）";
+  node.addEventListener("click",function(){say("🏰 "+tribe.name+"支派的代表城邑："+node.querySelector(".tribe-city-name").textContent+"。參考："+city.verse+"。這是記憶地點用的標誌，不代表當時有正式首都或已完全攻取。")});
+  node.hidden=true;$("#southAtlas").appendChild(node);tribeCityNodes.push(node);
+});
+const eastManassehCity=document.createElement("button");
+eastManassehCity.type="button";eastManassehCity.className="tribe-capital";
+eastManassehCity.style.left="805px";eastManassehCity.style.top="-7px";
+eastManassehCity.innerHTML='<span class="tribe-castle" aria-hidden="true"></span><span class="tribe-city-name">哥蘭・河東</span>';
+eastManassehCity.title="瑪拿西河東半支派代表城邑：哥蘭（書 20:8）";
+eastManassehCity.addEventListener("click",function(){say("🏰 哥蘭位於巴珊，是瑪拿西河東半支派境內的逃城（約書亞記 20:8）。")});
+eastManassehCity.hidden=true;$("#southAtlas").appendChild(eastManassehCity);
 const shechemMuster=document.createElement("div");shechemMuster.className="shechem-muster";
 shechemMuster.style.left=SHECHEM.x+"px";shechemMuster.style.top="265px";
 shechemMuster.textContent="⛺ 示劍・十二支派集結";shechemMuster.hidden=true;$("#southAtlas").appendChild(shechemMuster);
@@ -765,6 +805,15 @@ function renderTribalMap(){
     if(!marching){var point=dispatched?(tribe.id==="dan"&&state.danNorthReached?DAN_LAISH:tribe):tribeMusterPosition(index);node.style.left=point.x+"px";node.style.top=point.y+"px"}
     node.title=tribe.id==="benjamin"&&state.tribeClaims.includes("benjamin")?"便雅憫・與耶布斯人共居（耶路撒冷未完全攻取）":tribe.id==="dan"&&state.tribeClaims.includes("dan")?"但支派・北方利善已攻取":tribe.id==="dan"&&state.danPhase===1?"但支派・沿海受阻，點選北上利善":tribe.name+(dispatched?"・已抵達領地":"・示劍待命，點選出發");
   });
+  tribeCityNodes.forEach(function(node,index){
+    var tribe=TRIBAL_FLAGS[index],dispatched=state.tribeDispatched.includes(tribe.id);
+    var northDan=tribe.id==="dan"&&state.danNorthReached;
+    var point=northDan?DAN_LAISH:tribe;
+    node.hidden=!available||!dispatched;
+    node.style.left=(point.x+34)+"px";node.style.top=(point.y+19)+"px";
+    node.querySelector(".tribe-city-name").textContent=northDan?"利善（但）":TRIBE_CITIES[tribe.id].name;
+  });
+  eastManassehCity.hidden=!available||!state.tribeDispatched.includes("manasseh");
   if(!available)return;
   TRIBAL_FLAGS.forEach(function(tribe){
     var done=state.tribeClaims.includes(tribe.id),dispatched=state.tribeDispatched.includes(tribe.id),button=tribeGrid.querySelector('[data-tribe-task="'+tribe.id+'"]');
