@@ -457,7 +457,7 @@ overview.prepend(overviewArt);
 // Manasseh has two portions; Levi receives cities and is explained in the campaign panel.
 const TRIBAL_FLAGS=[
   {id:"judah",name:"猶大",color:"#d08b72",x:475,y:690,kind:"battle",mode:"afterJudah",verse:"士師記 1:1–7",story:"示劍立約的篇章已結束。士師記開頭記載，約書亞死後猶大與西緬同行，在比色擊敗敵軍。這場戰鬥作為士師記序章，並非約書亞親自率軍。"},
-  {id:"simeon",name:"西緬",color:"#d9b66d",x:466,y:810,kind:"story",verse:"約書亞記 19:1–9；士師記 1:3",story:"西緬支派的產業位於猶大境內，因為猶大所得過多，部分城邑便分給西緬。後來兩支派也曾攜手出征。請在南方立起西緬的旗。"},
+  {id:"simeon",name:"西緬",color:"#d9b66d",x:466,y:810,kind:"battle",mode:"afterSimeon",verse:"約書亞記 19:1–9；士師記 1:3、17",story:"🚩 西緬與猶大聯軍・洗法之戰！約書亞離世後，猶大邀請西緬一同出征，承諾日後也協助西緬。兩支派並肩迎戰洗法的迦南居民，後來將該城稱為何珥瑪。（士 1:3、17）這是後續士師記的事件，不是約書亞親自領軍。"},
   {id:"benjamin",name:"便雅憫",color:"#a497d3",x:511,y:549,kind:"story",verse:"約書亞記 18:11–28；士師記 1:21",story:"便雅憫的產業位在猶大與約瑟子孫之間，包含耶利哥一帶。經文也記載耶布斯人仍與便雅憫人同住耶路撒冷，因此立旗不代表已攻下全城。"},
   {id:"dan",name:"但",color:"#7ca9cc",x:331,y:575,kind:"story",verse:"約書亞記 19:40–48",story:"但支派原先分得沿海平原附近的產業；因擴展艱難，後來另攻取利善。大地圖的旗幟標示原產業區，北遷故事已在利善戰役中介紹。"},
   {id:"ephraim",name:"以法蓮",color:"#8bbd83",x:452,y:449,kind:"battle",mode:"afterJoseph",verse:"約書亞記 16 章；士師記 1:22–26",story:"約瑟家族往伯特利前進，探得入城的道路而攻取那城。這是士師記的支派篇章，改由約瑟家的勇士率軍，約書亞不再親自參戰。"},
@@ -1160,21 +1160,22 @@ const TRIBE_BATTLES=[
   });
 });
 function startBattle(mode){
-  battleMode=["campaign","gibeon","south","hazor","training","tribeHebron","tribeDebir","tribeLeshem","afterJudah","afterJoseph"].includes(mode)?mode:"demo";
+  battleMode=["campaign","gibeon","south","hazor","training","tribeHebron","tribeDebir","tribeLeshem","afterJudah","afterSimeon","afterJoseph"].includes(mode)?mode:"demo";
   var tribal=TRIBE_BATTLES.find(function(b){return b.mode===battleMode});
-  var postCovenant=battleMode==="afterJudah"||battleMode==="afterJoseph";
+  var postCovenant=battleMode==="afterJudah"||battleMode==="afterSimeon"||battleMode==="afterJoseph";
   var postTribe=postCovenant?TRIBAL_FLAGS.find(function(t){return t.mode===battleMode}):null;
-  $("#battleLeaderLabel").textContent=postCovenant?"支派指揮官 HP":"約書亞 HP";
-  $("#battleLeaderTip").textContent=postCovenant?"士師記支派戰役由支派勇士領軍。拖動方向盤接近敵人即可自動迎戰，並可召喚援軍；將領與士兵可累積經驗。":"握緊方向盤，帶領約書亞穿越戰場！靠近敵軍時會自動迎戰；每一次交鋒，都能讓將領與弟兄們累積歷練、逐步成長。";
+  $("#battleLeaderLabel").textContent=battleMode==="afterSimeon"?"西緬聯軍指揮官 HP":postCovenant?"支派指揮官 HP":"約書亞 HP";
+  $("#battleLeaderTip").textContent=battleMode==="afterSimeon"?"西緬與猶大的勇士並肩迎戰！金色標記代表西緬、紅色標記代表猶大；拖動方向盤接敵後自動攻擊，還可召喚兩支派的聯軍增援。":postCovenant?"士師記支派戰役由支派勇士領軍。拖動方向盤接近敵人即可自動迎戰，並可召喚援軍；將領與士兵可累積經驗。":"握緊方向盤，帶領約書亞穿越戰場！靠近敵軍時會自動迎戰；每一次交鋒，都能讓將領與弟兄們累積歷練、逐步成長。";
   modal.classList.remove("show");battleScreen.classList.add("show");
   $("#battleModeTitle").textContent=postTribe?postTribe.name+"・士師記支派戰役":tribal?tribal.title:battleMode==="training"?cities[trainingLocation].name+" · 練兵":battleMode==="campaign"?"艾城主線戰場":battleMode==="gibeon"?"援救基遍 · 南方聯軍":battleMode==="south"?"南方五王 · 山地追擊戰":battleMode==="hazor"?"夏瑣之戰 · 北方聯軍":"自由戰場練習";
+  if(battleMode==="afterSimeon")$("#battleModeTitle").textContent="西緬 × 猶大聯軍・洗法之戰";
   battleState={running:true,ambush:false,hail:false,wave:false,won:false,lost:false,player:postCovenant?unit("player",160,330,120,"leader","tribalLeader",profileFor("tribalLeader","leader")):unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
   for(var i=0;i<7;i++){var sid="soldier"+(i+1);battleState.allies.push(unit("ally",90+(i%3)*62,385+Math.floor(i/3)*53,55,"soldier",sid,profileFor(sid,"soldier")))}
   var enemyTotal=battleMode==="hazor"?18:battleMode==="south"?16:battleMode==="gibeon"?14:postCovenant?15:tribal?(battleMode==="tribeLeshem"?17:13):11;
   for(var j=0;j<enemyTotal;j++)battleState.enemies.push(unit("enemy",560+(j%5)*54,278+Math.floor(j/5)*64,48,"soldier","enemy"+(j+1),{level:1,xp:0}));
   var bossLevel=battleMode==="hazor"?6:battleMode==="south"?5:battleMode==="gibeon"?4:postCovenant?5:tribal?(battleMode==="tribeLeshem"?6:5):3;
   battleState.boss=unit("enemy",765,200,battleMode==="hazor"?290:battleMode==="south"?260:battleMode==="gibeon"?235:180,"boss","boss",{level:bossLevel,xp:0});battleState.enemies.push(battleState.boss);
-  $("#ambushBtn").textContent=postCovenant?"支派援軍":tribal?tribal.command:battleMode==="gibeon"?"夜行急援":battleMode==="south"?"山路包抄":battleMode==="hazor"?"側翼突擊":"伏兵出擊";
+  $("#ambushBtn").textContent=battleMode==="afterSimeon"?"西緬・猶大聯軍增援":postCovenant?"支派援軍":tribal?tribal.command:battleMode==="gibeon"?"夜行急援":battleMode==="south"?"山路包抄":battleMode==="hazor"?"側翼突擊":"伏兵出擊";
   $("#ambushBtn").disabled=false;showBattleMessage(postTribe?postTribe.story:tribal?tribal.opening:battleMode==="campaign"?"艾城就在眼前！帶領約書亞迎戰，留意戰局，號令伏兵從後方出擊！":battleMode==="gibeon"?"盟友正在等待援軍！率領將士迎戰南方五王，關鍵時刻可下令夜行急援。":battleMode==="south"?"山地狹路，南方諸王的軍隊正在退卻！率軍追擊，關鍵時刻下令山路包抄。":battleMode==="hazor"?"夏瑣王聚集北方聯軍，戰車隆隆而來！沉著迎戰，及時派出側翼突擊隊。":battleMode==="training"?"操練開始！將士們握緊武器、磨練默契，每一次交鋒都能讓隊伍更上一層樓。":(joshuaSpriteReady?"戰鼓響起！試著帶領約書亞穿越戰場，熟悉自動迎戰與軍隊指揮吧。":"戰鼓即將響起，約書亞正在整裝準備……"));updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
 }
 $("#battleDemo").addEventListener("click",function(){startBattle("demo")});
@@ -1182,7 +1183,7 @@ $("#exitBattle").addEventListener("click",endBattle);
 function endBattle(){
   if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}
   cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};
-  if(TRIBE_BATTLES.some(function(b){return b.mode===battleMode})||battleMode==="afterJudah"||battleMode==="afterJoseph")say("支派勇士返回營地！這趟征途中獲得的經驗與等級已保存，若尚未獲勝，隨時可以重新挑戰。");
+  if(TRIBE_BATTLES.some(function(b){return b.mode===battleMode})||battleMode==="afterJudah"||battleMode==="afterSimeon"||battleMode==="afterJoseph")say("支派勇士返回營地！這趟征途中獲得的經驗與等級已保存，若尚未獲勝，隨時可以重新挑戰。");
   else if(battleMode==="campaign")say(state.stage>=3?"艾城的軍旗已升起，新故事正從基遍方向傳來！":"今日暫時鳴金收兵，整頓後仍可再挑戰艾城！");
   else if(battleMode==="gibeon")say(state.stage>=5?"基遍終於平安，盟約也得到了守護！":"基遍仍在等待援救，整軍後再次出發吧！");
   else if(battleMode==="south")say(state.stage>=6?"南方五王的軍隊已敗退。記住，這不代表耶路撒冷城已被佔領；新的敵情正從北方傳來。":"南方追擊戰暫告一段落，整頓後再前往山地迎戰！");
@@ -1257,13 +1258,14 @@ function update(dt){
       if(state.stage>=8&&expected&&expected.mode===battleMode){state.tribeVictories++;saveCampaign()}
       showBattleMessage("支派勇士凱旋！已完成 "+state.tribeVictories+" / 3 場拓土戰役。");
     }
-    else if(battleMode==="afterJudah"||battleMode==="afterJoseph"){
-      claimTribe(battleMode==="afterJudah"?"judah":"ephraim");
+    else if(battleMode==="afterJudah"||battleMode==="afterSimeon"||battleMode==="afterJoseph"){
+      claimTribe(battleMode==="afterJudah"?"judah":battleMode==="afterSimeon"?"simeon":"ephraim");
       showBattleMessage("支派的戰役告捷！領地旗幟已在地圖升起。");
     }
     else showBattleMessage(battleMode==="training"?"操練告捷！將士們的身手又更精進了！":"漂亮的一戰！全軍帶著新的歷練凱旋！");
     var tribalVictory=TRIBE_BATTLES.find(function(b){return b.mode===battleMode});
     var victoryText=tribalVictory?tribalVictory.win:battleMode==="afterJudah"?"猶大與西緬支派的比色之戰告捷！\n\n這是士師記 1:1–7 所記載的後續歷史；猶大的旗幟已在大地圖亮起。":battleMode==="afterJoseph"?"約瑟家族攻取伯特利！\n\n這是士師記 1:22–26 的故事，以法蓮的旗幟已在大地圖亮起。":battleMode==="campaign"?"艾城凱歌！\n\n以色列的軍旗在城頭高高飄揚，下一段故事將從基遍展開。":battleMode==="gibeon"?"基遍得救了！\n\n約書亞守住盟約。經文記載大冰雹與日月停住的奇事（書 10:11–14）。":battleMode==="south"?"南方追擊告捷！\n\n南方五王的聯軍已被擊敗（書 10:16–27），但耶路撒冷仍不是已佔領的城邑。現在，北方夏瑣王的軍隊正集結待戰！":battleMode==="hazor"?"夏瑣之戰告捷！\n\n約書亞擊敗北方聯軍，攻取夏瑣（書 11:10–15）。夏瑣已變成淡藍色，能返回練兵；將領與士兵的經驗和等級都會保留。":battleMode==="training"?"操練告捷！\n\n將士們的經驗與等級都已保留，主線旅程可以繼續。":"自由試煉告捷！\n\n將士們滿載歷練回營。";
+    if(battleMode==="afterSimeon")victoryText="西緬與猶大聯軍凱旋！\n\n兩支派攜手攻取洗法，並將此城稱為何珥瑪（士師記 1:17）。西緬的軍旗與領地色塊已在大地圖顯現；西緬原本的產業位於猶大境內（約書亞記 19:1–9）。";
     setTimeout(function(){alert(victoryText);endBattle()},1100)
   }
 }
@@ -1346,6 +1348,15 @@ function drawUnit(u){
   ctx.fillStyle="#1a1a1a";ctx.fillRect(u.x-w/2,hudY,w,4);
   ctx.fillStyle=u.team==="enemy"?"#c45e54":"#78aa70";ctx.fillRect(u.x-w/2,hudY,w*(u.hp/u.maxHp),4);
   if(u.team==="ally"){ctx.fillStyle="#fff3bf";ctx.font="bold 10px sans-serif";ctx.textAlign="center";ctx.fillText("Lv."+u.level,u.x,hudY-5)}
+  // The joint Simeon-Judah battle visibly distinguishes both allied contingents.
+  if(battleMode==="afterSimeon"&&u.team==="ally"){
+    var unitNumber=Number((u.id.match(/\d+$/)||[])[0])||1;
+    var simeon=unitNumber%2===1;
+    ctx.fillStyle=simeon?"#d9b66d":"#d08b72";
+    ctx.fillRect(u.x-14,hudY-23,28,13);
+    ctx.fillStyle="#252018";ctx.font="bold 10px sans-serif";ctx.textAlign="center";
+    ctx.fillText(simeon?"西緬":"猶大",u.x,hudY-13);
+  }
 }
 function draw(){
   var s=resizeCanvas(),w=s.w,h=s.h;ctx.clearRect(0,0,w,h);
