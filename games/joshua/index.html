@@ -368,7 +368,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 <aside class="side">
   <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><div id="marmy" class="marmy"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
   <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">約旦河已在身後，迦南的城邑就在前方。先往吉甲安營，整頓隊伍，準備迎接第一場挑戰！</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn primary" id="goGibeon" disabled>前往基遍・盟約事件</button><button class="btn warn" id="defendGibeon" disabled>⚔ 援救基遍（南方聯軍）</button><button class="btn warn" id="goSouth" disabled>⚔ 追擊南方五王</button><button class="btn warn" id="goHazor" disabled>⚔ 北上攻取夏瑣</button><button class="btn blue" id="goInheritance" disabled>🏞 分地與迦勒的信心</button><button class="btn primary" id="goCovenant" disabled>📜 示劍立約</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div><div id="trainingPanel" class="training-panel"><div id="trainingInfo">每攻下一座城，就多一處可以休整、練兵的據點。讓將士們磨練身手，再迎接下一場戰役吧！</div><button class="btn blue" id="trainCity" disabled>選擇已佔領城鎮練兵</button></div></div>
-  <div class="panel" id="tribePanel" hidden><h2>🛡 支派拓土戰役</h2><div class="objective" id="tribeStory">分得產業之後，支派仍要面對山地與邊境的挑戰。</div><div class="actions"><button class="btn warn" id="tribeHebron">① 猶大支派・希伯崙</button><button class="btn warn" id="tribeDebir" disabled>② 俄陀聶・底璧</button><button class="btn warn" id="tribeLeshem" disabled>③ 但支派・利善</button></div><p class="scripture-note" id="tribeProgress">完成 0 / 3 場戰役；戰鬥經驗與等級繼續累積。</p></div>
+  <div class="panel" id="tribePanel" hidden><h2>🛡 延伸戰役・自由挑戰</h2><div class="objective" id="tribeStory">分得產業之後，支派仍要面對山地與邊境的挑戰。這三場延伸戰役可自由挑戰，不影響示劍立約與十二支派篇章的開啟。</div><div class="actions"><button class="btn warn" id="tribeHebron">① 猶大支派・希伯崙</button><button class="btn warn" id="tribeDebir" disabled>② 俄陀聶・底璧</button><button class="btn warn" id="tribeLeshem" disabled>③ 但支派・利善</button></div><p class="scripture-note" id="tribeProgress">完成 0 / 3 場延伸戰役；不影響主線通關。</p></div>
   <div class="panel" id="tribesAfterCovenant" hidden><h2>🚩 十二支派・領地旗幟</h2><div class="objective" id="tribesObjective">示劍立約後，十二面旗幟在示劍集結，等候您的指令。</div><div class="tribe-grid" id="tribeTaskGrid"></div><p class="scripture-note" id="tribesProgress">已完成 0 / 12</p><p class="scripture-note">十二支派從示劍集結出發是本遊戲的敘事安排；經文中的分地過程發生在更早的時期（書 13–19 章）。疆界為遊戲示意、非精確古地圖；瑪拿西河東與河西共用一面旗，利未人受分的是各支派中的城邑，沒有單獨成片的領地。（書 21 章）</p></div>
   <div class="panel"><h2>戰記</h2><div class="log" id="log">河水已退，腳下是應許之地。摩西交付的使命，如今由約書亞接續。號角尚未響起，先帶領百姓前往吉甲安營吧！想先熟悉戰鬥，也可以進入自由戰場試試身手。</div></div>
 </aside>
@@ -807,12 +807,12 @@ function renderCampaign(){
   $("#goSouth").disabled=state.stage!==5||state.moving;
   $("#goHazor").disabled=state.stage!==6||state.moving;
   $("#goInheritance").disabled=state.stage!==7||state.moving;
-  $("#goCovenant").disabled=state.stage!==8||state.tribeVictories<3||state.moving;
+  $("#goCovenant").disabled=state.stage!==8||state.moving;
   $("#tribePanel").hidden=state.stage<8;
   if(state.stage>=8){
     const tribeTitles=["猶大支派的迦勒要迎向希伯崙的山地。聖經記載，他趕出亞衲族的三個族長。（書 15:13–14）","迦勒宣告：誰攻取底璧，就把押撒給他為妻。俄陀聶挺身而出！（書 15:15–19）","但支派後來攻取利善，重新命名為但。走進他們尋找安居之地的征途。（書 19:47）","三場支派拓土戰役都完成了！帶著各支派的故事，前往示劍聆聽約書亞的勸勉。"];
     $("#tribeStory").textContent=tribeTitles[Math.min(3,state.tribeVictories)];
-    $("#tribeProgress").textContent="支派拓土完成 "+state.tribeVictories+" / 3 場｜每場勝利都保留將領與士兵的經驗值。";
+    $("#tribeProgress").textContent="延伸戰役完成 "+state.tribeVictories+" / 3 場｜不影響示劍立約，每場勝利都保留將領與士兵的經驗值。";
     ["tribeHebron","tribeDebir","tribeLeshem"].forEach(function(id,i){
       const button=$("#"+id);button.disabled=state.stage<8||state.moving||state.tribeVictories!==i;
       button.textContent=(state.tribeVictories>i?"✓ ":["① ","② ","③ "][i])+["猶大支派・希伯崙","俄陀聶・底璧","但支派・利善"][i];
@@ -873,7 +873,7 @@ function renderCampaign(){
     $("#goHazor").textContent="✓ 夏瑣已攻取";
     var hazorCity=document.querySelector('[data-city="hazor"]');
     hazorCity.classList.remove("locked","enemy");hazorCity.classList.add("friendly");
-    objective.textContent=state.stage===7?"北方戰鼓終於停歇，現在要讓眾支派得到安居之地。迦勒雖年事已高，仍帶著信心來求山地！進入『分地與迦勒的信心』，認識神所賜的產業。（書 13–21 章）":state.stage===8?(state.tribeVictories<3?"分地不代表旅程已經結束！從迦勒的希伯崙、俄陀聶的底璧，到但支派的利善，請依序完成三場支派拓土戰役。（書 15、19 章）":"各支派的征途已有新的篇章。約書亞正在示劍等待百姓，請帶領他們回顧神的恩典、作出信仰的選擇。（書 24 章）"):"示劍立約已完成，十二支派的旗幟正等待升起！點選地圖旗幟或右側『十二支派・領地旗幟』，逐一完成戰役和情節；每個支派都有自己的領土色塊。";
+    objective.textContent=state.stage===7?"北方戰鼓終於停歇，現在要讓眾支派得到安居之地。迦勒雖年事已高，仍帶著信心來求山地！進入『分地與迦勒的信心』，認識神所賜的產業。（書 13–21 章）":state.stage===8?"分地產業的故事已完成！約書亞正在示劍等待百姓，請點選『示劍立約』回顧神的恩典，接著開啟十二支派篇章。希伯崙、底璧、利善三場戰役可於延伸戰役自由挑戰，不會阻擋主線。（書 24 章）":"示劍立約已完成，十二支派的旗幟已在示劍集結！點選地圖旗幟或右側『十二支派・領地旗幟』，逐一完成戰役和情節；每個支派都有自己的領土色塊。";
   }
   if(state.stage>=8)$("#goInheritance").textContent="✓ 各支派產業已介紹";
   if(state.stage>=9)$("#goCovenant").textContent="📜 重看旅程總結";
@@ -995,23 +995,23 @@ $("#heritageNext").addEventListener("click",function(){
   if(state.stage!==7)return;
   heritageModal.classList.remove("show");
   state.stage=8;state.heritageScore=heritageCorrect;state.morale=Math.min(100,state.morale+3);
-  say("分地的故事漸漸完整了！然而，山地上還有新的挑戰。先追隨迦勒、俄陀聶與但支派的腳步，走過支派拓土戰役，再前往示劍！（書 15、19、24 章）");
+  say("分地的故事已完成！現在可以直接前往示劍立約，開啟十二支派篇章；希伯崙、底璧、利善三場延伸戰役也能另外自由挑戰。（書 15、19、24 章）");
   sync();renderCampaign();saveCampaign();
 });
 const covenantModal=$("#covenantModal"),covenantFeedback=$("#covenantFeedback");
 function journeySummary(){
   var level=(state.progression&&state.progression.joshua&&state.progression.joshua.level)||1;
-  return "🏅 約書亞記主線完成！\n\n已完成主線：耶利哥、艾城、基遍盟約與援救、南方聯軍、夏瑣，以及分地、支派拓土與示劍立約。\n十二支派領地旗幟："+state.tribeClaims.length+" / 12 面。\n支派拓土：完成 "+state.tribeVictories+" / 3 場。\n分地情境：答對 "+state.heritageScore+" / 3 題。\n約書亞目前等級：Lv."+level+"。\n\n示劍立約之後，還能逐一完成十二支派的領地故事；部分戰役屬於後續士師記的年代。耶路撒冷未標示為已攻佔，基遍仍保留盟友身分。";
+  return "🏅 約書亞記主線完成！\n\n已完成主線：耶利哥、艾城、基遍盟約與援救、南方聯軍、夏瑣，以及分地與示劍立約。\n十二支派領地旗幟："+state.tribeClaims.length+" / 12 面。\n延伸戰役：完成 "+state.tribeVictories+" / 3 場（不影響主線）。\n分地情境：答對 "+state.heritageScore+" / 3 題。\n約書亞目前等級：Lv."+level+"。\n\n示劍立約之後，還能逐一完成十二支派的領地故事；部分戰役屬於後續士師記的年代。耶路撒冷未標示為已攻佔，基遍仍保留盟友身分。";
 }
 $("#goCovenant").addEventListener("click",function(){
-  if(state.moving||state.stage<8||(state.stage===8&&state.tribeVictories<3))return;
+  if(state.moving||state.stage<8)return;
   $("#covenantStory").textContent=state.stage>=9?journeySummary():"約書亞召集眾支派來到示劍，回顧神如何帶領祖先、拯救百姓並賜下產業。現在，他請百姓明確選擇所要事奉的對象。（書 24:1–15）";
   $("#covenantChoices").hidden=state.stage>=9;
   covenantFeedback.hidden=true;$("#covenantFinish").hidden=true;
   covenantModal.classList.add("show");
 });
 function answerCovenant(faithful){
-  if(state.stage!==8||state.tribeVictories<3)return;
+  if(state.stage!==8)return;
   $("#covenantChoices").hidden=true;covenantFeedback.hidden=false;
   covenantFeedback.textContent=(faithful?"這是約書亞堅定的宣告！":"約書亞提醒百姓，不可輕忽所立的約。")+" 他說：『至於我和我家，我們必定事奉耶和華。』百姓也回答願意事奉耶和華。約書亞便在示劍立約，並立石頭作為見證。（書 24:15–27）";
   $("#covenantFinish").hidden=false;
@@ -1020,7 +1020,7 @@ $("#covenantFaith").addEventListener("click",function(){answerCovenant(true)});
 $("#covenantOther").addEventListener("click",function(){answerCovenant(false)});
 $("#covenantClose").addEventListener("click",function(){covenantModal.classList.remove("show")});
 $("#covenantFinish").addEventListener("click",function(){
-  if(state.stage!==8||state.tribeVictories<3)return;
+  if(state.stage!==8)return;
   state.stage=9;state.morale=Math.min(100,state.morale+5);
   postCampaignFocus={x:SHECHEM.x,y:SHECHEM.y};mapPanOffset=0;
   covenantModal.classList.remove("show");say("示劍立約完成！十二面支派軍旗已在示劍集結。選擇支線，帶領該支派前往目的地；完成故事或戰役後，河東與河西的領土才會逐步著色。");sync();renderCampaign();saveCampaign();
