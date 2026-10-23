@@ -115,6 +115,13 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .army::after{top:67px;background:#483322d9;color:#fff1ce;border:1px solid #c4a36e;font-weight:700}
 .marmy{width:3px;height:17px;background:#e5c482;border:0;border-radius:0;box-shadow:0 1px 2px #23180e;z-index:3}
 .marmy::after{content:"";position:absolute;top:0;left:3px;width:13px;height:9px;background:#9a3d36;clip-path:polygon(0 0,100% 12%,75% 52%,100% 90%,0 80%)}
+/* Compact city markers: preserve readable names while separating nearby towns. */
+.city{min-width:40px}
+.city .fort{width:33px;height:22px;margin:4px auto 0;border-width:2px;box-shadow:inset 0 1px 0 #f6dcad,0 3px 0 #60472e,0 4px 6px #30231566}
+.city .fort::before{left:-6px;top:-8px;width:10px;height:28px;border-width:1.5px;box-shadow:29px 0 0 -1px #b88d54,31px 0 0 0 #62482d}
+.city .fort::after{left:11px;bottom:-1px;width:8px;height:11px;border-width:1.5px}
+.city .flag{left:31px;top:-13px;width:13px;height:10px}
+.city span{margin-top:6px;font-size:13px}
 </style>
 </head>
 <body>
