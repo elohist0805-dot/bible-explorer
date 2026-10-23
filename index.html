@@ -41,7 +41,7 @@ main{width:min(1180px,94vw);margin:auto;padding:28px 0 52px}.hero{background:#ff
   </div>
   <div class="portalBody">
     <div class="stats">
-      <div class="stat"><strong id="visitCount">—</strong><span>到訪人次</span><div class="note">開站至今蒞臨的探險家們</div></div>
+      <div class="stat"><strong id="visitCount">—</strong><span>到訪人次</span><div class="note">正在讀取探險家人數…</div></div>
       <div class="stat"><strong>5</strong><span>目前遊戲</span><div class="note">出埃及記・約書亞記・創造天地・族長足跡・文字曠野</div></div>
       <div class="stat"><strong>39+</strong><span>互動事件</span><div class="note">25 關既有內容＋14 個族長事件</div></div>
     </div>
@@ -141,52 +141,66 @@ main{width:min(1180px,94vw);margin:auto;padding:28px 0 52px}.hero{background:#ff
 (async()=>{
   const el=document.getElementById('visitCount');
   const note=el.closest('.stat')?.querySelector('.note');
-  const originalNote=note?.textContent||'開站至今蒞臨的探險家們';
-  const url='https://counterapi.com/api/elohist0805-dot.github.io/visit/bible-explorer-global';
-  const sessionKey='bibleExplorerCounterApiVisited';
-  const cacheKey='bibleExplorerCounterLastGood';
+  // This public counter needs no secret key or separate server on GitHub Pages.
+  // The former CounterAPI service started returning HTTP 502 in October 2026.
+  const base='https://countapi.mileshilliard.com/api/v1';
+  const key='bible_explorer_elohist0805_global_v20261023';
+  const legacy='https://counterapi.com/api/elohist0805-dot.github.io/visit/bible-explorer-global?readOnly=true';
+  const sessionKey='bibleExplorerGlobalVisitedV2';
+  const cacheKey='bibleExplorerCounterV2LastGood';
   const format=n=>n.toLocaleString('zh-TW');
-  let lastGood=null;
+  let lastGood=null,legacyTotal=null;
+  function storageGet(storage,key){try{return storage.getItem(key)}catch(_){return null}}
+  function storageSet(storage,key,value){try{storage.setItem(key,value)}catch(_){}}
   try{
-    const saved=JSON.parse(localStorage.getItem(cacheKey)||'null');
+    const saved=JSON.parse(storageGet(localStorage,cacheKey)||'null');
     if(saved&&Number.isSafeInteger(saved.value)&&saved.value>=0)lastGood=saved;
   }catch(_){}
   function display(value,stale=false){
-    el.textContent=stale?'≈'+format(value):format(value);
-    el.title=stale?'最後一次成功讀取的到訪數，並非即時統計':'已更新的累計到訪人數';
-    if(note)note.textContent=stale?'統計服務暫時無法連線・顯示上次讀取紀錄':originalNote;
+    const merged=legacyTotal!==null;
+    const total=value+(merged?legacyTotal:0);
+    el.textContent=(stale?'≈':'')+format(total);
+    el.title=(stale?'最後一次取得的紀錄；可能不是即時數字。':'累計人數已更新。')+(merged?'已合併舊統計資料。':'舊統計服務目前無法提供歷史總數。');
+    if(note)note.textContent=merged?'開站至今蒞臨的探險家們':stale?'新統計暫時離線・顯示上次紀錄':'2026/10/23 起重新累計的探險家們';
   }
   if(lastGood)display(lastGood.value,true);
-  async function read(readOnly){
+  async function fetchCount(url,timeoutMs){
     const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),8000);
+    const timeout=setTimeout(()=>controller.abort(),timeoutMs);
     try{
-      const r=await fetch(url+(readOnly?'?readOnly=true':''),{
-        cache:'no-store',mode:'cors',signal:controller.signal
-      });
+      const r=await fetch(url,{cache:'no-store',mode:'cors',signal:controller.signal});
       if(!r.ok)throw new Error('counter response '+r.status);
       const data=await r.json();
       const n=Number(data.value);
       if(!Number.isSafeInteger(n)||n<0)throw new Error('invalid counter payload');
-      try{localStorage.setItem(cacheKey,JSON.stringify({value:n,time:Date.now()}));}catch(_){}
-      lastGood={value:n,time:Date.now()};
-      display(n);
-      return true;
+      return n;
     }finally{clearTimeout(timeout);}
   }
+  async function update(readOnly){
+    const value=await fetchCount(base+'/'+(readOnly?'get':'hit')+'/'+key,9000);
+    lastGood={value,time:Date.now()};
+    storageSet(localStorage,cacheKey,JSON.stringify(lastGood));
+    display(value);
+  }
   try{
-    const alreadyCounted=sessionStorage.getItem(sessionKey)==='1';
-    await read(alreadyCounted);
-    if(!alreadyCounted)sessionStorage.setItem(sessionKey,'1');
+    const alreadyCounted=storageGet(sessionStorage,sessionKey)==='1';
+    await update(alreadyCounted);
+    if(!alreadyCounted)storageSet(sessionStorage,sessionKey,'1');
   }catch(_){
     if(!lastGood){
       el.textContent='—';
       el.title='到訪統計服務暫時無法連線';
-      if(note)note.textContent='到訪統計暫時無法取得，稍後會自動重試';
+      if(note)note.textContent='統計暫時無法取得，稍後會自動重試';
     }
-    // A failed increment may have reached the server: retry read-only.
-    setTimeout(async()=>{try{await read(true);}catch(_){}},20000);
+    // A failed increment could still have reached the server: retry GET only.
+    setTimeout(async()=>{try{await update(true)}catch(_){}},15000);
   }
+  // Read-only recovery of historical data if the old host becomes available.
+  // Never send an increment to the old counter and never invent a baseline.
+  fetchCount(legacy,3500).then(function(n){
+    legacyTotal=n;
+    if(lastGood)display(lastGood.value);
+  }).catch(function(){});
 })();
 </script>
 <script>
