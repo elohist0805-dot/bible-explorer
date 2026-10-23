@@ -141,6 +141,22 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .gibeon-choices[hidden],#gibeonContinue[hidden]{display:none!important}
 .gibeon-choices button{line-height:1.45}
 .scripture-note{border-left:3px solid #c6ad68;color:#d5d6c5;font-size:13px;padding:8px 10px;background:#172019;margin:12px 0}
+#tribePanel[hidden]{display:none!important}
+#tribesAfterCovenant[hidden],#tribeEventModal[hidden]{display:none!important}
+.tribe-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}
+.tribe-grid .btn{font-size:13px;padding:9px 6px;text-align:left;min-height:44px;white-space:normal}
+.tribe-grid .btn.done{border-color:#c9d2b9;background:#294137}
+.tribe-legend{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;line-height:1.5}
+.tribe-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin-right:4px}
+.tribe-territory{stroke:#584d3d;stroke-width:2.6;stroke-dasharray:7 7;fill:#e1cc90;fill-opacity:.03;stroke-opacity:.7;transition:fill-opacity .5s,stroke .5s;pointer-events:none}
+.tribe-territory.claimed{stroke-dasharray:none;stroke-width:3.5;fill-opacity:.50;stroke-opacity:1}
+.tribe-flag{position:absolute;z-index:7;display:flex;flex-direction:column;align-items:center;gap:1px;transform:translate(-50%,-50%);width:66px;border:0;background:transparent;color:#fef4d9;cursor:pointer;filter:drop-shadow(0 2px 2px #261c12);opacity:.58}
+.tribe-flag i{position:relative;width:4px;height:29px;background:#5f4931;border:1px solid #eadca0}
+.tribe-flag i::after{content:"";position:absolute;top:2px;left:4px;width:23px;height:17px;background:var(--tribe-color);clip-path:polygon(0 0,100% 12%,83% 51%,100% 89%,0 100%);border-top:1px solid #f6dda5}
+.tribe-flag span{font-size:12px;line-height:1.2;background:#2d271ecb;padding:1px 4px;border-radius:4px;white-space:nowrap}
+.tribe-flag.claimed{opacity:1}.tribe-flag:hover{opacity:1;filter:drop-shadow(0 0 5px #ffe7a9)}
+.tribe-flag[hidden]{display:none!important}
+#tribeEventModal .card{max-width:560px}
 .city.trainable .fort{box-shadow:inset 0 1px 0 #f6dcad,0 3px 0 #60472e,0 0 0 3px #77cae966,0 4px 6px #30231566}
 .training-panel{margin-top:10px;padding:10px;background:#13241f;border:1px solid #477e88;border-radius:10px;font-size:13px;color:#e0e9df;line-height:1.5}
 .training-panel button{margin-top:8px;width:100%}
@@ -265,10 +281,11 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
       <div class="actions"><button class="btn primary" id="covenantFinish" hidden>立約並完成旅程</button><button class="btn" id="covenantClose">返回大地圖</button></div>
     </div>
   </div>
+  <div id="tribeEventModal" class="modal" role="dialog" aria-modal="true" aria-label="十二支派領地事件"><div class="card"><h2 id="tribeEventTitle">支派故事</h2><p id="tribeEventStory"></p><p class="scripture-note" id="tribeEventVerse"></p><div class="actions"><button class="btn primary" id="tribeEventFinish">完成事件，立起支派旗</button><button class="btn" id="tribeEventClose">返回大地圖</button></div></div></div>
 
   <div id="battleScreen" aria-label="艾城即時戰場">
     <div class="battleHud">
-      <div class="hpBlock"><div class="hpLabel"><span>約書亞 HP</span><b id="playerHpText">120 / 120</b></div><div class="hpbar"><i id="playerHpBar"></i></div><div class="hpLabel" style="margin-top:4px"><span id="playerLevelText">Lv.1</span><span id="playerXpText">EXP 0 / 40</span></div></div>
+      <div class="hpBlock"><div class="hpLabel"><span id="battleLeaderLabel">約書亞 HP</span><b id="playerHpText">120 / 120</b></div><div class="hpbar"><i id="playerHpBar"></i></div><div class="hpLabel" style="margin-top:4px"><span id="playerLevelText">Lv.1</span><span id="playerXpText">EXP 0 / 40</span></div></div>
       <div class="battleTitle"><span id="battleModeTitle">艾城戰場</span><br><span id="enemyCount">敵軍 12</span></div>
       <div class="hpBlock"><div class="hpLabel"><span>敵將 HP</span><b id="bossHpText">180 / 180</b></div><div class="hpbar enemy"><i id="bossHpBar"></i></div></div>
     </div>
@@ -279,7 +296,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
       </div>
       <div class="battleBtns">
         <div class="autoAttackStatus">⚔ 接敵後自動攻擊</div><button class="ambush" id="ambushBtn">伏兵出擊</button><button class="exit" id="exitBattle">退出戰場</button>
-        <div class="battleTip">握緊方向盤，帶領約書亞穿越戰場！靠近敵軍時會自動迎戰；每一次交鋒，都能讓將領與弟兄們累積歷練、逐步成長。</div>
+        <div class="battleTip" id="battleLeaderTip">握緊方向盤，帶領約書亞穿越戰場！靠近敵軍時會自動迎戰；每一次交鋒，都能讓將領與弟兄們累積歷練、逐步成長。</div>
       </div>
     </div>
   </div>
@@ -288,6 +305,8 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 <aside class="side">
   <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><div id="marmy" class="marmy"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
   <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">約旦河已在身後，迦南的城邑就在前方。先往吉甲安營，整頓隊伍，準備迎接第一場挑戰！</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn primary" id="goGibeon" disabled>前往基遍・盟約事件</button><button class="btn warn" id="defendGibeon" disabled>⚔ 援救基遍（南方聯軍）</button><button class="btn warn" id="goSouth" disabled>⚔ 追擊南方五王</button><button class="btn warn" id="goHazor" disabled>⚔ 北上攻取夏瑣</button><button class="btn blue" id="goInheritance" disabled>🏞 分地與迦勒的信心</button><button class="btn primary" id="goCovenant" disabled>📜 示劍立約</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div><div id="trainingPanel" class="training-panel"><div id="trainingInfo">每攻下一座城，就多一處可以休整、練兵的據點。讓將士們磨練身手，再迎接下一場戰役吧！</div><button class="btn blue" id="trainCity" disabled>選擇已佔領城鎮練兵</button></div></div>
+  <div class="panel" id="tribePanel" hidden><h2>🛡 支派拓土戰役</h2><div class="objective" id="tribeStory">分得產業之後，支派仍要面對山地與邊境的挑戰。</div><div class="actions"><button class="btn warn" id="tribeHebron">① 猶大支派・希伯崙</button><button class="btn warn" id="tribeDebir" disabled>② 俄陀聶・底璧</button><button class="btn warn" id="tribeLeshem" disabled>③ 但支派・利善</button></div><p class="scripture-note" id="tribeProgress">完成 0 / 3 場戰役；戰鬥經驗與等級繼續累積。</p></div>
+  <div class="panel" id="tribesAfterCovenant" hidden><h2>🚩 十二支派・領地旗幟</h2><div class="objective" id="tribesObjective">示劍立約後，各支派將自己的領地逐一標記在大地圖上。</div><div class="tribe-grid" id="tribeTaskGrid"></div><p class="scripture-note" id="tribesProgress">已立旗 0 / 12</p><p class="scripture-note">地圖採遊戲示意疆界；瑪拿西的東西兩部共用一面旗。利未人在各支派中獲分城邑，沒有獨立的整塊領土。（書 21 章）</p></div>
   <div class="panel"><h2>戰記</h2><div class="log" id="log">河水已退，腳下是應許之地。摩西交付的使命，如今由約書亞接續。號角尚未響起，先帶領百姓前往吉甲安營吧！想先熟悉戰鬥，也可以進入自由戰場試試身手。</div></div>
 </aside>
 </div>
@@ -296,7 +315,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 <script>
 (function(){
 const $=function(s){return document.querySelector(s)};
-const state={x:715,y:475,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null,heritageScore:0};
+const state={x:715,y:475,at:"camp",stage:0,marches:0,troop:600,morale:82,food:100,moving:false,progression:null,heritageScore:0,tribeVictories:0,tribeClaims:[]};
 const PROGRESS_KEY="canaan_joshua_progress_v1";
 const CAMPAIGN_KEY="canaan_joshua_campaign_v1";
 try{
@@ -311,12 +330,15 @@ try{
     state.morale=Math.max(0,Math.min(100,Number(saved.morale)||82));
     state.food=Math.max(0,Math.min(100,Number(saved.food)||100));
     state.heritageScore=Math.max(0,Math.min(3,Number(saved.heritageScore)||0));
+    state.tribeVictories=Math.max(0,Math.min(3,Number(saved.tribeVictories)||0));
+    state.tribeClaims=Array.isArray(saved.tribeClaims)?saved.tribeClaims.filter(function(x){return typeof x==="string"}).slice(0,12):[];
+    // 舊版已完成示劍立約的玩家保留結局，新支派戰役可作為通關後追加篇章。
   }
 }catch(_){}
 function saveCampaign(){
   try{localStorage.setItem(CAMPAIGN_KEY,JSON.stringify({
     stage:state.stage,marches:state.marches,x:state.x,y:state.y,at:state.at,
-    troop:state.troop,morale:state.morale,food:state.food,heritageScore:state.heritageScore
+    troop:state.troop,morale:state.morale,food:state.food,heritageScore:state.heritageScore,tribeVictories:state.tribeVictories,tribeClaims:state.tribeClaims
   }))}catch(_){}
 }
 function loadProgress(){
@@ -367,6 +389,55 @@ overviewArt.querySelectorAll("[id]").forEach(function(el){
   el.id=next;
 });
 overview.prepend(overviewArt);
+// Twelve territorial allotments: illustrative game geography rather than surveyed biblical borders.
+// Manasseh has two portions; Levi receives cities and is explained in the campaign panel.
+const TRIBAL_FLAGS=[
+  {id:"judah",name:"猶大",color:"#d08b72",x:475,y:690,kind:"battle",mode:"afterJudah",verse:"士師記 1:1–7",story:"示劍立約的篇章已結束。士師記開頭記載，約書亞死後猶大與西緬同行，在比色擊敗敵軍。這場戰鬥作為士師記序章，並非約書亞親自率軍。"},
+  {id:"simeon",name:"西緬",color:"#d9b66d",x:466,y:810,kind:"story",verse:"約書亞記 19:1–9；士師記 1:3",story:"西緬支派的產業位於猶大境內，因為猶大所得過多，部分城邑便分給西緬。後來兩支派也曾攜手出征。請在南方立起西緬的旗。"},
+  {id:"benjamin",name:"便雅憫",color:"#a497d3",x:511,y:549,kind:"story",verse:"約書亞記 18:11–28；士師記 1:21",story:"便雅憫的產業位在猶大與約瑟子孫之間，包含耶利哥一帶。經文也記載耶布斯人仍與便雅憫人同住耶路撒冷，因此立旗不代表已攻下全城。"},
+  {id:"dan",name:"但",color:"#7ca9cc",x:331,y:575,kind:"story",verse:"約書亞記 19:40–48",story:"但支派原先分得沿海平原附近的產業；因擴展艱難，後來另攻取利善。大地圖的旗幟標示原產業區，北遷故事已在利善戰役中介紹。"},
+  {id:"ephraim",name:"以法蓮",color:"#8bbd83",x:452,y:449,kind:"battle",mode:"afterJoseph",verse:"約書亞記 16 章；士師記 1:22–26",story:"約瑟家族往伯特利前進，探得入城的道路而攻取那城。這是士師記的支派篇章，改由約瑟家的勇士率軍，約書亞不再親自參戰。"},
+  {id:"manasseh",name:"瑪拿西",color:"#75b7a4",x:441,y:352,kind:"story",verse:"約書亞記 17:1–18；士師記 1:27–28",story:"瑪拿西有約旦河東與河西兩部分產業。部分迦南居民並未完全被趕出，請記得：分地與實際掌握領土不是同一回事。"},
+  {id:"issachar",name:"以薩迦",color:"#e0bd75",x:529,y:296,kind:"story",verse:"約書亞記 19:17–23",story:"以薩迦在耶斯列平原附近得到城邑與鄉村。農田、道路和族人的日常生活，都是這份產業的一部分。"},
+  {id:"zebulun",name:"西布倫",color:"#c18cbd",x:406,y:255,kind:"story",verse:"約書亞記 19:10–16",story:"西布倫得到了加利利南部一帶的產業。族人沿著分地所得的城邑前進，將自己的旗幟立在新的家園。"},
+  {id:"asher",name:"亞設",color:"#e3a16c",x:318,y:160,kind:"story",verse:"約書亞記 19:24–31",story:"亞設分得北方沿海的多座城邑。港灣、農地與北方道路，讓這片產業有了不同的生活樣貌。"},
+  {id:"naphtali",name:"拿弗他利",color:"#80bec4",x:534,y:157,kind:"story",verse:"約書亞記 19:32–39",story:"拿弗他利在北方山地與加利利湖一帶領受產業。請帶領族人沿湖與山地建立新的家園。"},
+  {id:"reuben",name:"流便",color:"#bb9a79",x:786,y:741,kind:"story",verse:"約書亞記 13:15–23",story:"流便的產業在約旦河東、死海東方一帶。河東支派先得到產業，仍曾與其他支派一同承擔征戰責任。"},
+  {id:"gad",name:"迦得",color:"#9ab66c",x:783,y:510,kind:"story",verse:"約書亞記 13:24–28；22:1–9",story:"迦得支派在約旦河東的基列地區領受產業。完成與其他支派共同承擔的使命後，河東支派才返回家園。"}
+];
+const TRIBE_SHAPES=[
+  ["asher","280,66 375,65 385,120 366,205 354,262 279,272"],
+  ["naphtali","407,52 590,56 593,165 572,232 462,215 394,156"],
+  ["zebulun","355,218 442,206 471,246 456,306 382,314 335,277"],
+  ["issachar","471,229 581,231 596,301 559,366 479,345 457,306"],
+  ["manasseh","339,328 459,315 479,345 559,366 550,406 485,435 376,423 323,384"],
+  ["ephraim","352,422 485,435 542,422 558,481 497,516 385,509 336,472"],
+  ["benjamin","406,509 497,516 572,493 594,550 556,594 442,586"],
+  ["dan","280,492 384,505 407,525 398,613 325,645 271,619"],
+  ["judah","408,604 555,611 586,695 550,786 423,780 357,692"],
+  ["simeon","414,785 547,796 567,858 397,860 369,815"],
+  ["manasseh","680,81 914,104 921,366 715,376 678,291"],
+  ["gad","694,386 920,379 946,595 705,600 679,519"],
+  ["reuben","704,610 931,612 928,825 704,826 684,724"]
+];
+const tribeSvgNS="http://www.w3.org/2000/svg",tribeShapes=[];
+[$(".mapart"),overviewArt].forEach(function(svg){
+  var layer=document.createElementNS(tribeSvgNS,"g");layer.setAttribute("class","tribeLayer");
+  TRIBE_SHAPES.forEach(function(shape){
+    var polygon=document.createElementNS(tribeSvgNS,"polygon"),tribe=TRIBAL_FLAGS.find(function(t){return t.id===shape[0]});
+    polygon.setAttribute("points",shape[1]);polygon.setAttribute("class","tribe-territory");polygon.dataset.tribe=shape[0];polygon.style.fill=tribe.color;
+    layer.appendChild(polygon);tribeShapes.push(polygon);
+  });
+  svg.appendChild(layer);
+});
+const tribeFlagNodes=[];
+TRIBAL_FLAGS.forEach(function(tribe){
+  var marker=document.createElement("button");marker.type="button";marker.className="tribe-flag";marker.dataset.tribe=tribe.id;
+  marker.style.left=tribe.x+"px";marker.style.top=tribe.y+"px";marker.style.setProperty("--tribe-color",tribe.color);
+  marker.innerHTML="<i></i><span>"+tribe.name+"</span>";marker.title=tribe.name+"支派領地";
+  marker.addEventListener("click",function(){openTribeTask(tribe.id)});
+  marker.hidden=true;$("#maplayer").appendChild(marker);tribeFlagNodes.push(marker);
+});
 Object.keys(cities).forEach(function(id){
   var c=cities[id],button=document.querySelector('[data-city="'+id+'"]');
   button.style.left=c.x+"px";button.style.top=c.y+"px";
@@ -376,8 +447,54 @@ Object.keys(cities).forEach(function(id){
   overview.appendChild(dot);
 });
 function say(t){log.textContent=t}
+let activeTribeId=null;
+const tribeGrid=$("#tribeTaskGrid");
+TRIBAL_FLAGS.forEach(function(tribe){
+  var button=document.createElement("button");button.className="btn";button.type="button";button.dataset.tribeTask=tribe.id;
+  button.addEventListener("click",function(){openTribeTask(tribe.id)});tribeGrid.appendChild(button);
+});
+function claimTribe(id){
+  if(state.stage<9||state.tribeClaims.includes(id))return;
+  state.tribeClaims.push(id);state.morale=Math.min(100,state.morale+1);
+  saveCampaign();sync();renderCampaign();
+  var tribe=TRIBAL_FLAGS.find(function(t){return t.id===id});
+  say("🚩 "+tribe.name+"支派的旗幟已升起！大地圖上的專屬色塊逐漸顯現。已完成 "+state.tribeClaims.length+" / 12 支派。"+(state.tribeClaims.length===12?" 十二支派地圖已完成！":""));
+}
+function renderTribalMap(){
+  var available=state.stage>=9;
+  $("#tribesAfterCovenant").hidden=!available;
+  tribeShapes.forEach(function(p){p.style.display=available?"":"none";p.classList.toggle("claimed",state.tribeClaims.includes(p.dataset.tribe))});
+  tribeFlagNodes.forEach(function(node){node.hidden=!available;node.classList.toggle("claimed",state.tribeClaims.includes(node.dataset.tribe))});
+  if(!available)return;
+  TRIBAL_FLAGS.forEach(function(tribe){
+    var done=state.tribeClaims.includes(tribe.id),button=tribeGrid.querySelector('[data-tribe-task="'+tribe.id+'"]');
+    button.classList.toggle("done",done);button.style.borderLeft="5px solid "+tribe.color;
+    button.textContent=(done?"✓ ":tribe.kind==="battle"?"⚔ ":"📜 ")+tribe.name+(done?"・已立旗":tribe.kind==="battle"?"・支派戰役":"・領地事件");
+  });
+  $("#tribesProgress").textContent="已立旗 "+state.tribeClaims.length+" / 12｜"+(state.tribeClaims.length===12?"各支派的地圖都已完成，恭喜您！":"點選支派名稱或地圖旗幟，完成該支派的故事。");
+  $("#tribesObjective").textContent="示劍立約以後，讓我們回顧各支派的產業與未竟之事。戰鬥篇章標明屬於士師記的年代；每完成一個事件，旗幟與地圖色塊就會增亮。";
+}
+function openTribeTask(id){
+  if(state.stage<9)return;
+  var tribe=TRIBAL_FLAGS.find(function(t){return t.id===id});if(!tribe)return;
+  if(state.tribeClaims.includes(id)){say(tribe.name+"支派已完成領地事件，旗幟正高高飄揚。（"+tribe.verse+"）");return}
+  activeTribeId=id;
+  if(tribe.kind==="battle"){
+    say(tribe.story);startBattle(tribe.mode);return;
+  }
+  $("#tribeEventTitle").textContent="📜 "+tribe.name+"支派・領地故事";
+  $("#tribeEventStory").textContent=tribe.story;
+  $("#tribeEventVerse").textContent="經文線索｜"+tribe.verse;
+  $("#tribeEventModal").classList.add("show");
+}
+$("#tribeEventClose").addEventListener("click",function(){$("#tribeEventModal").classList.remove("show")});
+$("#tribeEventFinish").addEventListener("click",function(){
+  if(state.stage<9||!activeTribeId)return;
+  $("#tribeEventModal").classList.remove("show");claimTribe(activeTribeId);activeTribeId=null;
+});
 function sync(){army.style.left=state.x+"px";army.style.top=state.y+"px";marmy.style.left=(state.x/1200*100)+"%";marmy.style.top=(state.y/900*100)+"%";$("#troop").textContent=state.troop;$("#morale").textContent=state.morale;$("#food").textContent=state.food}
 function renderCampaign(){
+  renderTribalMap();
   $("#goGilgal").disabled=state.stage>=1;
   $("#goJericho").disabled=state.stage<1||state.stage>=2;
   $("#goAi").disabled=state.stage!==2;
@@ -386,7 +503,17 @@ function renderCampaign(){
   $("#goSouth").disabled=state.stage!==5||state.moving;
   $("#goHazor").disabled=state.stage!==6||state.moving;
   $("#goInheritance").disabled=state.stage!==7||state.moving;
-  $("#goCovenant").disabled=state.stage!==8||state.moving;
+  $("#goCovenant").disabled=state.stage!==8||state.tribeVictories<3||state.moving;
+  $("#tribePanel").hidden=state.stage<8;
+  if(state.stage>=8){
+    const tribeTitles=["猶大支派的迦勒要迎向希伯崙的山地。聖經記載，他趕出亞衲族的三個族長。（書 15:13–14）","迦勒宣告：誰攻取底璧，就把押撒給他為妻。俄陀聶挺身而出！（書 15:15–19）","但支派後來攻取利善，重新命名為但。走進他們尋找安居之地的征途。（書 19:47）","三場支派拓土戰役都完成了！帶著各支派的故事，前往示劍聆聽約書亞的勸勉。"];
+    $("#tribeStory").textContent=tribeTitles[Math.min(3,state.tribeVictories)];
+    $("#tribeProgress").textContent="支派拓土完成 "+state.tribeVictories+" / 3 場｜每場勝利都保留將領與士兵的經驗值。";
+    ["tribeHebron","tribeDebir","tribeLeshem"].forEach(function(id,i){
+      const button=$("#"+id);button.disabled=state.stage<8||state.moving||state.tribeVictories!==i;
+      button.textContent=(state.tribeVictories>i?"✓ ":["① ","② ","③ "][i])+["猶大支派・希伯崙","俄陀聶・底璧","但支派・利善"][i];
+    });
+  }
   document.querySelectorAll("[data-territory]").forEach(function(area){
     area.classList.toggle("claimed",isOccupied(area.dataset.territory));
     area.classList.toggle("allied",isAllied(area.dataset.territory));
@@ -442,7 +569,7 @@ function renderCampaign(){
     $("#goHazor").textContent="✓ 夏瑣已攻取";
     var hazorCity=document.querySelector('[data-city="hazor"]');
     hazorCity.classList.remove("locked","enemy");hazorCity.classList.add("friendly");
-    objective.textContent=state.stage===7?"北方戰鼓終於停歇，現在要讓眾支派得到安居之地。迦勒雖年事已高，仍帶著信心來求山地！進入『分地與迦勒的信心』，認識神所賜的產業。（書 13–21 章）":state.stage===8?"眾支派正在各自的產業安居。約書亞召集百姓來到示劍，提醒大家思想神一路的恩典，並作出信仰的選擇。（書 24 章）":"從約旦河到迦南各地，您完成了征戰、分地與立約的旅程！主線已完成，仍可返回已佔領的城鎮練兵，或重看旅程總結。";
+    objective.textContent=state.stage===7?"北方戰鼓終於停歇，現在要讓眾支派得到安居之地。迦勒雖年事已高，仍帶著信心來求山地！進入『分地與迦勒的信心』，認識神所賜的產業。（書 13–21 章）":state.stage===8?(state.tribeVictories<3?"分地不代表旅程已經結束！從迦勒的希伯崙、俄陀聶的底璧，到但支派的利善，請依序完成三場支派拓土戰役。（書 15、19 章）":"各支派的征途已有新的篇章。約書亞正在示劍等待百姓，請帶領他們回顧神的恩典、作出信仰的選擇。（書 24 章）"):"示劍立約已完成，十二支派的旗幟正等待升起！點選地圖旗幟或右側『十二支派・領地旗幟』，逐一完成戰役和情節；每個支派都有自己的領土色塊。";
   }
   if(state.stage>=8)$("#goInheritance").textContent="✓ 各支派產業已介紹";
   if(state.stage>=9)$("#goCovenant").textContent="📜 重看旅程總結";
@@ -564,23 +691,23 @@ $("#heritageNext").addEventListener("click",function(){
   if(state.stage!==7)return;
   heritageModal.classList.remove("show");
   state.stage=8;state.heritageScore=heritageCorrect;state.morale=Math.min(100,state.morale+3);
-  say("分地的故事漸漸完整了！迦勒得到山地，利未人得到城邑，約瑟的後裔也承受產業。現在，約書亞召集百姓前往示劍，迎接最後的重要選擇！（書 24 章）");
+  say("分地的故事漸漸完整了！然而，山地上還有新的挑戰。先追隨迦勒、俄陀聶與但支派的腳步，走過支派拓土戰役，再前往示劍！（書 15、19、24 章）");
   sync();renderCampaign();saveCampaign();
 });
 const covenantModal=$("#covenantModal"),covenantFeedback=$("#covenantFeedback");
 function journeySummary(){
   var level=(state.progression&&state.progression.joshua&&state.progression.joshua.level)||1;
-  return "🏅 約書亞記旅程完成！\n\n已完成主線：耶利哥、艾城、基遍盟約與援救、南方聯軍、夏瑣，以及分地與示劍立約。\n分地情境：答對 "+state.heritageScore+" / 3 題。\n約書亞目前等級：Lv."+level+"。\n\n耶路撒冷未標示為已佔領，基遍則保留盟友身分。您仍可以繼續回城練兵！";
+  return "🏅 約書亞記主線完成！\n\n已完成主線：耶利哥、艾城、基遍盟約與援救、南方聯軍、夏瑣，以及分地、支派拓土與示劍立約。\n十二支派領地旗幟："+state.tribeClaims.length+" / 12 面。\n支派拓土：完成 "+state.tribeVictories+" / 3 場。\n分地情境：答對 "+state.heritageScore+" / 3 題。\n約書亞目前等級：Lv."+level+"。\n\n示劍立約之後，還能逐一完成十二支派的領地故事；部分戰役屬於後續士師記的年代。耶路撒冷未標示為已攻佔，基遍仍保留盟友身分。";
 }
 $("#goCovenant").addEventListener("click",function(){
-  if(state.moving||state.stage<8)return;
+  if(state.moving||state.stage<8||(state.stage===8&&state.tribeVictories<3))return;
   $("#covenantStory").textContent=state.stage>=9?journeySummary():"約書亞召集眾支派來到示劍，回顧神如何帶領祖先、拯救百姓並賜下產業。現在，他請百姓明確選擇所要事奉的對象。（書 24:1–15）";
   $("#covenantChoices").hidden=state.stage>=9;
   covenantFeedback.hidden=true;$("#covenantFinish").hidden=true;
   covenantModal.classList.add("show");
 });
 function answerCovenant(faithful){
-  if(state.stage!==8)return;
+  if(state.stage!==8||state.tribeVictories<3)return;
   $("#covenantChoices").hidden=true;covenantFeedback.hidden=false;
   covenantFeedback.textContent=(faithful?"這是約書亞堅定的宣告！":"約書亞提醒百姓，不可輕忽所立的約。")+" 他說：『至於我和我家，我們必定事奉耶和華。』百姓也回答願意事奉耶和華。約書亞便在示劍立約，並立石頭作為見證。（書 24:15–27）";
   $("#covenantFinish").hidden=false;
@@ -589,9 +716,9 @@ $("#covenantFaith").addEventListener("click",function(){answerCovenant(true)});
 $("#covenantOther").addEventListener("click",function(){answerCovenant(false)});
 $("#covenantClose").addEventListener("click",function(){covenantModal.classList.remove("show")});
 $("#covenantFinish").addEventListener("click",function(){
-  if(state.stage!==8)return;
+  if(state.stage!==8||state.tribeVictories<3)return;
   state.stage=9;state.morale=Math.min(100,state.morale+5);
-  covenantModal.classList.remove("show");say(journeySummary());sync();renderCampaign();saveCampaign();
+  covenantModal.classList.remove("show");say("示劍立約完成！十二支派領地篇章已開啟：地圖上出現十二面旗幟，等您帶領各支派完成戰役或情節，領地便會逐步染上新的顏色。");sync();renderCampaign();saveCampaign();
 });
 document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click",function(){
   var id=b.dataset.city,c=cities[id];
@@ -671,7 +798,7 @@ function unit(team,x,y,hp,role,id,profile){
   profile=profile||{level:1,xp:0};
   var lv=Math.max(1,profile.level||1);
   var isLeader=role==="joshua"||role==="leader"||role==="boss";
-  var baseAtk=role==="joshua"?28:role==="boss"?14:role==="ambush"?13:team==="ally"?10:8;
+  var baseAtk=role==="joshua"||role==="leader"?28:role==="boss"?14:role==="ambush"?13:team==="ally"?10:8;
   var hpGain=isLeader?12:6;
   var atkGain=isLeader?3:2;
   var maxHp=hp+(lv-1)*hpGain;
@@ -706,25 +833,43 @@ function grantXp(u,amount){
   updateHud();
 }
 let battleMode="demo";
+const TRIBE_BATTLES=[
+  {mode:"tribeHebron",title:"猶大支派・希伯崙山地",opening:"迦勒雖然年老，仍勇敢前往希伯崙！今天你帶領援軍守護他的行動，記念他專心跟從耶和華的信心。（書 15:13–14）",command:"山地增援",win:"希伯崙山地戰告捷！\n\n迦勒趕出亞衲族三個族長，猶大支派的山地產業展開新的一頁。（書 15:13–14）"},
+  {mode:"tribeDebir",title:"俄陀聶・底璧攻城",opening:"底璧的城牆就在眼前！俄陀聶回應迦勒的挑戰，率領勇士迎向難關。你將在這場戰役中支援他。（書 15:15–19）",command:"俄陀聶突擊",win:"底璧戰役告捷！\n\n俄陀聶攻取底璧，押撒後來向父親迦勒求得水泉。（書 15:16–19）"},
+  {mode:"tribeLeshem",title:"但支派・利善之戰",opening:"但支派正尋找安居之處，軍旗朝北方利善前進。這場戰役重現他們攻取利善、改名為但的記載。（書 19:47）",command:"但族勇士",win:"利善戰役告捷！\n\n但支派攻取利善，住在那裡，照祖先但的名字為城命名。（書 19:47）"}
+];
+["tribeHebron","tribeDebir","tribeLeshem"].forEach(function(id,index){
+  $("#"+id).addEventListener("click",function(){
+    if(state.stage<8||state.tribeVictories!==index||state.moving)return;
+    say(TRIBE_BATTLES[index].opening);
+    startBattle(id);
+  });
+});
 function startBattle(mode){
-  battleMode=["campaign","gibeon","south","hazor","training"].includes(mode)?mode:"demo";
+  battleMode=["campaign","gibeon","south","hazor","training","tribeHebron","tribeDebir","tribeLeshem","afterJudah","afterJoseph"].includes(mode)?mode:"demo";
+  var tribal=TRIBE_BATTLES.find(function(b){return b.mode===battleMode});
+  var postCovenant=battleMode==="afterJudah"||battleMode==="afterJoseph";
+  var postTribe=postCovenant?TRIBAL_FLAGS.find(function(t){return t.mode===battleMode}):null;
+  $("#battleLeaderLabel").textContent=postCovenant?"支派指揮官 HP":"約書亞 HP";
+  $("#battleLeaderTip").textContent=postCovenant?"士師記支派戰役由支派勇士領軍。拖動方向盤接近敵人即可自動迎戰，並可召喚援軍；將領與士兵可累積經驗。":"握緊方向盤，帶領約書亞穿越戰場！靠近敵軍時會自動迎戰；每一次交鋒，都能讓將領與弟兄們累積歷練、逐步成長。";
   modal.classList.remove("show");battleScreen.classList.add("show");
-  $("#battleModeTitle").textContent=battleMode==="training"?cities[trainingLocation].name+" · 練兵":battleMode==="campaign"?"艾城主線戰場":battleMode==="gibeon"?"援救基遍 · 南方聯軍":battleMode==="south"?"南方五王 · 山地追擊戰":battleMode==="hazor"?"夏瑣之戰 · 北方聯軍":"自由戰場練習";
-  battleState={running:true,ambush:false,hail:false,wave:false,won:false,lost:false,player:unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
+  $("#battleModeTitle").textContent=postTribe?postTribe.name+"・士師記支派戰役":tribal?tribal.title:battleMode==="training"?cities[trainingLocation].name+" · 練兵":battleMode==="campaign"?"艾城主線戰場":battleMode==="gibeon"?"援救基遍 · 南方聯軍":battleMode==="south"?"南方五王 · 山地追擊戰":battleMode==="hazor"?"夏瑣之戰 · 北方聯軍":"自由戰場練習";
+  battleState={running:true,ambush:false,hail:false,wave:false,won:false,lost:false,player:postCovenant?unit("player",160,330,120,"leader","tribalLeader",profileFor("tribalLeader","leader")):unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
   for(var i=0;i<7;i++){var sid="soldier"+(i+1);battleState.allies.push(unit("ally",90+(i%3)*62,385+Math.floor(i/3)*53,55,"soldier",sid,profileFor(sid,"soldier")))}
-  var enemyTotal=battleMode==="hazor"?18:battleMode==="south"?16:battleMode==="gibeon"?14:11;
+  var enemyTotal=battleMode==="hazor"?18:battleMode==="south"?16:battleMode==="gibeon"?14:postCovenant?15:tribal?(battleMode==="tribeLeshem"?17:13):11;
   for(var j=0;j<enemyTotal;j++)battleState.enemies.push(unit("enemy",560+(j%5)*54,278+Math.floor(j/5)*64,48,"soldier","enemy"+(j+1),{level:1,xp:0}));
-  var bossLevel=battleMode==="hazor"?6:battleMode==="south"?5:battleMode==="gibeon"?4:3;
+  var bossLevel=battleMode==="hazor"?6:battleMode==="south"?5:battleMode==="gibeon"?4:postCovenant?5:tribal?(battleMode==="tribeLeshem"?6:5):3;
   battleState.boss=unit("enemy",765,200,battleMode==="hazor"?290:battleMode==="south"?260:battleMode==="gibeon"?235:180,"boss","boss",{level:bossLevel,xp:0});battleState.enemies.push(battleState.boss);
-  $("#ambushBtn").textContent=battleMode==="gibeon"?"夜行急援":battleMode==="south"?"山路包抄":battleMode==="hazor"?"側翼突擊":"伏兵出擊";
-  $("#ambushBtn").disabled=false;showBattleMessage(battleMode==="campaign"?"艾城就在眼前！帶領約書亞迎戰，留意戰局，號令伏兵從後方出擊！":battleMode==="gibeon"?"盟友正在等待援軍！率領將士迎戰南方五王，關鍵時刻可下令夜行急援。":battleMode==="south"?"山地狹路，南方諸王的軍隊正在退卻！率軍追擊，關鍵時刻下令山路包抄。":battleMode==="hazor"?"夏瑣王聚集北方聯軍，戰車隆隆而來！沉著迎戰，及時派出側翼突擊隊。":battleMode==="training"?"操練開始！將士們握緊武器、磨練默契，每一次交鋒都能讓隊伍更上一層樓。":(joshuaSpriteReady?"戰鼓響起！試著帶領約書亞穿越戰場，熟悉自動迎戰與軍隊指揮吧。":"戰鼓即將響起，約書亞正在整裝準備……"));updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
+  $("#ambushBtn").textContent=postCovenant?"支派援軍":tribal?tribal.command:battleMode==="gibeon"?"夜行急援":battleMode==="south"?"山路包抄":battleMode==="hazor"?"側翼突擊":"伏兵出擊";
+  $("#ambushBtn").disabled=false;showBattleMessage(postTribe?postTribe.story:tribal?tribal.opening:battleMode==="campaign"?"艾城就在眼前！帶領約書亞迎戰，留意戰局，號令伏兵從後方出擊！":battleMode==="gibeon"?"盟友正在等待援軍！率領將士迎戰南方五王，關鍵時刻可下令夜行急援。":battleMode==="south"?"山地狹路，南方諸王的軍隊正在退卻！率軍追擊，關鍵時刻下令山路包抄。":battleMode==="hazor"?"夏瑣王聚集北方聯軍，戰車隆隆而來！沉著迎戰，及時派出側翼突擊隊。":battleMode==="training"?"操練開始！將士們握緊武器、磨練默契，每一次交鋒都能讓隊伍更上一層樓。":(joshuaSpriteReady?"戰鼓響起！試著帶領約書亞穿越戰場，熟悉自動迎戰與軍隊指揮吧。":"戰鼓即將響起，約書亞正在整裝準備……"));updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
 }
 $("#battleDemo").addEventListener("click",function(){startBattle("demo")});
 $("#exitBattle").addEventListener("click",endBattle);
 function endBattle(){
   if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}
   cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};
-  if(battleMode==="campaign")say(state.stage>=3?"艾城的軍旗已升起，新故事正從基遍方向傳來！":"今日暫時鳴金收兵，整頓後仍可再挑戰艾城！");
+  if(TRIBE_BATTLES.some(function(b){return b.mode===battleMode})||battleMode==="afterJudah"||battleMode==="afterJoseph")say("支派勇士返回營地！這趟征途中獲得的經驗與等級已保存，若尚未獲勝，隨時可以重新挑戰。");
+  else if(battleMode==="campaign")say(state.stage>=3?"艾城的軍旗已升起，新故事正從基遍方向傳來！":"今日暫時鳴金收兵，整頓後仍可再挑戰艾城！");
   else if(battleMode==="gibeon")say(state.stage>=5?"基遍終於平安，盟約也得到了守護！":"基遍仍在等待援救，整軍後再次出發吧！");
   else if(battleMode==="south")say(state.stage>=6?"南方五王的軍隊已敗退。記住，這不代表耶路撒冷城已被佔領；新的敵情正從北方傳來。":"南方追擊戰暫告一段落，整頓後再前往山地迎戰！");
   else if(battleMode==="hazor")say(state.stage>=7?"夏瑣已攻下，北方戰鼓漸漸平息。將士們可以回到城中練兵！":"北方聯軍仍在夏瑣集結，請整軍後再出發！");
@@ -793,8 +938,18 @@ function update(dt){
     else if(battleMode==="gibeon"){state.stage=5;showBattleMessage("基遍得救了！城內響起歡呼，盟約得以守護！");saveCampaign()}
     else if(battleMode==="south"){state.stage=6;showBattleMessage("南方五王的軍隊已敗退！下一個挑戰，來自北方的夏瑣聯軍。");saveCampaign()}
     else if(battleMode==="hazor"){state.stage=7;showBattleMessage("夏瑣已攻取！北方戰事告捷，新的練兵據點也已開放。");saveCampaign()}
+    else if(TRIBE_BATTLES.some(function(b){return b.mode===battleMode})){
+      const expected=TRIBE_BATTLES[state.tribeVictories];
+      if(state.stage>=8&&expected&&expected.mode===battleMode){state.tribeVictories++;saveCampaign()}
+      showBattleMessage("支派勇士凱旋！已完成 "+state.tribeVictories+" / 3 場拓土戰役。");
+    }
+    else if(battleMode==="afterJudah"||battleMode==="afterJoseph"){
+      claimTribe(battleMode==="afterJudah"?"judah":"ephraim");
+      showBattleMessage("支派的戰役告捷！領地旗幟已在地圖升起。");
+    }
     else showBattleMessage(battleMode==="training"?"操練告捷！將士們的身手又更精進了！":"漂亮的一戰！全軍帶著新的歷練凱旋！");
-    var victoryText=battleMode==="campaign"?"艾城凱歌！\n\n以色列的軍旗在城頭高高飄揚，下一段故事將從基遍展開。":battleMode==="gibeon"?"基遍得救了！\n\n約書亞守住盟約。經文記載大冰雹與日月停住的奇事（書 10:11–14）。":battleMode==="south"?"南方追擊告捷！\n\n南方五王的聯軍已被擊敗（書 10:16–27），但耶路撒冷仍不是已佔領的城邑。現在，北方夏瑣王的軍隊正集結待戰！":battleMode==="hazor"?"夏瑣之戰告捷！\n\n約書亞擊敗北方聯軍，攻取夏瑣（書 11:10–15）。夏瑣已變成淡藍色，能返回練兵；將領與士兵的經驗和等級都會保留。":battleMode==="training"?"操練告捷！\n\n將士們的經驗與等級都已保留，主線旅程可以繼續。":"自由試煉告捷！\n\n將士們滿載歷練回營。";
+    var tribalVictory=TRIBE_BATTLES.find(function(b){return b.mode===battleMode});
+    var victoryText=tribalVictory?tribalVictory.win:battleMode==="afterJudah"?"猶大與西緬支派的比色之戰告捷！\n\n這是士師記 1:1–7 所記載的後續歷史；猶大的旗幟已在大地圖亮起。":battleMode==="afterJoseph"?"約瑟家族攻取伯特利！\n\n這是士師記 1:22–26 的故事，以法蓮的旗幟已在大地圖亮起。":battleMode==="campaign"?"艾城凱歌！\n\n以色列的軍旗在城頭高高飄揚，下一段故事將從基遍展開。":battleMode==="gibeon"?"基遍得救了！\n\n約書亞守住盟約。經文記載大冰雹與日月停住的奇事（書 10:11–14）。":battleMode==="south"?"南方追擊告捷！\n\n南方五王的聯軍已被擊敗（書 10:16–27），但耶路撒冷仍不是已佔領的城邑。現在，北方夏瑣王的軍隊正集結待戰！":battleMode==="hazor"?"夏瑣之戰告捷！\n\n約書亞擊敗北方聯軍，攻取夏瑣（書 11:10–15）。夏瑣已變成淡藍色，能返回練兵；將領與士兵的經驗和等級都會保留。":battleMode==="training"?"操練告捷！\n\n將士們的經驗與等級都已保留，主線旅程可以繼續。":"自由試煉告捷！\n\n將士們滿載歷練回營。";
     setTimeout(function(){alert(victoryText);endBattle()},1100)
   }
 }
