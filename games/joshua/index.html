@@ -122,6 +122,20 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 .city .fort::after{left:11px;bottom:-1px;width:8px;height:11px;border-width:1.5px}
 .city .flag{left:31px;top:-13px;width:13px;height:10px}
 .city span{margin-top:6px;font-size:13px}
+/* Campaign territories and directed route network share the fixed atlas coordinates. */
+.territory{fill:#d6c59c;fill-opacity:.035;stroke:#69573b;stroke-width:2.5;stroke-dasharray:7 7;stroke-opacity:.65;stroke-linejoin:round;transition:fill .35s,fill-opacity .35s,stroke .35s}
+.territory.claimed{fill:#9eddf4;fill-opacity:.49;stroke:#3c91ba;stroke-width:3.5;stroke-dasharray:none;stroke-opacity:.95}
+.campaign-route{fill:none;stroke:#6d573c;stroke-width:5;stroke-dasharray:4 12;stroke-linecap:round;stroke-linejoin:round;opacity:.42;transition:stroke .3s,opacity .3s}
+.campaign-route.available{stroke:#dbb763;stroke-width:7;stroke-dasharray:10 7;opacity:.95}
+.campaign-route.completed{stroke:#4a9dc0;stroke-width:7;stroke-dasharray:none;opacity:.9}
+.campaign-route.future{opacity:.24}
+.campaign-route-label{font:700 12px "Noto Sans TC","Microsoft JhengHei",sans-serif;fill:#5b482e;stroke:#edd7ae;stroke-width:3;paint-order:stroke;pointer-events:none}
+.map-status{position:absolute;top:12px;left:12px;z-index:10;background:#271f17dd;color:#ffedc6;border:1px solid #bc9d65;border-radius:10px;padding:7px 10px;font-size:12px;pointer-events:none}
+.map-status .swatch{display:inline-block;width:12px;height:9px;margin:0 4px 0 8px;border-radius:2px;vertical-align:middle;background:#a5d8ed;border:1px solid #549abc}
+.map-status .swatch.route{background:#d8b85e;border-color:#ddc584}
+.city.trainable .fort{box-shadow:inset 0 1px 0 #f6dcad,0 3px 0 #60472e,0 0 0 3px #77cae966,0 4px 6px #30231566}
+.training-panel{margin-top:10px;padding:10px;background:#13241f;border:1px solid #477e88;border-radius:10px;font-size:13px;color:#e0e9df;line-height:1.5}
+.training-panel button{margin-top:8px;width:100%}
 </style>
 </head>
 <body>
@@ -154,11 +168,29 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
         <path class="ridge" d="M760 146 C793 206 779 269 808 324 C835 377 821 447 842 503 C862 557 851 631 879 690"/>
         <path class="ridge2" d="M760 146 C793 206 779 269 808 324 C835 377 821 447 842 503 C862 557 851 631 879 690"/>
         <path d="M710 610 C815 570 947 585 1125 640" fill="none" stroke="#c3a067" stroke-width="110" opacity=".13" filter="url(#soft)"/>
+        <!-- Stylized territorial districts (strategic game boundaries, not historical borders). -->
+        <g id="territoryLayer">
+          <polygon class="territory" data-territory="gilgal" points="570,460 592,441 622,448 635,480 619,526 584,534 567,507"/>
+          <polygon class="territory" data-territory="jericho" points="503,440 527,419 568,435 570,460 567,507 528,508 498,479"/>
+          <polygon class="territory" data-territory="ai" points="441,388 472,377 502,396 515,423 503,440 498,479 459,474 435,443"/>
+          <polygon class="territory" data-territory="gibeon" points="397,475 435,443 459,474 498,479 495,526 465,550 423,548 395,519"/>
+          <polygon class="territory" data-territory="jerusalem" points="423,548 465,550 495,526 518,578 511,635 474,655 426,625 403,581"/>
+          <polygon class="territory" data-territory="hazor" points="481,20 544,16 579,38 591,91 562,130 516,135 480,99"/>
+        </g>
         <path class="roadline minor" d="M715 475 Q655 485 595 490"/>
         <path class="roadline" d="M595 490 Q570 480 545 460 Q505 450 470 425 Q445 465 435 505 Q445 540 465 570"/>
         <path class="roadline minor" d="M465 570 C475 626 488 674 499 724"/>
         <path class="roadline minor" d="M435 505 C380 509 324 500 277 484"/>
         <path class="roadline minor" d="M470 425 C484 350 500 275 515 200 C525 150 540 105 550 65"/>
+        <!-- Routes branch only through fixed city nodes; visual state follows the campaign. -->
+        <g id="campaignRoutes">
+          <path class="campaign-route" data-route="camp-gilgal" d="M715 475 Q655 485 595 490"/>
+          <path class="campaign-route" data-route="gilgal-jericho" d="M595 490 Q570 480 545 460"/>
+          <path class="campaign-route" data-route="jericho-ai" d="M545 460 Q505 450 470 425"/>
+          <path class="campaign-route future" data-route="ai-gibeon" d="M470 425 Q445 465 435 505"/>
+          <path class="campaign-route future" data-route="gibeon-jerusalem" d="M435 505 Q445 540 465 570"/>
+          <path class="campaign-route future" data-route="ai-hazor" d="M470 425 C484 350 500 275 515 200 C525 150 540 105 550 65"/>
+        </g>
         <text class="waterlabel" x="74" y="400" transform="rotate(-90 74 400)">地 中 海</text>
         <text class="waterlabel" x="665" y="330" transform="rotate(84 665 330)">約旦河</text>
         <text class="maplabel" x="587" y="54">加利利湖</text>
@@ -181,6 +213,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
       <div id="army" class="army" style="left:715px;top:475px" aria-label="約書亞軍"><i class="war-standard" aria-hidden="true"></i></div>
     </div>
   </div>
+  <div class="map-status">戰役路線 <span class="swatch"></span>已佔領 <span class="swatch route"></span>下一站 · 城鎮可點選</div>
   <div id="storyModal" class="modal" role="dialog" aria-modal="true">
     <div class="card"><h2 id="modalTitle">耶利哥之戰</h2><p id="modalText"></p><div id="battleBox" class="battlefield" hidden><div class="wall" id="wall"></div><div class="troops">🧍🧍🧍 📯 🧍🧍</div></div><div id="marchProgress" class="progress" hidden><div></div></div><div class="actions"><button id="modalAction" class="btn primary">開始</button><button id="modalClose" class="btn">稍後再說</button></div></div>
   </div>
@@ -188,7 +221,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
   <div id="battleScreen" aria-label="艾城即時戰場">
     <div class="battleHud">
       <div class="hpBlock"><div class="hpLabel"><span>約書亞 HP</span><b id="playerHpText">120 / 120</b></div><div class="hpbar"><i id="playerHpBar"></i></div><div class="hpLabel" style="margin-top:4px"><span id="playerLevelText">Lv.1</span><span id="playerXpText">EXP 0 / 40</span></div></div>
-      <div class="battleTitle">艾城戰場<br><span id="enemyCount">敵軍 12</span></div>
+      <div class="battleTitle"><span id="battleModeTitle">艾城戰場</span><br><span id="enemyCount">敵軍 12</span></div>
       <div class="hpBlock"><div class="hpLabel"><span>敵將 HP</span><b id="bossHpText">180 / 180</b></div><div class="hpbar enemy"><i id="bossHpBar"></i></div></div>
     </div>
     <div style="position:relative;flex:1 1 auto;min-height:0;overflow:hidden"><canvas id="battleCanvas" width="900" height="540"></canvas><div id="battleMessage"></div></div>
@@ -206,7 +239,7 @@ radial-gradient(circle at 72% 62%,#382c1c 0 1px,transparent 1.4px);background-si
 
 <aside class="side">
   <div class="panel"><h2>戰略小地圖</h2><div class="minimap"><div id="marmy" class="marmy"></div></div><div class="legend" style="margin-top:8px"><span><i class="dot" style="background:#62a6d3"></i>以色列</span><span><i class="dot" style="background:#a44f48"></i>迦南城邦</span></div></div>
-  <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">前往吉甲整軍，準備進入耶利哥戰役。</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div></div>
+  <div class="panel"><h2>主線任務</h2><div class="objective" id="objective">前往吉甲整軍，準備進入耶利哥戰役。</div><h3>軍令</h3><div class="actions"><button class="btn primary" id="goGilgal">前往吉甲</button><button class="btn warn" id="goJericho" disabled>進軍耶利哥</button><button class="btn primary" id="goAi" disabled>⚔ 進軍艾城（主線）</button><button class="btn blue" id="battleDemo">⚔ 自由戰場練習</button></div><div id="trainingPanel" class="training-panel"><div id="trainingInfo">完成城鎮戰役後，可返回已佔領的據點練兵。</div><button class="btn blue" id="trainCity" disabled>選擇已佔領城鎮練兵</button></div></div>
   <div class="panel"><h2>戰記</h2><div class="log" id="log">約書亞接續摩西的使命。以色列百姓已渡過約旦河，現在必須在吉甲整軍。也可直接進入「艾城戰場演練」測試即時戰鬥。</div></div>
 </aside>
 </div>
@@ -225,6 +258,7 @@ try{
     state.marches=Math.max(0,Math.min(7,Number(saved.marches)||0));
     state.x=Number.isFinite(saved.x)?saved.x:715;
     state.y=Number.isFinite(saved.y)?saved.y:475;
+    state.at=typeof saved.at==="string"?saved.at:"";
     state.troop=Math.max(0,Number(saved.troop)||600);
     state.morale=Math.max(0,Math.min(100,Number(saved.morale)||82));
     state.food=Math.max(0,Math.min(100,Number(saved.food)||100));
@@ -232,7 +266,7 @@ try{
 }catch(_){}
 function saveCampaign(){
   try{localStorage.setItem(CAMPAIGN_KEY,JSON.stringify({
-    stage:state.stage,marches:state.marches,x:state.x,y:state.y,
+    stage:state.stage,marches:state.marches,x:state.x,y:state.y,at:state.at,
     troop:state.troop,morale:state.morale,food:state.food
   }))}catch(_){}
 }
@@ -246,6 +280,28 @@ function saveProgress(){
 }
 state.progression=loadProgress();
 const cities={gilgal:{x:595,y:490,name:"吉甲"},jericho:{x:545,y:460,name:"耶利哥"},ai:{x:470,y:425,name:"艾城"},gibeon:{x:435,y:505,name:"基遍"},jerusalem:{x:465,y:570,name:"耶路撒冷"},hazor:{x:550,y:65,name:"夏瑣"}};
+const routePoints=Object.assign({camp:{x:715,y:475,name:"約旦河東營地"}},cities);
+const routeEdges=[["camp","gilgal"],["gilgal","jericho"],["jericho","ai"],["ai","gibeon"],["gibeon","jerusalem"],["ai","hazor"]];
+if(!routePoints[state.at]){
+  state.at=Object.keys(routePoints).reduce(function(best,id){
+    var a=routePoints[id],b=routePoints[best];
+    return Math.hypot(state.x-a.x,state.y-a.y)<Math.hypot(state.x-b.x,state.y-b.y)?id:best;
+  },"camp");
+}
+let selectedTrainingCity=null,trainingLocation="gilgal";
+function isOccupied(id){return (id==="gilgal"&&state.stage>=1)||(id==="jericho"&&state.stage>=2)||(id==="ai"&&state.stage>=3)}
+function findRoute(from,to){
+  if(from===to)return [from];
+  var q=[[from]],visited=new Set([from]);
+  while(q.length){var path=q.shift(),lastNode=path[path.length-1];
+    for(var edge of routeEdges){var next=edge[0]===lastNode?edge[1]:edge[1]===lastNode?edge[0]:null;
+      if(!next||visited.has(next))continue;
+      if(next===to)return path.concat(next);
+      visited.add(next);q.push(path.concat(next));
+    }
+  }
+  return null;
+}
 const army=$("#army"),marmy=$("#marmy"),log=$("#log"),objective=$("#objective");
 // Share geography and city coordinates with the overview, including narrow layouts.
 const overview=$(".minimap"),overviewArt=$(".mapart").cloneNode(true);
@@ -275,6 +331,21 @@ function renderCampaign(){
   $("#goGilgal").disabled=state.stage>=1;
   $("#goJericho").disabled=state.stage<1||state.stage>=2;
   $("#goAi").disabled=state.stage!==2;
+  document.querySelectorAll("[data-territory]").forEach(function(area){
+    area.classList.toggle("claimed",isOccupied(area.dataset.territory));
+  });
+  var progressRoutes={"camp-gilgal":1,"gilgal-jericho":2,"jericho-ai":3};
+  document.querySelectorAll("[data-route]").forEach(function(line){
+    var threshold=progressRoutes[line.dataset.route];
+    line.classList.toggle("completed",!!threshold&&state.stage>=threshold);
+    line.classList.toggle("available",!!threshold&&state.stage===threshold-1);
+    line.classList.toggle("future",!threshold);
+  });
+  document.querySelectorAll(".city").forEach(function(city){
+    var occupied=isOccupied(city.dataset.city);
+    city.classList.toggle("trainable",occupied);
+    city.title=occupied?city.textContent.trim()+"：已佔領，可點選練兵":city.classList.contains("locked")?"尚未開放的戰役":city.textContent.trim();
+  });
   if(state.stage>=2){
     const jericho=document.querySelector('[data-city="jericho"]');
     jericho.classList.remove("enemy");jericho.classList.add("friendly");
@@ -290,16 +361,60 @@ function renderCampaign(){
   }else if(state.stage===1){
     objective.textContent=state.marches===7?"耶利哥城牆已倒塌，請完成佔領。":"耶利哥繞城進度："+state.marches+" / 7 日。";
   }else objective.textContent="前往吉甲整軍，準備進入耶利哥戰役。";
+  if(selectedTrainingCity&&!isOccupied(selectedTrainingCity))selectedTrainingCity=null;
+  if(!selectedTrainingCity){selectedTrainingCity=state.stage>=3?"ai":state.stage>=2?"jericho":state.stage>=1?"gilgal":null}
+  $("#trainCity").disabled=!selectedTrainingCity||state.moving;
+  $("#trainCity").textContent=selectedTrainingCity?"⚔ 返回"+cities[selectedTrainingCity].name+"練兵":"尚無可練兵的據點";
+  $("#trainingInfo").textContent=selectedTrainingCity?"已佔領據點："+cities[selectedTrainingCity].name+"。練兵不重播主線、不改變佔領進度，經驗與等級會保存。點選地圖上其他淡藍色區塊的城鎮可切換據點。":"先抵達吉甲整軍，即可開啟練兵。";
 }
-function moveTo(city,done){if(state.moving)return;state.moving=true;state.x=city.x;state.y=city.y;state.food=Math.max(0,state.food-3);sync();setTimeout(function(){state.moving=false;if(done)done()},850)}
-$("#goGilgal").addEventListener("click",function(){moveTo(cities.gilgal,function(){state.at="gilgal";state.stage=Math.max(state.stage,1);say("軍隊抵達吉甲。百姓安營，約書亞準備依照吩咐面對耶利哥。");renderCampaign();saveCampaign()})});
-$("#goJericho").addEventListener("click",function(){moveTo(cities.jericho,openJericho)});
+function moveTo(id,done){
+  if(state.moving||!routePoints[id])return;
+  var path=findRoute(state.at,id);
+  if(!path){say("此地尚無可通行的行軍路線。");return}
+  state.moving=true;state.food=Math.max(0,state.food-3);renderCampaign();
+  var legs=path.slice(1),previous={x:state.x,y:state.y};
+  army.style.transition="none";
+  function nextLeg(){
+    if(!legs.length){state.at=id;state.moving=false;army.style.transition="";sync();renderCampaign();saveCampaign();if(done)done();return}
+    var node=legs.shift(),dest=routePoints[node],start=performance.now(),duration=650;
+    function frame(now){
+      var t=Math.min(1,(now-start)/duration),ease=t*t*(3-2*t);
+      state.x=previous.x+(dest.x-previous.x)*ease;
+      state.y=previous.y+(dest.y-previous.y)*ease;
+      sync();
+      if(t<1)requestAnimationFrame(frame);
+      else{state.at=node;previous={x:dest.x,y:dest.y};nextLeg()}
+    }
+    requestAnimationFrame(frame);
+  }
+  nextLeg();
+}
+$("#goGilgal").addEventListener("click",function(){if(state.stage!==0)return;moveTo("gilgal",function(){state.stage=Math.max(state.stage,1);say("軍隊沿指定道路抵達吉甲。百姓安營，約書亞準備依照吩咐面對耶利哥。");renderCampaign();saveCampaign()})});
+$("#goJericho").addEventListener("click",function(){if(state.stage!==1)return;moveTo("jericho",openJericho)});
 $("#goAi").addEventListener("click",function(){
   if(state.stage!==2)return;
   say("艾城戰役（約書亞記 7–8 章）：以色列人省察失敗原因後，照神的指示設下伏兵。進入戰場後可使用「伏兵出擊」。");
-  moveTo(cities.ai,function(){saveCampaign();startBattle("campaign")});
+  moveTo("ai",function(){saveCampaign();startBattle("campaign")});
 });
-document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click",function(){var id=b.dataset.city,c=cities[id];if(b.classList.contains("locked")){say(c.name+"目前尚未開放。請先完成前一場戰役。");return}if(id==="gilgal"&&state.stage===0)$("#goGilgal").click();if(id==="jericho"&&state.stage===1)$("#goJericho").click();if(id==="ai"&&state.stage===2)$("#goAi").click();if(id==="ai"&&state.stage===3)say("艾城已攻克，正準備下一段旅程。")})});
+document.querySelectorAll(".city").forEach(function(b){b.addEventListener("click",function(){
+  var id=b.dataset.city,c=cities[id];
+  if(state.moving){say("軍隊正沿行軍路線前進，請稍候。");return}
+  if(isOccupied(id)){
+    selectedTrainingCity=id;renderCampaign();
+    say(c.name+"已屬以色列據點。可在右側點選「返回"+c.name+"練兵」，再次訓練約書亞與士兵。");return;
+  }
+  if(b.classList.contains("locked")){say(c.name+"目前尚未開放。請沿主線路線完成前一場戰役。");return}
+  if(id==="gilgal"&&state.stage===0)$("#goGilgal").click();
+  else if(id==="jericho"&&state.stage===1)$("#goJericho").click();
+  else if(id==="ai"&&state.stage===2)$("#goAi").click();
+})});
+$("#trainCity").addEventListener("click",function(){
+  var id=selectedTrainingCity;
+  if(!id||!isOccupied(id)||state.moving)return;
+  trainingLocation=id;
+  say("正在沿已開放路線返回"+cities[id].name+"。本次為無劇情練兵，不影響主線佔領。 ");
+  moveTo(id,function(){saveCampaign();startBattle("training")});
+});
 const modal=$("#storyModal"),title=$("#modalTitle"),text=$("#modalText"),action=$("#modalAction"),close=$("#modalClose"),battle=$("#battleBox"),progress=$("#marchProgress"),bar=progress.firstElementChild;
 function openJericho(){modal.classList.add("show");title.textContent="耶利哥之戰";if(state.marches<6){text.textContent="第 "+(state.marches+1)+" 日：祭司抬著約櫃，七位祭司在前吹角。今天繞城一次，不可呼喊。";action.textContent="繞城一周";battle.hidden=true;progress.hidden=false;bar.style.width=(state.marches/7*100)+"%"}else if(state.marches===6){text.textContent="第七日到了。今天要繞城七次，最後祭司角聲長鳴，百姓一同呼喊。";action.textContent="完成第七日";battle.hidden=false;progress.hidden=false;bar.style.width="86%"}else{text.textContent="城牆已倒塌。耶利哥成為以色列在迦南取得的第一個重要據點。";action.textContent="返回戰略地圖";battle.hidden=false;progress.hidden=true}}
 action.addEventListener("click",function(){if(state.marches<6){state.marches++;state.food=Math.max(0,state.food-2);state.morale=Math.min(100,state.morale+1);sync();modal.classList.remove("show");say("完成第 "+state.marches+" 日繞城。軍隊保持安靜，返回營中。");objective.textContent="耶利哥繞城進度："+state.marches+" / 7 日。再次進軍耶利哥繼續任務。"}else if(state.marches===6){state.marches=7;bar.style.width="100%";text.textContent="角聲長鳴，百姓大聲呼喊！耶利哥城牆倒塌。";$("#wall").style.transform="translateY(90px) rotate(2deg)";$("#wall").style.transition="transform 1s ease";state.morale=95;sync();action.textContent="佔領耶利哥";say("耶利哥城牆倒塌！戰役勝利。")}else{modal.classList.remove("show");state.stage=2;document.querySelector('[data-city="jericho"]').classList.remove("enemy");document.querySelector('[data-city="jericho"]').classList.add("friendly");document.querySelector('[data-city="ai"]').classList.remove("locked");objective.textContent="下一戰：艾城。可點擊艾城進入即時戰場。";$("#goJericho").disabled=true;say("耶利哥已成為以色列據點。艾城路線開放。")}});close.addEventListener("click",function(){modal.classList.remove("show")});
@@ -384,17 +499,18 @@ function grantXp(u,amount){
 }
 let battleMode="demo";
 function startBattle(mode){
-  battleMode=mode==="campaign"?"campaign":"demo";
+  battleMode=mode==="campaign"?"campaign":mode==="training"?"training":"demo";
   modal.classList.remove("show");battleScreen.classList.add("show");
+  $("#battleModeTitle").textContent=battleMode==="training"?cities[trainingLocation].name+" · 練兵":battleMode==="campaign"?"艾城主線戰場":"自由戰場練習";
   battleState={running:true,ambush:false,won:false,lost:false,player:unit("player",160,330,120,"joshua","joshua",profileFor("joshua","joshua")),allies:[],enemies:[],boss:null,time:0};
   for(var i=0;i<7;i++){var sid="soldier"+(i+1);battleState.allies.push(unit("ally",115+(i%3)*38,370+Math.floor(i/3)*34,55,"soldier",sid,profileFor(sid,"soldier")))}
   for(var j=0;j<11;j++)battleState.enemies.push(unit("enemy",610+(j%4)*42,270+Math.floor(j/4)*48,48,"soldier","enemy"+(j+1),{level:1,xp:0}));
   battleState.boss=unit("enemy",765,200,180,"boss","boss",{level:3,xp:0});battleState.enemies.push(battleState.boss);
-  $("#ambushBtn").disabled=false;showBattleMessage(battleMode==="campaign"?"艾城主線：操控約書亞移動，接敵自動攻擊。適時發動伏兵！":(joshuaSpriteReady?"自由練習開始。":"約書亞角色素材載入中…"));updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
+  $("#ambushBtn").disabled=false;showBattleMessage(battleMode==="campaign"?"艾城主線：操控約書亞移動，接敵自動攻擊。適時發動伏兵！":battleMode==="training"?"據點練兵：沒有主線劇情，戰鬥經驗與升級會保留。":(joshuaSpriteReady?"自由練習開始。":"約書亞角色素材載入中…"));updateHud();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
 }
 $("#battleDemo").addEventListener("click",function(){startBattle("demo")});
 $("#exitBattle").addEventListener("click",endBattle);
-function endBattle(){if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};if(battleMode==="campaign"){say(state.stage>=3?"艾城戰役完成！以色列軍隊整軍待命，下一站將前往基遍。":"已離開艾城戰役。仍可再次進軍挑戰，角色等級與經驗值已保留。")}else say("已離開自由戰場練習。角色等級與經驗值已保留。");renderCampaign();saveCampaign()}
+function endBattle(){if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}cancelAnimationFrame(raf);battleScreen.classList.remove("show");keys={};if(battleMode==="campaign"){say(state.stage>=3?"艾城戰役完成！以色列軍隊整軍待命，下一站將前往基遍。":"已離開艾城戰役。仍可再次進軍挑戰，角色等級與經驗值已保留。")}else if(battleMode==="training")say("已結束"+cities[trainingLocation].name+"的練兵。經驗與等級已保留，主線進度不變。");else say("已離開自由戰場練習。角色等級與經驗值已保留。");renderCampaign();saveCampaign()}
 function resizeCanvas(){var box=canvas.getBoundingClientRect();var ratio=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.max(620,Math.floor(box.width*ratio));canvas.height=Math.max(360,Math.floor(box.height*ratio));ctx.setTransform(ratio,0,0,ratio,0,0);return {w:box.width,h:box.height}}
 function dist(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.hypot(dx,dy)}
 function nearest(from,list){var best=null,bd=1e9;for(var i=0;i<list.length;i++){var u=list[i];if(u.dead)continue;var d=dist(from,u);if(d<bd){bd=d;best=u}}return {u:best,d:bd}}
@@ -441,8 +557,8 @@ function update(dt){
     bs.won=true;bs.running=false;p.anim="victory";p.animLock=999;
     state.morale=Math.min(100,state.morale+3);sync();
     if(battleMode==="campaign"){state.stage=3;showBattleMessage("艾城攻克！主線任務完成。");saveCampaign()}
-    else showBattleMessage("自由戰場練習勝利！");
-    setTimeout(function(){alert(battleMode==="campaign"?"艾城戰役勝利！\n\n主線進度已保存，下一階段將前往基遍。":"自由練習勝利！\n\n角色經驗與等級已保存。");endBattle()},1100)
+    else showBattleMessage(battleMode==="training"?"據點練兵完成！":"自由戰場練習勝利！");
+    setTimeout(function(){alert(battleMode==="campaign"?"艾城戰役勝利！\n\n主線進度已保存，下一階段將前往基遍。":battleMode==="training"?"練兵完成！\n\n約書亞與士兵的經驗、等級已保存，主線進度不變。":"自由練習勝利！\n\n角色經驗與等級已保存。");endBattle()},1100)
   }
 }
 function drawJoshua(u){
