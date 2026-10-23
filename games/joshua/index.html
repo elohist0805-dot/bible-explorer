@@ -461,7 +461,7 @@ overview.prepend(overviewArt);
 const TRIBAL_FLAGS=[
   {id:"judah",name:"猶大",color:"#d08b72",x:475,y:690,kind:"battle",mode:"afterJudah",verse:"士師記 1:1–7",story:"示劍立約的篇章已結束。士師記開頭記載，約書亞死後猶大與西緬同行，在比色擊敗敵軍。這場戰鬥作為士師記序章，並非約書亞親自率軍。"},
   {id:"simeon",name:"西緬",color:"#d9b66d",x:466,y:810,kind:"battle",mode:"afterSimeon",verse:"約書亞記 19:1–9；士師記 1:3、17",story:"🚩 西緬與猶大聯軍・洗法之戰！約書亞離世後，猶大邀請西緬一同出征，承諾日後也協助西緬。兩支派並肩迎戰洗法的迦南居民，後來將該城稱為何珥瑪。（士 1:3、17）這是後續士師記的事件，不是約書亞親自領軍。"},
-  {id:"benjamin",name:"便雅憫",color:"#a497d3",x:511,y:549,kind:"story",verse:"約書亞記 18:11–28；士師記 1:21",story:"便雅憫的產業位在猶大與約瑟子孫之間，包含耶利哥一帶。經文也記載耶布斯人仍與便雅憫人同住耶路撒冷，因此立旗不代表已攻下全城。"},
+  {id:"benjamin",name:"便雅憫",color:"#a497d3",x:511,y:549,kind:"battle",mode:"afterBenjamin",verse:"約書亞記 18:11–28；士師記 1:21",story:"⚔ 便雅憫支派來到耶路撒冷附近！起初的戰鬥似乎即將獲勝，但耶布斯人仍在城中堅守。當援軍出現，便雅憫軍將不得不停戰。聖經記載，便雅憫人沒有趕出耶路撒冷的耶布斯人，雙方在當地共居。（士 1:21）"},
   {id:"dan",name:"但",color:"#7ca9cc",x:331,y:575,kind:"story",verse:"約書亞記 19:40–48",story:"但支派原先分得沿海平原附近的產業；因擴展艱難，後來另攻取利善。大地圖的旗幟標示原產業區，北遷故事已在利善戰役中介紹。"},
   {id:"ephraim",name:"以法蓮",color:"#8bbd83",x:452,y:449,kind:"battle",mode:"afterJoseph",verse:"約書亞記 16 章；士師記 1:22–26",story:"約瑟家族往伯特利前進，探得入城的道路而攻取那城。這是士師記的支派篇章，改由約瑟家的勇士率軍，約書亞不再親自參戰。"},
   {id:"manasseh",name:"瑪拿西",color:"#75b7a4",x:441,y:352,kind:"story",verse:"約書亞記 17:1–18；士師記 1:27–28",story:"瑪拿西有約旦河東與河西兩部分產業。部分迦南居民並未完全被趕出，請記得：分地與實際掌握領土不是同一回事。"},
@@ -691,14 +691,14 @@ function renderTribalMap(){
     node.hidden=!available;node.classList.toggle("claimed",state.tribeClaims.includes(tribe.id));
     node.classList.toggle("in-camp",!dispatched&&!marching);node.classList.toggle("marching",marching);
     if(!marching){var point=dispatched?tribe:tribeMusterPosition(index);node.style.left=point.x+"px";node.style.top=point.y+"px"}
-    node.title=tribe.name+(dispatched?"・已抵達領地":"・示劍待命，點選出發");
+    node.title=tribe.id==="benjamin"&&state.tribeClaims.includes("benjamin")?"便雅憫・與耶布斯人共居（耶路撒冷未完全攻取）":tribe.name+(dispatched?"・已抵達領地":"・示劍待命，點選出發");
   });
   if(!available)return;
   TRIBAL_FLAGS.forEach(function(tribe){
     var done=state.tribeClaims.includes(tribe.id),dispatched=state.tribeDispatched.includes(tribe.id),button=tribeGrid.querySelector('[data-tribe-task="'+tribe.id+'"]');
     button.classList.toggle("done",done);button.style.borderLeft="5px solid "+tribe.color;
     button.disabled=Boolean(tribeMarching);
-    button.textContent=(done?"✓ ":tribe.kind==="battle"?"⚔ ":"📜 ")+tribe.name+(done?"・領地已完成":tribeMarching===tribe.id?"・行軍中":dispatched?"・抵達待完成":"・從示劍出發");
+    button.textContent=(done?"✓ ":tribe.kind==="battle"?"⚔ ":"📜 ")+tribe.name+(done?(tribe.id==="benjamin"?"・與耶布斯人共居":"・領地已完成"):tribeMarching===tribe.id?"・行軍中":dispatched?"・抵達待完成":"・從示劍出發");
   });
   $("#tribesProgress").textContent="已完成 "+state.tribeClaims.length+" / 12 支派｜"+(state.tribeClaims.length===12?"約旦河東西的支派領地示意圖已完整顯現！":"選擇支線，該支派才會離開示劍；完成事件後，領地才會著色。");
   $("#tribesObjective").textContent="十二面支派軍旗集結在示劍。選擇支派後，只有該支派前往地圖上的產業；完成戰役或故事，才會在河東、河西逐步呈現對應色塊。";
@@ -1163,9 +1163,9 @@ const TRIBE_BATTLES=[
   });
 });
 function startBattle(mode){
-  battleMode=["campaign","gibeon","south","hazor","training","tribeHebron","tribeDebir","tribeLeshem","afterJudah","afterSimeon","afterJoseph"].includes(mode)?mode:"demo";
+  battleMode=["campaign","gibeon","south","hazor","training","tribeHebron","tribeDebir","tribeLeshem","afterJudah","afterSimeon","afterBenjamin","afterJoseph"].includes(mode)?mode:"demo";
   var tribal=TRIBE_BATTLES.find(function(b){return b.mode===battleMode});
-  var postCovenant=battleMode==="afterJudah"||battleMode==="afterSimeon"||battleMode==="afterJoseph";
+  var postCovenant=battleMode==="afterJudah"||battleMode==="afterSimeon"||battleMode==="afterBenjamin"||battleMode==="afterJoseph";
   var postTribe=postCovenant?TRIBAL_FLAGS.find(function(t){return t.mode===battleMode}):null;
   $("#battleLeaderLabel").textContent=battleMode==="afterSimeon"?"西緬聯軍指揮官 HP":postCovenant?"支派指揮官 HP":"約書亞 HP";
   $("#battleLeaderTip").textContent=battleMode==="afterSimeon"?"西緬與猶大的勇士並肩迎戰！金色標記代表西緬、紅色標記代表猶大；拖動方向盤接敵後自動攻擊，還可召喚兩支派的聯軍增援。":postCovenant?"士師記支派戰役由支派勇士領軍。拖動方向盤接近敵人即可自動迎戰，並可召喚援軍；將領與士兵可累積經驗。":"握緊方向盤，帶領約書亞穿越戰場！靠近敵軍時會自動迎戰；每一次交鋒，都能讓將領與弟兄們累積歷練、逐步成長。";
@@ -1186,7 +1186,8 @@ $("#exitBattle").addEventListener("click",endBattle);
 function endBattle(){
   if(battleState){battleState.running=false;syncProfile(battleState.player);battleState.allies.forEach(syncProfile);saveProgress()}
   cancelAnimationFrame(raf);battleScreen.classList.remove("show");endJoy();unlockBattleScroll();keys={};
-  if(TRIBE_BATTLES.some(function(b){return b.mode===battleMode})||battleMode==="afterJudah"||battleMode==="afterSimeon"||battleMode==="afterJoseph")say("支派勇士返回營地！這趟征途中獲得的經驗與等級已保存，若尚未獲勝，隨時可以重新挑戰。");
+  if(battleMode==="afterBenjamin"&&state.tribeClaims.includes("benjamin"))say("便雅憫支線已結束：耶布斯人仍與便雅憫人共居，耶路撒冷沒有標記為完全攻取。（士師記 1:21）");
+  else if(TRIBE_BATTLES.some(function(b){return b.mode===battleMode})||battleMode==="afterJudah"||battleMode==="afterSimeon"||battleMode==="afterBenjamin"||battleMode==="afterJoseph")say("支派勇士返回營地！這趟征途中獲得的經驗與等級已保存，若尚未獲勝，隨時可以重新挑戰。");
   else if(battleMode==="campaign")say(state.stage>=3?"艾城的軍旗已升起，新故事正從基遍方向傳來！":"今日暫時鳴金收兵，整頓後仍可再挑戰艾城！");
   else if(battleMode==="gibeon")say(state.stage>=5?"基遍終於平安，盟約也得到了守護！":"基遍仍在等待援救，整軍後再次出發吧！");
   else if(battleMode==="south")say(state.stage>=6?"南方五王的軍隊已敗退。記住，這不代表耶路撒冷城已被佔領；新的敵情正從北方傳來。":"南方追擊戰暫告一段落，整頓後再前往山地迎戰！");
@@ -1250,6 +1251,27 @@ function update(dt){
   if(p.dead&&!bs.lost){bs.lost=true;bs.running=false;p.anim="defeated";p.animLock=999;showBattleMessage(battleMode==="campaign"?"艾城戰況不利！先整頓隊伍，還有再次出發的機會。":battleMode==="gibeon"?"援救基遍受阻！收攏將士，重新振作吧！":battleMode==="south"?"南方聯軍仍在山地抵抗！先整隊，再找機會包抄。":battleMode==="hazor"?"北方的戰車攻勢猛烈！退回營地休整後再出發。":"這回合沒有守住陣地，別灰心，再練一次吧！");setTimeout(function(){if(confirm("將士們已退回營地。要重新整軍，再挑戰一次嗎？"))startBattle(battleMode);else endBattle()},900)}
   var alive=bs.enemies.some(function(u){return !u.dead});if(!alive&&!bs.won){
     if(battleMode==="hazor"&&!bs.wave){bs.wave=true;for(var k=0;k<5;k++)bs.enemies.push(unit("enemy",780-(k%3)*45,160+Math.floor(k/3)*48,64,"soldier","chariot"+k,{level:2,xp:0}));showBattleMessage("北方戰車的最後一隊趕到了！守住陣線，才能迎接真正的勝利！");return}
+    if(battleMode==="afterBenjamin"){
+      // Judges 1:21: this is a narrative stalemate, not a conquest of Jerusalem.
+      // Freeze the battle after the first wave, then reveal Jebusite reinforcements
+      // at the upper-right corner long enough for players to see the outcome.
+      bs.won=true;bs.running=false;bs.standoff=true;
+      p.anim="idle";p.animLock=2;
+      for(var j=0;j<7;j++){
+        var reinforcement=unit("enemy",765+(j%3)*49,143+Math.floor(j/3)*52,62,"soldier","jebusite"+j,{level:2,xp:0});
+        reinforcement.dir=-1;bs.enemies.push(reinforcement);
+      }
+      state.morale=Math.min(100,state.morale+1);
+      claimTribe("benjamin");
+      showBattleMessage("⚠ 耶布斯人的援軍在戰場角落出現！雙方停止交戰，耶路撒冷沒有被完全攻取。");
+      var pausedBattle=bs;
+      setTimeout(function(){
+        if(battleState!==pausedBattle||!battleScreen.classList.contains("show"))return;
+        alert("⚖ 便雅憫支線・共居結局\n\n便雅憫軍雖擊退眼前的敵人，卻未能趕出耶路撒冷的耶布斯居民。雙方在當地共居。（士師記 1:21）\n\n便雅憫支線已完成，地圖會顯示便雅憫的領地色塊，但耶路撒冷仍不是完全攻取的城邑。");
+        endBattle();
+      },3000);
+      return;
+    }
     bs.won=true;bs.running=false;p.anim="victory";p.animLock=999;
     state.morale=Math.min(100,state.morale+3);sync();
     if(battleMode==="campaign"){state.stage=3;showBattleMessage("艾城的軍旗升起了！下一段故事，從基遍開始。");saveCampaign()}
@@ -1378,6 +1400,12 @@ function draw(){
   var offsetX=(w-900*scale)/2,offsetY=(h-540*scale)/2;
   ctx.save();ctx.translate(offsetX,offsetY);ctx.scale(scale,scale);
   battleState.allies.forEach(drawUnit);battleState.enemies.forEach(drawUnit);drawUnit(battleState.player);
+  if(battleState.standoff){
+    ctx.fillStyle="#2b1811d9";ctx.fillRect(645,67,240,35);
+    ctx.strokeStyle="#ebbd85";ctx.lineWidth=1;ctx.strokeRect(645,67,240,35);
+    ctx.fillStyle="#fff0cf";ctx.font="bold 17px sans-serif";ctx.textAlign="center";
+    ctx.fillText("⚑ 耶布斯援軍抵達・共居結局",765,91);
+  }
   ctx.restore()
 }
 function loop(now){if(!battleState)return;var dt=Math.min(.032,(now-last)/1000);last=now;if(battleState.running)update(dt);draw();if(battleScreen.classList.contains("show"))raf=requestAnimationFrame(loop)}
