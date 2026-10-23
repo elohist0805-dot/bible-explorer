@@ -804,6 +804,10 @@ $("#tribeEventFinish").addEventListener("click",function(){
 let postCampaignFocus=state.stage>=9?{x:SHECHEM.x,y:SHECHEM.y}:null;
 let tribeFocusAnimation=0;
 let tribeMarching=null;
+// All marching standards travel at the same map-distance speed, without
+// shortening long marches or speeding up distant destinations.
+const MARCH_SPEED_PX_PER_SECOND=125;
+function marchDuration(from,to){return Math.max(350,Math.hypot(to.x-from.x,to.y-from.y)/MARCH_SPEED_PX_PER_SECOND*1000)}
 function focusTribeMap(tribe,onArrival){
   if(state.stage<9)return;
   cancelAnimationFrame(tribeFocusAnimation);
@@ -820,13 +824,13 @@ function dispatchTribe(tribe){
   var index=TRIBAL_FLAGS.findIndex(function(t){return t.id===tribe.id});
   if(index<0||tribeMarching)return;
   var marker=tribeFlagNodes[index],from=tribeMusterPosition(index),start=performance.now();
-  var length=Math.hypot(tribe.x-from.x,tribe.y-from.y),duration=Math.max(1100,Math.min(1900,length*3.1));
+  var duration=marchDuration(from,tribe);
   tribeMarching=tribe.id;postCampaignFocus={x:from.x,y:from.y};mapPanOffset=0;
   tribeMarchPath.setAttribute("d","M"+from.x+","+from.y+" Q"+((from.x+tribe.x)/2+30)+","+((from.y+tribe.y)/2-36)+" "+tribe.x+","+tribe.y);
   tribeMarchPath.style.display="";marker.classList.remove("in-camp");marker.classList.add("marching");
   say("🚩 "+tribe.name+"支派的軍旗從示劍啟程！跟隨這支隊伍前往下一段故事。");renderTribalMap();
   function advance(now){
-    var t=Math.min(1,(now-start)/duration),ease=t*t*(3-2*t);
+    var t=Math.min(1,(now-start)/duration),ease=t;
     var point={x:from.x+(tribe.x-from.x)*ease,y:from.y+(tribe.y-from.y)*ease};
     marker.style.left=point.x+"px";marker.style.top=point.y+"px";
     postCampaignFocus=point;sync();
@@ -841,13 +845,13 @@ function dispatchTribe(tribe){
 function dispatchDanNorth(tribe){
   if(tribeMarching||tribe.id!=="dan"||state.danPhase!==1)return;
   var index=TRIBAL_FLAGS.findIndex(function(t){return t.id==="dan"}),marker=tribeFlagNodes[index];
-  var from={x:tribe.x,y:tribe.y},to=DAN_LAISH,start=performance.now(),duration=2500;
+  var from={x:tribe.x,y:tribe.y},to=DAN_LAISH,start=performance.now(),duration=marchDuration(from,to);
   tribeMarching="dan";postCampaignFocus={x:from.x,y:from.y};mapPanOffset=0;
   tribeMarchPath.setAttribute("d","M"+from.x+","+from.y+" Q"+(from.x+105)+","+(from.y-300)+" "+to.x+","+to.y);
   tribeMarchPath.style.display="";$("#northDanMarchPath").style.display="";marker.classList.remove("in-camp");marker.classList.add("marching");
   say("🚩 沿海的土地未能守住，但支派重新整隊，離開原分地一路北上，向利善進發！");renderTribalMap();
   function advance(now){
-    var t=Math.min(1,(now-start)/duration),ease=t*t*(3-2*t);
+    var t=Math.min(1,(now-start)/duration),ease=t;
     var point={x:from.x+(to.x-from.x)*ease,y:from.y+(to.y-from.y)*ease};
     marker.style.left=point.x+"px";marker.style.top=point.y+"px";
     postCampaignFocus=point;sync();
@@ -993,9 +997,9 @@ function moveTo(id,done){
   army.style.transition="none";
   function nextLeg(){
     if(!legs.length){state.at=id;state.moving=false;army.style.transition="";sync();renderCampaign();saveCampaign();if(done)done();return}
-    var node=legs.shift(),dest=routePoints[node],start=performance.now(),duration=650;
+    var node=legs.shift(),dest=routePoints[node],start=performance.now(),duration=marchDuration(previous,dest);
     function frame(now){
-      var t=Math.min(1,(now-start)/duration),ease=t*t*(3-2*t);
+      var t=Math.min(1,(now-start)/duration),ease=t;
       state.x=previous.x+(dest.x-previous.x)*ease;
       state.y=previous.y+(dest.y-previous.y)*ease;
       sync();
