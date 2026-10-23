@@ -132,28 +132,52 @@ main{width:min(1180px,94vw);margin:auto;padding:28px 0 52px}.hero{background:#ff
 <script>
 (async()=>{
   const el=document.getElementById('visitCount');
+  const note=el.closest('.stat')?.querySelector('.note');
+  const originalNote=note?.textContent||'開站至今蒞臨的探險家們';
   const url='https://counterapi.com/api/elohist0805-dot.github.io/visit/bible-explorer-global';
-  const key='bibleExplorerCounterApiVisited';
+  const sessionKey='bibleExplorerCounterApiVisited';
+  const cacheKey='bibleExplorerCounterLastGood';
+  const format=n=>n.toLocaleString('zh-TW');
+  let lastGood=null;
   try{
-    let r;
-    if(sessionStorage.getItem(key)){
-      r=await fetch(url+'?readOnly=true',{cache:'no-store',mode:'cors'});
-    }else{
-      r=await fetch(url,{cache:'no-store',mode:'cors'});
-      if(r.ok)sessionStorage.setItem(key,'1');
-    }
-    if(!r.ok)throw new Error('counter response '+r.status);
-    const d=await r.json();
-    const n=Number(d.value);
-    if(!Number.isFinite(n))throw new Error('invalid counter payload');
-    el.textContent=n.toLocaleString('zh-TW');
-  }catch(e){
+    const saved=JSON.parse(localStorage.getItem(cacheKey)||'null');
+    if(saved&&Number.isSafeInteger(saved.value)&&saved.value>=0)lastGood=saved;
+  }catch(_){}
+  function display(value,stale=false){
+    el.textContent=stale?'≈'+format(value):format(value);
+    el.title=stale?'最後一次成功讀取的到訪數，並非即時統計':'已更新的累計到訪人數';
+    if(note)note.textContent=stale?'統計服務暫時無法連線・顯示上次讀取紀錄':originalNote;
+  }
+  if(lastGood)display(lastGood.value,true);
+  async function read(readOnly){
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),8000);
     try{
-      const r=await fetch(url+'?readOnly=true',{cache:'no-store',mode:'cors'});
-      const d=await r.json();
-      const n=Number(d.value);
-      el.textContent=Number.isFinite(n)?n.toLocaleString('zh-TW'):'—';
-    }catch(_){el.textContent='—'}
+      const r=await fetch(url+(readOnly?'?readOnly=true':''),{
+        cache:'no-store',mode:'cors',signal:controller.signal
+      });
+      if(!r.ok)throw new Error('counter response '+r.status);
+      const data=await r.json();
+      const n=Number(data.value);
+      if(!Number.isSafeInteger(n)||n<0)throw new Error('invalid counter payload');
+      try{localStorage.setItem(cacheKey,JSON.stringify({value:n,time:Date.now()}));}catch(_){}
+      lastGood={value:n,time:Date.now()};
+      display(n);
+      return true;
+    }finally{clearTimeout(timeout);}
+  }
+  try{
+    const alreadyCounted=sessionStorage.getItem(sessionKey)==='1';
+    await read(alreadyCounted);
+    if(!alreadyCounted)sessionStorage.setItem(sessionKey,'1');
+  }catch(_){
+    if(!lastGood){
+      el.textContent='—';
+      el.title='到訪統計服務暫時無法連線';
+      if(note)note.textContent='到訪統計暫時無法取得，稍後會自動重試';
+    }
+    // A failed increment may have reached the server: retry read-only.
+    setTimeout(async()=>{try{await read(true);}catch(_){}},20000);
   }
 })();
 </script>
